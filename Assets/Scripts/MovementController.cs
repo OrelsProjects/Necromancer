@@ -65,7 +65,6 @@ public class MovementController : MonoBehaviour
         {
             return;
         }
-        Debug.Log("Enabled, speed and direction: " + _speed + " " + _direction);
         enabled = true;
     }
 
@@ -75,7 +74,6 @@ public class MovementController : MonoBehaviour
         {
             return;
         }
-        Debug.Log("Disabled, speed and direction: " + _speed + " " + _direction);
         enabled = false;
     }
 

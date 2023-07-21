@@ -25,7 +25,6 @@ public class Zombie : MonoBehaviour, IChaseable
     [SerializeField]
     private float _health = 100f;
 
-    private Rigidbody2D _rigidbody;
     private MovementController _movementController;
     private Animator _animator;
     private ZombieChaser _chaser;
@@ -38,15 +37,13 @@ public class Zombie : MonoBehaviour, IChaseable
 
     private void Awake()
     {
-        gameObject.tag = "Zombie";
+        tag = "Zombie";
     }
-
 
     private void Start()
     {
         RoundManager.Instance.AddZombie(this);
 
-        _rigidbody = GetComponent<Rigidbody2D>();
         _movementController = GetComponent<MovementController>();
         _animator = GetComponent<Animator>();
         _chaser = GetComponent<ZombieChaser>();
@@ -57,11 +54,6 @@ public class Zombie : MonoBehaviour, IChaseable
 
     private void Update()
     {
-        if (_health <= 0)
-        {
-            _state = ZombieState.Death;
-            Destroy(gameObject, 1f);
-        }
         if (_chaser.Target == null && _state != ZombieState.RoundOver)
         {
             _state = ZombieState.Idle;
@@ -136,6 +128,13 @@ public class Zombie : MonoBehaviour, IChaseable
     {
         _animationHelper.Hit();
         _health -= damage;
+        if (_health <= 0 && _state != ZombieState.Death)
+        {
+            _state = ZombieState.Death;
+            _movementController.Stop();
+            _wanderController.Disable();
+            Destroy(gameObject, 1f);
+        }
     }
 
     public void Heal(float health)

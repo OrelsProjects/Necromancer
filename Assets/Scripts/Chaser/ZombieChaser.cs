@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class ZombieChaser : MonoBehaviour
 {
+
+    [SerializeField]
+    private float distanceFromTarget = 0.5f;
+
     private IChaser<Zombifiable> _chaser;
     public Zombifiable Target
     {
@@ -13,7 +17,7 @@ public class ZombieChaser : MonoBehaviour
 
     void Awake()
     {
-        _chaser = new Chaser<Zombifiable>(gameObject);
+        _chaser = new Chaser<Zombifiable>(gameObject, distanceFromTarget);
     }
 
     public void SetTarget()

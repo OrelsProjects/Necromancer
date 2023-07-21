@@ -45,12 +45,20 @@ public class WanderController : MonoBehaviour
 
     public void Enable()
     {
+        if (enabled)
+        {
+            return;
+        }
         enabled = true;
         SetNewDestination();
     }
 
     public void Disable()
     {
+        if (!enabled)
+        {
+            return;
+        }
         enabled = false;
     }
 }
