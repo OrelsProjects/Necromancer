@@ -1,54 +1,75 @@
 using UnityEngine;
+
+public enum AnimationType
+{
+    Idle,
+    Walking,
+    Running,
+    AttackMelee,
+    Hit,
+    Heal,
+    Death
+}
+
 public class AnimationHelper
 {
-    private Animator _animator;
+    private readonly Animator _animator;
 
     public AnimationHelper(Animator animator)
     {
         _animator = animator;
     }
 
-    public void Idle()
+    private void Reset()
     {
-        _animator.SetBool("Action", false);
-        _animator.SetBool("Walking", false);
-        _animator.SetBool("Running", false);
-        _animator.SetBool("Idle", true);
+        foreach (var parameter in _animator.parameters)
+        {
+            if (parameter.type == AnimatorControllerParameterType.Trigger)
+            {
+                _animator.ResetTrigger(parameter.name);
+            }
+            else if (parameter.type == AnimatorControllerParameterType.Bool)
+            {
+                _animator.SetBool(parameter.name, false);
+            }
+        }
     }
 
-    public void Walking(bool isWalking)
+    public void PlayAnimation(AnimationType animationType, bool value = true)
     {
-        _animator.SetBool("Action", true);
-        _animator.SetBool("Walking", isWalking);
-    }
+        if (_animator == null)
+        {
+            return;
+        }
+        Reset();
 
-    public void Running(bool isRunning)
-    {
-        _animator.SetBool("Action", true);
-        _animator.SetBool("Running", isRunning);
-    }
-
-    public void AttackMelee()
-    {
-        _animator.SetBool("Action", true);
-        _animator.SetTrigger("Attack Melee");
-    }
-
-    public void Hit()
-    {
-        _animator.SetTrigger("Hit");
-    }
-
-    public void Heal()
-    {
-        _animator.SetTrigger("Heal");
-    }
-
-    public void Death()
-    {
-        Idle();
-        _animator.SetBool("Action", false);
-        _animator.SetBool("Idle", false);
-        _animator.SetBool("Death", true);
+        switch (animationType)
+        {
+            case AnimationType.Idle:
+                _animator.SetBool("Idle", true);
+                break;
+            case AnimationType.Walking:
+                _animator.SetBool("Walking", value);
+                _animator.SetBool("Action", true);
+                break;
+            case AnimationType.Running:
+                _animator.SetBool("Running", value);
+                _animator.SetBool("Action", true);
+                break;
+            case AnimationType.AttackMelee:
+                _animator.SetTrigger("Attack Melee");
+                _animator.SetBool("Action", true);
+                break;
+            case AnimationType.Hit:
+                _animator.SetTrigger("Hit");
+                break;
+            case AnimationType.Heal:
+                _animator.SetTrigger("Heal");
+                break;
+            case AnimationType.Death:
+                _animator.SetBool("Idle", false);
+                _animator.SetTrigger("Death");
+                break;
+        }
     }
 }

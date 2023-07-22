@@ -11,6 +11,13 @@ public class DefenderMelee : Defender
     [SerializeField]
     private float _attackSpeed = 1;
 
+
+    public override int Health { get; set; }
+    public override int Damage { get; set; }
+    public override float Speed { get; set; }
+    public override float AttackSpeed { get; set; }
+
+
     public override void Start()
     {
         base.Start();
@@ -22,6 +29,6 @@ public class DefenderMelee : Defender
 
     public override void Attack()
     {
-        _animationHelper.AttackMelee();
+        _animationHelper.PlayAnimation(AnimationType.AttackMelee);
     }
 }

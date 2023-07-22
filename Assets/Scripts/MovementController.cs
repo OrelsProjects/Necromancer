@@ -10,7 +10,7 @@ public class MovementController : MonoBehaviour
     private Animator _animator;
     private SpriteRenderer _spriteSheet;
 
-    private AnimationHelper _animatorHelper;
+    private AnimationHelper _animationHelper;
 
     private float _speed = 0;
     private Vector2 _direction = Vector2.zero;
@@ -22,7 +22,7 @@ public class MovementController : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _spriteSheet = GetComponent<SpriteRenderer>();
-        _animatorHelper = new AnimationHelper(_animator);
+        _animationHelper = new AnimationHelper(_animator);
     }
 
     public bool Move(float speed, Vector2 direction)
@@ -32,8 +32,8 @@ public class MovementController : MonoBehaviour
             _speed = speed;
             _direction = direction;
             _rigidbody.velocity = _direction * _speed;
-            _animatorHelper.Running(_speed > 1);
-            _animatorHelper.Walking(_speed > 0 && _speed <= 1);
+            _animationHelper.PlayAnimation(AnimationType.Running, _speed > 1);
+            _animationHelper.PlayAnimation(AnimationType.Walking, _speed > 0 && _speed <= 1);
             if (_speed > 0)
             {
                 _spriteSheet.flipX = _direction.x < 0;
@@ -57,6 +57,7 @@ public class MovementController : MonoBehaviour
     public void Stop()
     {
         Move(0, Vector2.zero);
+        _animationHelper.PlayAnimation(AnimationType.Idle);
     }
 
     public void Enable()

@@ -15,10 +15,10 @@ GameObject:
   - component: {fileID: 6631469889818340577}
   - component: {fileID: 7054832657954489042}
   - component: {fileID: 8399388235827765520}
-  - component: {fileID: 8746101734150605528}
   - component: {fileID: 6600049083215347375}
-  - component: {fileID: -2788237107724197324}
   - component: {fileID: 564843450319843610}
+  - component: {fileID: 8290909719328425396}
+  - component: {fileID: 8276059832657951724}
   m_Layer: 0
   m_Name: Defender Melee Zombie
   m_TagString: Zombifiable
@@ -39,7 +39,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &8535483394152627819
 Animator:
@@ -237,21 +237,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c985a22965f86524599309ece8793c8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8746101734150605528
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6028943000780815030}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 417bf873836df724e9e6410f47eba499, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _hitsToZombify: 6
-  _movementBlockedTimeAfterAttack: 0.2
-  _zombiePrefab: {fileID: 0}
 --- !u!114 &6600049083215347375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,30 +244,16 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6028943000780815030}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0414f319fe0685d41af3157ccf6cff48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 0.9
   _range: 10
-  _maxDistance: 10
-  _movementController: {fileID: 0}
---- !u!114 &-2788237107724197324
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6028943000780815030}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ab31d282c5ec8446bdab99bd8d5c336, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _speed: 2.5
-  _attackSpeed: 1.3
-  _health: 100
+  _maxDistanceY: 4
+  _maxDistanceX: 10
+  _movementController: {fileID: 8399388235827765520}
 --- !u!114 &564843450319843610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -295,3 +266,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42a4aa5d03fe26c4bb3209dbf505eeb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  distanceFromTarget: 0.5
+--- !u!114 &8290909719328425396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6028943000780815030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddf2ece95b5b0f64bb956167c52db66c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 2.5
+  _attackSpeed: 1
+  _health: 100
+--- !u!70 &8276059832657951724
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6028943000780815030}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.12999998, y: 0.17999999}
+  m_Direction: 0

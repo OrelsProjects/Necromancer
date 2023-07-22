@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(Collider2D))]
 public class Zombifiable : MonoBehaviour, IChaseable
 {
     [SerializeField]
@@ -11,8 +12,10 @@ public class Zombifiable : MonoBehaviour, IChaseable
     [SerializeField]
     private Zombie _zombiePrefab;
 
+    [SerializeField]
+    private bool _zombify = false; // For testing.
+
     private float _lastHitTime = 0f;
-    private bool _beingZombified = false;
 
     MovementController _movementController;
     Animator _animator;
@@ -33,10 +36,19 @@ public class Zombifiable : MonoBehaviour, IChaseable
         _animationHelper = new AnimationHelper(_animator);
     }
 
+    private void Update()
+    {
+        if (_zombify)
+        {
+            _zombify = false;
+            Zombify(999);
+        }
+    }
+
     public void Zombify(int zombifyDamage = 1)
     {
         _hitsToZombify -= zombifyDamage;
-        _animationHelper.Hit();
+        _animationHelper.PlayAnimation(AnimationType.Hit);
         if (_hitsToZombify > 0)
         {
             StartCoroutine(BlockMovement());
@@ -49,8 +61,8 @@ public class Zombifiable : MonoBehaviour, IChaseable
 
     private IEnumerator TurnToZombie()
     {
-        _animationHelper.Death();
         _movementController.Disable();
+        _animationHelper.PlayAnimation(AnimationType.Death);
         yield return new WaitForSeconds(1f);
         Instantiate(_zombiePrefab, transform.position, Quaternion.identity);
         Destroy(gameObject);
@@ -59,7 +71,7 @@ public class Zombifiable : MonoBehaviour, IChaseable
     private IEnumerator BlockMovement()
     {
         _lastHitTime = Time.time;
-        _animationHelper.Idle();
+        _animationHelper.PlayAnimation(AnimationType.Idle);
         _movementController.Disable();
         yield return new WaitForSeconds(_movementBlockedTimeAfterAttack);
         if (Time.time - _lastHitTime >= _movementBlockedTimeAfterAttack && !IsZombified())

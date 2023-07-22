@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum ZombieState
@@ -8,83 +7,83 @@ public enum ZombieState
     Chasing,
     AboutToAttack,
     Attacking,
-    Death,
+    AboutToDie,
+    Dead,
     RoundOver,
 }
 
-[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(MovementController))]
 [RequireComponent(typeof(Animator))]
 public class Zombie : MonoBehaviour, IChaseable
 {
-
-    [SerializeField]
-    private float _speed = 2.5f;
-    [SerializeField]
-    private float _attackSpeed = 1f;
-    [SerializeField]
-    private float _health = 100f;
+    [SerializeField] private float _speed = 2.5f;
+    [SerializeField] private float _attackSpeed = 1f;
+    [SerializeField] private float _health = 100f;
 
     private MovementController _movementController;
     private Animator _animator;
     private ZombieChaser _chaser;
-
     private WanderController _wanderController;
     private AnimationHelper _animationHelper;
-
     private ZombieState _state = ZombieState.Idle;
-
 
     private void Awake()
     {
         tag = "Zombie";
+        _movementController = GetComponent<MovementController>();
+        _animator = GetComponent<Animator>();
+        _chaser = GetComponent<ZombieChaser>();
+        _wanderController = GetComponent<WanderController>();
+        _animationHelper = new AnimationHelper(_animator);
     }
 
     private void Start()
     {
         RoundManager.Instance.AddZombie(this);
+    }
 
-        _movementController = GetComponent<MovementController>();
-        _animator = GetComponent<Animator>();
-        _chaser = GetComponent<ZombieChaser>();
-        _wanderController = GetComponent<WanderController>();
-
-        _animationHelper = new AnimationHelper(_animator);
+    private void OnDestroy()
+    {
+        RoundManager.Instance.RemoveZombie(this);
     }
 
     private void Update()
     {
         if (_chaser.Target == null && _state != ZombieState.RoundOver)
         {
-            _state = ZombieState.Idle;
-            _animationHelper.Idle();
+            SetState(ZombieState.Idle);
+            _animationHelper.PlayAnimation(AnimationType.Idle);
         }
+
         switch (_state)
         {
             case ZombieState.Idle:
-                _movementController.Stop();
-                _chaser.SetTarget();
-                if (_chaser.Target != null)
-                {
-                    _state = ZombieState.Chasing;
-                }
-                else
-                {
-                    FinishRound();
-                }
+                HandleIdleState();
                 break;
-
             case ZombieState.Chasing:
                 Chase();
                 break;
             case ZombieState.AboutToAttack:
-                StartCoroutine(zombifyTarget());
+                StartCoroutine(ZombifyTarget());
                 break;
-            case ZombieState.Death:
-                _movementController.Stop();
-                _animationHelper.Death();
+            case ZombieState.AboutToDie:
+                HandleDeath();
                 break;
-            default: break;
+        }
+    }
+
+    private void HandleIdleState()
+    {
+        _movementController.Stop();
+        _chaser.SetTarget();
+        if (_chaser.Target != null)
+        {
+            SetState(ZombieState.Chasing);
+        }
+        else
+        {
+            FinishRound();
         }
     }
 
@@ -93,7 +92,7 @@ public class Zombie : MonoBehaviour, IChaseable
         if (_chaser.IsTargetReached())
         {
             _movementController.Move(0, _chaser.Target.gameObject);
-            _state = ZombieState.AboutToAttack;
+            SetState(ZombieState.AboutToAttack);
         }
         else
         {
@@ -104,62 +103,61 @@ public class Zombie : MonoBehaviour, IChaseable
     private void FinishRound()
     {
         _wanderController.Enable();
-        _state = ZombieState.RoundOver;
+        SetState(ZombieState.RoundOver);
     }
 
-    private IEnumerator zombifyTarget()
+    private IEnumerator ZombifyTarget()
     {
-        if (_chaser.Target == null || _chaser.Target.IsZombified())
+        if (!_chaser.Target.IsAvailable() || _chaser.Target.IsZombified())
         {
-            _state = ZombieState.Idle;
+            SetState(ZombieState.Idle);
             yield break;
         }
-        _state = ZombieState.Attacking;
-        if (_chaser.Target != null)
+
+        SetState(ZombieState.Attacking);
+        _animationHelper.PlayAnimation(AnimationType.AttackMelee);
+        _chaser.Target.Zombify();
+        yield return new WaitForSeconds(1 / _attackSpeed);
+
+        if (_state == ZombieState.Attacking)
         {
-            _animationHelper.AttackMelee();
-            _chaser.Target.Zombify();
-            yield return new WaitForSeconds(1 / _attackSpeed);
-            _state = ZombieState.Chasing;
+            SetState(ZombieState.Chasing);
         }
+    }
+
+    private void HandleDeath()
+    {
+        SetState(ZombieState.Dead);
+        _movementController.Stop();
+        _wanderController.Disable();
+        _animationHelper.PlayAnimation(AnimationType.Death);
+        Destroy(gameObject, 1f);
+    }
+
+    private void SetState(ZombieState state)
+    {
+        _state = state;
     }
 
     public void TakeDamage(float damage)
     {
-        _animationHelper.Hit();
+        _animationHelper.PlayAnimation(AnimationType.Hit);
         _health -= damage;
-        if (_health <= 0 && _state != ZombieState.Death)
+        if (_health <= 0 && _state != ZombieState.AboutToDie)
         {
-            _state = ZombieState.Death;
-            _movementController.Stop();
-            _wanderController.Disable();
-            Destroy(gameObject, 1f);
+            SetState(ZombieState.AboutToDie);
         }
     }
 
     public void Heal(float health)
     {
-        _animationHelper.Heal();
+        _animationHelper.PlayAnimation(AnimationType.Heal);
         _health += health;
     }
 
-    public bool IsAlive()
-    {
-        return _health > 0;
-    }
+    public bool IsAlive() => _health > 0;
 
-    public bool IsAvailable()
-    {
-        return _health > 0;
-    }
+    public bool IsAvailable() => _health > 0;
 
-    public Transform GetTransform()
-    {
-        return transform;
-    }
-
-    private void OnDestroy()
-    {
-        RoundManager.Instance.RemoveZombie(this);
-    }
+    public Transform GetTransform() => transform;
 }

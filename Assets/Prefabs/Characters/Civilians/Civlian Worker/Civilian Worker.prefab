@@ -15,8 +15,9 @@ GameObject:
   - component: {fileID: 4224455758547499490}
   - component: {fileID: 8681049218357549920}
   - component: {fileID: 3609483615498798977}
-  - component: {fileID: 6315863706412067338}
   - component: {fileID: 4528005660862093679}
+  - component: {fileID: 8509284048829225676}
+  - component: {fileID: 6858789458682310126}
   m_Layer: 0
   m_Name: Civilian Worker
   m_TagString: Zombifiable
@@ -37,7 +38,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &7481331894031097190
 Animator:
@@ -193,21 +194,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c985a22965f86524599309ece8793c8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6315863706412067338
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5192329618666744031}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 417bf873836df724e9e6410f47eba499, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _hitsToZombify: 3
-  _movementBlockedTimeAfterAttack: 1.2
-  _zombiePrefab: {fileID: 8052600481379669168, guid: 53c3b6e8f4813a7498fc7c08c09d0aef, type: 3}
 --- !u!114 &4528005660862093679
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -221,6 +207,58 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 0.8
-  _range: 10
-  _maxDistance: 10
+  _range: 0.5
+  _maxDistanceY: 4
+  _maxDistanceX: 10
   _movementController: {fileID: 3609483615498798977}
+--- !u!114 &8509284048829225676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5192329618666744031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: def432626e2241b41bdf93bc5cd0fbdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hitsToZombify: 3
+  _movementBlockedTimeAfterAttack: 1.2
+  _zombiePrefab: {fileID: 8177406279206980724, guid: 53c3b6e8f4813a7498fc7c08c09d0aef, type: 3}
+  _zombify: 0
+--- !u!70 &6858789458682310126
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5192329618666744031}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.11999999, y: 0.16999999}
+  m_Direction: 0

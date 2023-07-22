@@ -15,9 +15,11 @@ GameObject:
   - component: {fileID: 6170479529132697979}
   - component: {fileID: 3138582906226631335}
   - component: {fileID: 1350036226775379289}
-  - component: {fileID: 7810215299714866691}
   - component: {fileID: 7743316011326211327}
-  - component: {fileID: -5819487174923486842}
+  - component: {fileID: 8500372773892179639}
+  - component: {fileID: 4374274779998677368}
+  - component: {fileID: 3690822906193468867}
+  - component: {fileID: 6605930328438912686}
   m_Layer: 0
   m_Name: Defender Melee
   m_TagString: Zombifiable
@@ -38,7 +40,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2845085499663975967
 Animator:
@@ -221,21 +223,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c985a22965f86524599309ece8793c8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7810215299714866691
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1036798099327359381}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 417bf873836df724e9e6410f47eba499, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _hitsToZombify: 6
-  _movementBlockedTimeAfterAttack: 0.2
-  _zombiePrefab: {fileID: -2788237107724197324, guid: aee4b231a7695a24f8dc6df5110edce1, type: 3}
 --- !u!114 &7743316011326211327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,16 +230,17 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1036798099327359381}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0414f319fe0685d41af3157ccf6cff48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 0.9
-  _range: 10
-  _maxDistance: 10
-  _movementController: {fileID: 0}
---- !u!114 &-5819487174923486842
+  _range: 0.5
+  _maxDistanceY: 4
+  _maxDistanceX: 10
+  _movementController: {fileID: 1350036226775379289}
+--- !u!114 &8500372773892179639
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -261,6 +249,74 @@ MonoBehaviour:
   m_GameObject: {fileID: 1036798099327359381}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11c1ae86b31328c409eabc711aaa91e8, type: 3}
+  m_Script: {fileID: 11500000, guid: b7d21936a07d1f14d9a2cdaa20c3c512, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  distanceFromTarget: 0.5
+--- !u!114 &4374274779998677368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036798099327359381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b03cf02645f619c4f9624978dd3a1c39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: 100
+  _damage: 91
+  _speed: 3
+  _attackSpeed: 1
+--- !u!114 &3690822906193468867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036798099327359381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: def432626e2241b41bdf93bc5cd0fbdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hitsToZombify: 3
+  _movementBlockedTimeAfterAttack: 1.2
+  _zombiePrefab: {fileID: 8290909719328425396, guid: aee4b231a7695a24f8dc6df5110edce1, type: 3}
+  _zombify: 0
+--- !u!70 &6605930328438912686
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036798099327359381}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.15999998, y: 0.17999999}
+  m_Direction: 0

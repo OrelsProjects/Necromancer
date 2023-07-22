@@ -18,7 +18,7 @@ public class DefenderChaser : MonoBehaviour
 
     void Awake()
     {
-        _chaser = new Chaser<Zombie>(this.gameObject, distanceFromTarget);
+        _chaser = new Chaser<Zombie>(gameObject, distanceFromTarget);
     }
 
     public void SetTarget()

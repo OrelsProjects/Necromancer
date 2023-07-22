@@ -15,9 +15,10 @@ GameObject:
   - component: {fileID: 5218249681658037424}
   - component: {fileID: 2970135514557612657}
   - component: {fileID: 7841506135107454363}
-  - component: {fileID: 8052600481379669168}
   - component: {fileID: 6941997120890172219}
   - component: {fileID: 1124095128629001006}
+  - component: {fileID: 8177406279206980724}
+  - component: {fileID: 1819113947917521363}
   m_Layer: 0
   m_Name: Civilian Worker Zombie
   m_TagString: Zombie
@@ -38,7 +39,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &4139534852172144921
 Animator:
@@ -233,21 +234,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c985a22965f86524599309ece8793c8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8052600481379669168
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5369073117181453503}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ab31d282c5ec8446bdab99bd8d5c336, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _speed: 2.5
-  _attackSpeed: 1
-  _health: 100
 --- !u!114 &6941997120890172219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -262,7 +248,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 0.8
   _range: 10
-  _maxDistance: 10
+  _maxDistanceY: 4
+  _maxDistanceX: 10
   _movementController: {fileID: 7841506135107454363}
 --- !u!114 &1124095128629001006
 MonoBehaviour:
@@ -276,3 +263,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42a4aa5d03fe26c4bb3209dbf505eeb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  distanceFromTarget: 0.5
+--- !u!114 &8177406279206980724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5369073117181453503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddf2ece95b5b0f64bb956167c52db66c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 2.5
+  _attackSpeed: 1
+  _health: 100
+--- !u!70 &1819113947917521363
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5369073117181453503}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.13999999, y: 0.15999998}
+  m_Direction: 0
