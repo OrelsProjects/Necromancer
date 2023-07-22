@@ -97,6 +97,7 @@ public class Zombie : MonoBehaviour, IChaseable
         else
         {
             _movementController.Move(_speed, _chaser.Target.gameObject);
+            _animationHelper.PlayAnimation(AnimationType.Running);
         }
     }
 

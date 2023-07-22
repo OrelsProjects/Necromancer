@@ -18,7 +18,8 @@ GameObject:
   - component: {fileID: 4528005660862093679}
   - component: {fileID: 8509284048829225676}
   - component: {fileID: 6858789458682310126}
-  m_Layer: 0
+  - component: {fileID: 3522475167000035339}
+  m_Layer: 9
   m_Name: Civilian Worker
   m_TagString: Zombifiable
   m_Icon: {fileID: 0}
@@ -38,7 +39,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &7481331894031097190
 Animator:
@@ -180,7 +181,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &3609483615498798977
 MonoBehaviour:
@@ -242,7 +243,7 @@ CapsuleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -256,9 +257,24 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.11999999, y: 0.16999999}
   m_Direction: 0
+--- !u!114 &3522475167000035339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5192329618666744031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99dcc7d384d6c1746908d91c87ba588b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 2
+  _maxDistanceFromZombie: 4
+  _delayBetweenChangingTargets: 2

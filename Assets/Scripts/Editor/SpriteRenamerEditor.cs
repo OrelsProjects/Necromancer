@@ -31,19 +31,17 @@ public class SpriteRenamerWindow : EditorWindow
     {
         if (spritesheet == null)
         {
-            Debug.LogWarning("Spritesheet not assigned.");
+            Debug.LogError("Spritesheet not assigned.");
             return;
         }
 
         string path = AssetDatabase.GetAssetPath(spritesheet);
         Object[] sprites = AssetDatabase.LoadAllAssetsAtPath(path);
-        Debug.Log(sprites.Length);
         for (int i = 0; i < sprites.Length; i++)
         {
             Sprite sprite = sprites[i] as Sprite;
             if (sprite != null && sprite.texture == spritesheet)
             {
-                Debug.Log(sprite.name);
                 string newName = baseName + (startIndex + i);
                 sprite.name = newName;
                 EditorUtility.SetDirty(sprite);

@@ -24,11 +24,7 @@ public class AnimationHelper
     {
         foreach (var parameter in _animator.parameters)
         {
-            if (parameter.type == AnimatorControllerParameterType.Trigger)
-            {
-                _animator.ResetTrigger(parameter.name);
-            }
-            else if (parameter.type == AnimatorControllerParameterType.Bool)
+            if (parameter.type == AnimatorControllerParameterType.Bool)
             {
                 _animator.SetBool(parameter.name, false);
             }

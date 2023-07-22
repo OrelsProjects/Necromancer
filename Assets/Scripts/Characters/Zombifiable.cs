@@ -12,9 +12,6 @@ public class Zombifiable : MonoBehaviour, IChaseable
     [SerializeField]
     private Zombie _zombiePrefab;
 
-    [SerializeField]
-    private bool _zombify = false; // For testing.
-
     private float _lastHitTime = 0f;
 
     MovementController _movementController;
@@ -34,15 +31,6 @@ public class Zombifiable : MonoBehaviour, IChaseable
         _animator = GetComponent<Animator>();
         _movementController = GetComponent<MovementController>();
         _animationHelper = new AnimationHelper(_animator);
-    }
-
-    private void Update()
-    {
-        if (_zombify)
-        {
-            _zombify = false;
-            Zombify(999);
-        }
     }
 
     public void Zombify(int zombifyDamage = 1)

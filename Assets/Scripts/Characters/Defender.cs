@@ -30,7 +30,6 @@ public abstract class Defender : MonoBehaviour, IChaser<Zombie>
 
     protected AnimationHelper _animationHelper;
     private DefenderState _state = DefenderState.Idle;
-    private DefenderState _previousState;
 
     public abstract void Attack();
 
@@ -54,11 +53,6 @@ public abstract class Defender : MonoBehaviour, IChaser<Zombie>
         if (IsSelfZombified())
         {
             return;
-        }
-        if (_previousState != _state)
-        {
-            Debug.Log("Name: " + name + " State: " + _state);
-            _previousState = _state;
         }
         switch (_state)
         {
@@ -122,6 +116,7 @@ public abstract class Defender : MonoBehaviour, IChaser<Zombie>
             else
             {
                 _movementController.Move(Speed, _chaser.Target.gameObject);
+                _animationHelper.PlayAnimation(AnimationType.Running);
             }
         }
     }
@@ -185,7 +180,11 @@ public abstract class Defender : MonoBehaviour, IChaser<Zombie>
 
     private void SetState(DefenderState state)
     {
-        _previousState = _state;
         _state = state;
+    }
+
+    private void OnDestroy()
+    {
+        RoundManager.Instance.RemoveDefender(this);
     }
 }
