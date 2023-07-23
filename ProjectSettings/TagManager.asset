@@ -14,8 +14,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Ground
+  - Colliders
   - 
   - Character
   - 
@@ -55,4 +55,7 @@ TagManager:
     locked: 0
   - name: Bomb
     uniqueID: 2692766613
+    locked: 0
+  - name: UI
+    uniqueID: 777884379
     locked: 0

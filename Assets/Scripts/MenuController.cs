@@ -51,7 +51,11 @@ public class MenuController : MonoBehaviour
     public void OnExitClick()
     {
         _audioSource.PlayOneShot(_exitClickClip);
-        Application.Quit();
+         #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
         _isStartClicked = false;
     }
 }

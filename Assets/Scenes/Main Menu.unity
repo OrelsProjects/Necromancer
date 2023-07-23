@@ -159,7 +159,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1148.87, y: 267.91}
+  m_SizeDelta: {x: 1194.91, y: 267.91}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &157807582
 MonoBehaviour:
@@ -181,9 +181,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Settings
-
-'
+  m_text: SETTINGS
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bff40f5ebc1963d438d5776f2d14ad5c, type: 2}
   m_sharedMaterial: {fileID: 8969953453417656680, guid: bff40f5ebc1963d438d5776f2d14ad5c, type: 2}
@@ -296,7 +294,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 685.26, y: 267.91}
+  m_SizeDelta: {x: 808.07, y: 267.91}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &512854560
 MonoBehaviour:
@@ -318,7 +316,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Start
+  m_text: START
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bff40f5ebc1963d438d5776f2d14ad5c, type: 2}
   m_sharedMaterial: {fileID: 8969953453417656680, guid: bff40f5ebc1963d438d5776f2d14ad5c, type: 2}
@@ -666,7 +664,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 510.47, y: 245.35}
+  m_SizeDelta: {x: 544.23, y: 245.35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1085938321
 MonoBehaviour:
@@ -688,7 +686,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Exit
+  m_text: EXIT
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bff40f5ebc1963d438d5776f2d14ad5c, type: 2}
   m_sharedMaterial: {fileID: 8969953453417656680, guid: bff40f5ebc1963d438d5776f2d14ad5c, type: 2}
@@ -783,7 +781,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1129155058
 RectTransform:
   m_ObjectHideFlags: 0

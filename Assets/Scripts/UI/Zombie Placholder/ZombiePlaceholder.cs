@@ -1,0 +1,98 @@
+using TMPro;
+using UnityEngine;
+using UnityEngine.EventSystems;
+
+public class ZombiePlaceholder : MonoBehaviour, IEndDragHandler, IDragHandler
+{
+    [SerializeField]
+    SpriteRenderer _zombieSprite;
+    [SerializeField]
+    ZombieHolder _zombieHolder;
+    [SerializeField]
+    private TextMeshProUGUI _amountText; // Serialized reference to the TextMeshPro GameObject.
+
+    private bool _isSpawned = false;
+    private Vector2 _initialSpritePosition;
+    private Vector2 _currentTempSpritePosition;
+    private SpriteRenderer _tempZombieSprite;
+
+    void Start()
+    {
+        _amountText.text = _zombieHolder.Amount.ToString();
+        _zombieSprite.sprite = _zombieHolder.ZombieSprite;
+        _initialSpritePosition = _zombieSprite.transform.position;
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (_isSpawned)
+        {
+            return;
+        }
+        if (_tempZombieSprite == null)
+        {
+            _tempZombieSprite = Instantiate(_zombieSprite, _initialSpritePosition, Quaternion.identity);
+            _zombieSprite.color = new Color(1, 1, 1, 0.3f);
+            _tempZombieSprite.sortingLayerName = "UI";
+            _tempZombieSprite.sortingOrder = 2;
+            _tempZombieSprite.transform.localScale = new Vector3(5, 5, 5);
+        }
+
+        _currentTempSpritePosition = GetMousePosition();
+        _tempZombieSprite.transform.position = _currentTempSpritePosition;
+
+        if (IsGround())
+        {
+            _tempZombieSprite.color = new Color(1, 1, 1, 1);
+        }
+        else
+        {
+            _tempZombieSprite.color = new Color(1, 1, 1, 0.3f);
+        }
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (_isSpawned || _tempZombieSprite == null)
+        {
+            return;
+        }
+        Vector2 spawnPosition = _tempZombieSprite.transform.position;
+        Destroy(_tempZombieSprite.gameObject);
+        _tempZombieSprite = null;
+
+        if (IsGround())
+        {
+            for (int i = 0; i < _zombieHolder.Amount; i++)
+            {
+                Instantiate(_zombieHolder.ZombiePrefab, spawnPosition, Quaternion.identity);
+            }
+            _isSpawned = true;
+            _amountText.text = "0";
+        }
+        else
+        {
+            _zombieSprite.color = new Color(1, 1, 1, 1);
+        }
+    }
+
+    private bool IsGround()
+    {
+        Vector2 mousePosition = GetMousePosition();
+        RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero, Mathf.Infinity);
+
+        if (hit.collider != null && hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private Vector3 GetMousePosition()
+    {
+        return Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0f));
+    }
+}
