@@ -1,0 +1,57 @@
+using UnityEngine;
+using System.Collections;
+
+public class MenuController : MonoBehaviour
+{
+
+    [SerializeField]
+    private AudioClip _startClickClip;
+    [SerializeField]
+    private AudioClip _settingsClickClip;
+    [SerializeField]
+    private AudioClip _exitClickClip;
+    [SerializeField]
+    private AudioSource _audioSource;
+    [SerializeField]
+    private CanvasRenderer _blackScreen;
+
+    private bool _isStartClicked = false;
+
+    private void Start()
+    {
+        _blackScreen.gameObject.SetActive(false);
+    }
+
+    public void OnStartClick()
+    {
+        if (_isStartClicked)
+        {
+            return;
+        }
+
+        _audioSource.PlayOneShot(_startClickClip);
+        StartCoroutine(PlayStartScene());
+        _isStartClicked = true;
+    }
+
+    private IEnumerator PlayStartScene()
+    {
+        _blackScreen.gameObject.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Round Scene");
+    }
+
+    public void OnSettingsClick()
+    {
+        _audioSource.PlayOneShot(_settingsClickClip);
+        Debug.Log("Settings clicked");
+        _isStartClicked = false;
+    }
+
+    public void OnExitClick()
+    {
+        _audioSource.PlayOneShot(_exitClickClip);
+        Application.Quit();
+        _isStartClicked = false;
+    }
+}
