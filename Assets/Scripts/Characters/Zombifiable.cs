@@ -12,6 +12,12 @@ public class Zombifiable : MonoBehaviour, IChaseable
     [SerializeField]
     private Zombie _zombiePrefab;
 
+    [Header("Sound")]
+    [SerializeField]
+    private AudioClip _hitSound;
+    [SerializeField]
+    private AudioClip _deathSound;
+
     private float _lastHitTime = 0f;
 
     MovementController _movementController;
@@ -51,6 +57,7 @@ public class Zombifiable : MonoBehaviour, IChaseable
     {
         _movementController.Disable();
         _animationHelper.PlayAnimation(AnimationType.Death);
+        AudioSource.PlayClipAtPoint(_deathSound, transform.position);
         yield return new WaitForSeconds(1f);
         Instantiate(_zombiePrefab, transform.position, Quaternion.identity);
         Destroy(gameObject);

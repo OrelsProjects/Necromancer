@@ -6,6 +6,7 @@ public enum CivilianState
     Idle,
     AboutToRun,
     Running,
+    Dead,
 }
 
 [RequireComponent(typeof(MovementController))]
@@ -20,16 +21,23 @@ public class Civilian : MonoBehaviour
 
     private MovementController _movementController;
     private WanderController _wanderController;
+    private Zombifiable _zombifiable;
     private CivilianState _state = CivilianState.Idle;
 
     private void Awake()
     {
         _movementController = GetComponent<MovementController>();
         _wanderController = GetComponent<WanderController>();
+        _zombifiable = GetComponent<Zombifiable>();
     }
 
     private void Update()
     {
+        if (_zombifiable.IsZombified())
+        {
+            SetState(CivilianState.Dead);
+            return;
+        }
         switch (_state)
         {
             case CivilianState.Idle:

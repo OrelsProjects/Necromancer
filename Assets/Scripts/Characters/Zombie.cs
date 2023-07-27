@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 
@@ -20,6 +21,14 @@ public class Zombie : MonoBehaviour, IChaseable
     [SerializeField] private float _speed = 2.5f;
     [SerializeField] private float _attackSpeed = 1f;
     [SerializeField] private float _health = 100f;
+
+    [Header("Sound")]
+    [SerializeField]
+    private List<AudioClip> _attackSounds;
+    [SerializeField]
+    private AudioClip _deathSound;
+
+    private bool _isAttackSoundPlaying = false;
 
     private MovementController _movementController;
     private Animator _animator;
@@ -118,6 +127,7 @@ public class Zombie : MonoBehaviour, IChaseable
         SetState(ZombieState.Attacking);
         _animationHelper.PlayAnimation(AnimationType.AttackMelee);
         _chaser.Target.Zombify();
+
         yield return new WaitForSeconds(1 / _attackSpeed);
 
         if (_state == ZombieState.Attacking)
@@ -126,9 +136,34 @@ public class Zombie : MonoBehaviour, IChaseable
         }
     }
 
+    /// <summary>
+    /// Plays a random attack sound with 30% chance if a sound is not already playing.
+    /// </summary>
+    private void PlayRandomAttackSound()
+    {
+        bool shouldPlaySound = Random.Range(0, 100) < 30;
+        if (!_isAttackSoundPlaying && shouldPlaySound && IsAlive())
+        {
+            _isAttackSoundPlaying = true;
+            AudioSource.PlayClipAtPoint(_attackSounds[Random.Range(0, _attackSounds.Count)], transform.position);
+            StartCoroutine(AttackSoundCooldown());
+        }
+    }
+
+    private IEnumerator AttackSoundCooldown()
+    {
+        yield return new WaitForSeconds(1 / _attackSpeed);
+        _isAttackSoundPlaying = false;
+    }
+
     private void HandleDeath()
     {
+        if (_state == ZombieState.Dead)
+        {
+            return;
+        }
         SetState(ZombieState.Dead);
+        AudioSource.PlayClipAtPoint(_deathSound, transform.position);
         _movementController.Stop();
         _wanderController.Disable();
         _animationHelper.PlayAnimation(AnimationType.Death);

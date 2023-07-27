@@ -39,7 +39,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &4139534852172144921
 Animator:
@@ -279,6 +279,12 @@ MonoBehaviour:
   _speed: 2.5
   _attackSpeed: 1
   _health: 100
+  _attackSounds:
+  - {fileID: 8300000, guid: 592ab58b002a7284f9835145a50eff72, type: 3}
+  - {fileID: 8300000, guid: 4ba027eb87a30854a8f5c61202532fc7, type: 3}
+  - {fileID: 8300000, guid: fa4285618671f8c49a277381677489d4, type: 3}
+  - {fileID: 8300000, guid: 4527bd88b3841cf47bd0aaee15d582dd, type: 3}
+  _deathSound: {fileID: 8300000, guid: 056e0486bb22f9b40a2271c3c72bb864, type: 3}
 --- !u!70 &1819113947917521363
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

@@ -14,6 +14,18 @@ public class RoundManager : MonoBehaviour
 {
     public static RoundManager Instance;
 
+    [SerializeField]
+    private RoundData _roundData;
+    [Header("UI")]
+    [SerializeField]
+    private GameObject _roundResultsZombiesWon;
+
+    [Header("Sound")]
+    [SerializeField]
+    private AudioClip _winSound;
+    [SerializeField]
+    private AudioClip _loseSound;
+
     private List<Zombie> _zombies = new();
     private List<Zombifiable> _zombifiables = new();
     private List<Defender> _defenders = new();
@@ -22,9 +34,13 @@ public class RoundManager : MonoBehaviour
     private GameObject _zombifiablesParent;
     private GameObject _defendersParent;
 
-    private RoundState _state = RoundState.NotStarted;
+    private AudioSource _audioSource;
 
     private bool _sendDefendersToBattle = false;
+
+    private RoundState _state = RoundState.NotStarted;
+
+    public float Reward => _roundData.Reward;
 
     private void Awake()
     {
@@ -34,6 +50,8 @@ public class RoundManager : MonoBehaviour
             _zombiesParent = new GameObject("Zombies");
             _zombifiablesParent = new GameObject("Zombifiables");
             _defendersParent = new GameObject("Defenders");
+            _audioSource = GetComponent<AudioSource>();
+            StartRound();
         }
         else
         {
@@ -59,7 +77,6 @@ public class RoundManager : MonoBehaviour
 
     private void Update()
     {
-
         switch (_state)
         {
             case RoundState.NotStarted:
@@ -80,8 +97,6 @@ public class RoundManager : MonoBehaviour
         {
             SendDefenders();
         }
-
-
     }
 
     private void HandleStartedState()
@@ -98,12 +113,14 @@ public class RoundManager : MonoBehaviour
 
     private void HandleZombiesWonState()
     {
-        Debug.Log("Zombies won");
+        _audioSource.PlayOneShot(_winSound);
+        _roundResultsZombiesWon.SetActive(true);
         _state = RoundState.Done;
     }
 
     private void HandleDefendersWonState()
     {
+        _audioSource.PlayOneShot(_loseSound);
         Debug.Log("Defenders won");
         _state = RoundState.Done;
     }
@@ -129,16 +146,29 @@ public class RoundManager : MonoBehaviour
         _sendDefendersToBattle = false;
     }
 
+    public void StartRound()
+    {
+        for (int i = 0; i < _roundData.CiviliansCount; i++)
+        {
+            int randomCivilianIndex = Random.Range(0, _roundData.CiviliansPrefabs.Count);
+            Vector3 randomPosition = new(Random.Range(-5, 5), Random.Range(-5, 5));
+            Zombifiable civilianPrefab = _roundData.CiviliansPrefabs[randomCivilianIndex];
+            Zombifiable zombifiableInstance = Instantiate(civilianPrefab, randomPosition, Quaternion.identity);
+            zombifiableInstance.transform.SetParent(_zombifiablesParent.transform);
+        }
+
+        _roundData.Defenders.ForEach(defender =>
+        {
+            Defender defenderInstance = Instantiate(defender, Vector3.zero, Quaternion.identity);
+            defenderInstance.transform.SetParent(_defendersParent.transform);
+        });
+    }
+
     public void AddZombie(Zombie zombie)
     {
         zombie.gameObject.transform.SetParent(_zombiesParent.transform);
         _zombies.Add(zombie);
         _sendDefendersToBattle = true;
-    }
-
-    public void RemoveZombie(Zombie zombie)
-    {
-        _zombies.Remove(zombie);
     }
 
     public void AddZombifiable(Zombifiable zombifiable)
@@ -147,29 +177,36 @@ public class RoundManager : MonoBehaviour
         _zombifiables.Add(zombifiable);
     }
 
-    public void RemoveZombifiable(Zombifiable zombifiable)
-    {
-        _zombifiables.Remove(zombifiable);
-    }
-
     public void AddDefender(Defender defender)
     {
         defender.gameObject.transform.SetParent(_defendersParent.transform);
         _defenders.Add(defender);
-        Zombifiable zombifiableComponent = defender.GetComponent<Zombifiable>();
-        if (zombifiableComponent != null)
+    }
+
+    public void RemoveZombie(Zombie zombie)
+    {
+        _zombies.Remove(zombie);
+        if (_zombies.Count == 0)
         {
-            _zombifiables.Add(zombifiableComponent);
+            Destroy(_zombiesParent);
+        }
+    }
+
+    public void RemoveZombifiable(Zombifiable zombifiable)
+    {
+        _zombifiables.Remove(zombifiable);
+        if (_zombifiables.Count == 0)
+        {
+            Destroy(_zombifiablesParent);
         }
     }
 
     public void RemoveDefender(Defender defender)
     {
         _defenders.Remove(defender);
-        Zombifiable zombifiableComponent = defender.GetComponent<Zombifiable>();
-        if (zombifiableComponent != null)
+        if (_defenders.Count == 0)
         {
-            _zombifiables.Remove(zombifiableComponent);
+            Destroy(_defendersParent);
         }
     }
 }

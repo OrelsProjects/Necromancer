@@ -21,7 +21,7 @@ public abstract class Defender : MonoBehaviour, IChaser<Zombie>
     abstract public int Damage { get; set; }
     abstract public float Speed { get; set; }
     abstract public float AttackSpeed { get; set; }
-
+    
     private MovementController _movementController;
     private DefenderChaser _chaser;
     private WanderController _wanderController;

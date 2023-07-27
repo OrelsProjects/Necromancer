@@ -37,7 +37,9 @@ public class MenuController : MonoBehaviour
     private IEnumerator PlayStartScene()
     {
         _blackScreen.gameObject.SetActive(true);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
+        _audioSource.FadeOut(1f);
+        yield return new WaitForSeconds(0.8f);
         UnityEngine.SceneManagement.SceneManager.LoadScene("Round Scene");
     }
 
