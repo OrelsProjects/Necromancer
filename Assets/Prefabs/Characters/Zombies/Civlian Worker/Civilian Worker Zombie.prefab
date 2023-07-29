@@ -14,11 +14,11 @@ GameObject:
   - component: {fileID: 4804363729061312006}
   - component: {fileID: 5218249681658037424}
   - component: {fileID: 2970135514557612657}
+  - component: {fileID: 1819113947917521363}
   - component: {fileID: 7841506135107454363}
   - component: {fileID: 6941997120890172219}
   - component: {fileID: 1124095128629001006}
   - component: {fileID: 8177406279206980724}
-  - component: {fileID: 1819113947917521363}
   m_Layer: 9
   m_Name: Civilian Worker Zombie
   m_TagString: Zombie
@@ -39,7 +39,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &4139534852172144921
 Animator:
@@ -222,6 +222,41 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!70 &1819113947917521363
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5369073117181453503}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 512
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.13999999, y: 0.15999998}
+  m_Direction: 0
 --- !u!114 &7841506135107454363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,6 +269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c985a22965f86524599309ece8793c8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stepSound: {fileID: 8300000, guid: d56c5b0ebc0adaf4ebe7d59ec25ba44b, type: 3}
 --- !u!114 &6941997120890172219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -279,38 +315,11 @@ MonoBehaviour:
   _speed: 2.5
   _attackSpeed: 1
   _health: 100
---- !u!70 &1819113947917521363
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5369073117181453503}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 512
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.13999999, y: 0.15999998}
-  m_Direction: 0
+  _spawnSound: {fileID: 8300000, guid: da34b283cf7f0d64bb59a8e36a08937f, type: 3}
+  _attackSounds:
+  - {fileID: 8300000, guid: 592ab58b002a7284f9835145a50eff72, type: 3}
+  - {fileID: 8300000, guid: 4ba027eb87a30854a8f5c61202532fc7, type: 3}
+  - {fileID: 8300000, guid: fa4285618671f8c49a277381677489d4, type: 3}
+  - {fileID: 8300000, guid: 4527bd88b3841cf47bd0aaee15d582dd, type: 3}
+  _hitSound: {fileID: 8300000, guid: 30c0080e49df1944b92bf602eccb1253, type: 3}
+  _deathSound: {fileID: 8300000, guid: 56180fb3aec2748489aeae5d2833a4cb, type: 3}

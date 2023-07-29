@@ -12,5 +12,8 @@ public class RoundData : ScriptableObject
     public List<Defender> Defenders;
     public int Reward;
 
+    [Header("Sound")]
+    public AudioClip BackgroundMusic;
+
     public RoundData() => UUID = Guid.NewGuid();
 }

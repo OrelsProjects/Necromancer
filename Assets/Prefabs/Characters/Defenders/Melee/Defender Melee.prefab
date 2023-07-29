@@ -223,6 +223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c985a22965f86524599309ece8793c8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stepSound: {fileID: 8300000, guid: d56c5b0ebc0adaf4ebe7d59ec25ba44b, type: 3}
 --- !u!114 &7743316011326211327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,6 +266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b03cf02645f619c4f9624978dd3a1c39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attackSound: {fileID: 8300000, guid: 541d0be8fda7de14c95c0de081d10354, type: 3}
   _health: 100
   _damage: 91
   _speed: 3

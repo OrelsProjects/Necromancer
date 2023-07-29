@@ -14,8 +14,6 @@ public class Zombifiable : MonoBehaviour, IChaseable
 
     [Header("Sound")]
     [SerializeField]
-    private AudioClip _hitSound;
-    [SerializeField]
     private AudioClip _deathSound;
 
     private float _lastHitTime = 0f;

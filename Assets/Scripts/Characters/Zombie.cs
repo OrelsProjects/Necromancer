@@ -24,7 +24,11 @@ public class Zombie : MonoBehaviour, IChaseable
 
     [Header("Sound")]
     [SerializeField]
+    private AudioClip _spawnSound;
+    [SerializeField]
     private List<AudioClip> _attackSounds;
+    [SerializeField]
+    private AudioClip _hitSound;
     [SerializeField]
     private AudioClip _deathSound;
 
@@ -50,6 +54,7 @@ public class Zombie : MonoBehaviour, IChaseable
     private void Start()
     {
         RoundManager.Instance.AddZombie(this);
+        AudioSource.PlayClipAtPoint(_spawnSound, transform.position);
     }
 
     private void OnDestroy()
@@ -127,7 +132,7 @@ public class Zombie : MonoBehaviour, IChaseable
         SetState(ZombieState.Attacking);
         _animationHelper.PlayAnimation(AnimationType.AttackMelee);
         _chaser.Target.Zombify();
-
+        AudioSource.PlayClipAtPoint(_hitSound, transform.position);
         yield return new WaitForSeconds(1 / _attackSpeed);
 
         if (_state == ZombieState.Attacking)

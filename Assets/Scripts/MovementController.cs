@@ -6,6 +6,9 @@ using UnityEngine;
 public class MovementController : MonoBehaviour
 {
 
+    [SerializeField]
+    private AudioClip _stepSound;
+
     private Rigidbody2D _rigidbody;
     private Animator _animator;
     private SpriteRenderer _spriteSheet;
@@ -76,6 +79,11 @@ public class MovementController : MonoBehaviour
             return;
         }
         enabled = false;
+    }
+
+    private void PlayStepSound()
+    {
+        // SoundsManager.Instance.PlayStepSound(_stepSound);
     }
 
     private void OnDisable()

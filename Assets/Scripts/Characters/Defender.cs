@@ -17,11 +17,12 @@ public enum DefenderState
 [RequireComponent(typeof(Zombifiable))]
 public abstract class Defender : MonoBehaviour, IChaser<Zombie>
 {
+    abstract public AudioClip AttackSound { get; set; }
     abstract public int Health { get; set; }
     abstract public int Damage { get; set; }
     abstract public float Speed { get; set; }
     abstract public float AttackSpeed { get; set; }
-    
+
     private MovementController _movementController;
     private DefenderChaser _chaser;
     private WanderController _wanderController;
@@ -131,6 +132,7 @@ public abstract class Defender : MonoBehaviour, IChaser<Zombie>
         _movementController.Stop();
         SetState(DefenderState.Attacking);
         Attack();
+        AudioSource.PlayClipAtPoint(AttackSound, transform.position);
         _chaser.Target.TakeDamage(Damage);
         yield return new WaitForSeconds(AttackSpeed);
         SetState(DefenderState.Chasing);

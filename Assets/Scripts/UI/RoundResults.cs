@@ -1,9 +1,13 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using AssetKits.ParticleImage;
 public class RoundResults : MonoBehaviour
 {
+
+    private readonly string _winTitle = "Zombies Won";
+    private readonly string _loseTitle = "Defenders Won";
 
     [Header("UI")]
     [SerializeField]
@@ -16,6 +20,8 @@ public class RoundResults : MonoBehaviour
     private TextMeshProUGUI _title;
     [SerializeField]
     private TextMeshProUGUI _rewardText;
+    [SerializeField]
+    private Button _continueButton;
 
     [Header("Sounds")]
     [SerializeField]
@@ -35,21 +41,49 @@ public class RoundResults : MonoBehaviour
     private void Start()
     {
         _title.gameObject.SetActive(true);
-        _reward.gameObject.SetActive(false);
-        _rewardText.text = RoundManager.Instance.Reward.ToString();
         _currentGoldText.text = InventoryManager.Instance.Currency.ToString();
+        if (RoundManager.Instance.State == RoundState.Lost)
+        {
+            SetUpLose();
+        }
+        else
+        {
+            SetUpWin();
+        }
+    }
+
+    private void SetUpWin()
+    {
+        _rewardText.gameObject.SetActive(true);
+        _rewardText.text = RoundManager.Instance.Reward.ToString();
+        _title.text = _winTitle;
+
+        _title.GetComponent<Animator>().SetBool("Win", true);
+        _continueButton.onClick.AddListener(() => Debug.Log("Continue"));
+
         StartCoroutine(ShowRewardCoroutine());
+    }
+
+    private void SetUpLose()
+    {
+        _reward.gameObject.SetActive(false);
+        _rewardText.gameObject.SetActive(false);
+        _title.text = _loseTitle;
+
+        _title.GetComponent<Animator>().SetBool("Win", false);
+        _title.GetComponent<Animator>().SetBool("Lose", true);
+        _continueButton.onClick.AddListener(() => Debug.Log("Continue"));
     }
 
     private IEnumerator ShowRewardCoroutine()
     {
         yield return new WaitForSeconds(_timeToShowReward);
-        ShowReward();
+        ShowReward(true);
     }
 
-    public void ShowReward()
+    public void ShowReward(bool show)
     {
-        _reward.gameObject.SetActive(true);
+        _reward.gameObject.SetActive(show);
     }
 
     public void ShowResults()

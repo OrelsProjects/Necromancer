@@ -39,7 +39,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &7481331894031097190
 Animator:
@@ -195,6 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c985a22965f86524599309ece8793c8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stepSound: {fileID: 8300000, guid: d56c5b0ebc0adaf4ebe7d59ec25ba44b, type: 3}
 --- !u!114 &4528005660862093679
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,7 +225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: def432626e2241b41bdf93bc5cd0fbdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hitsToZombify: 3
+  _hitsToZombify: 1
   _movementBlockedTimeAfterAttack: 1.2
   _zombiePrefab: {fileID: 8177406279206980724, guid: 53c3b6e8f4813a7498fc7c08c09d0aef, type: 3}
   _hitSound: {fileID: 0}

@@ -14,7 +14,7 @@ public class ZombieSpawnerController : MonoBehaviour
 
     public void SpawnZombie(GameObject zombiePrefab, Vector3 position, Quaternion rotation, int amount)
     {
-        float spaceBetweenZombies = 2f;
+        float spaceBetweenZombies = 5f;
         for (int i = 0; i < amount; i++)
         {
             float angle = i * Mathf.PI * 2f / amount;

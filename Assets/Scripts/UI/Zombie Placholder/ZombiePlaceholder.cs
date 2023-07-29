@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -15,6 +16,8 @@ public class ZombiePlaceholder : MonoBehaviour, IEndDragHandler, IDragHandler
     private Vector2 _initialSpritePosition;
     private Vector2 _currentTempSpritePosition;
     private SpriteRenderer _tempZombieSprite;
+
+    public bool IsAvailable => !_isSpawned;
 
     void Start()
     {
@@ -67,13 +70,19 @@ public class ZombiePlaceholder : MonoBehaviour, IEndDragHandler, IDragHandler
             {
                 Instantiate(_zombieHolder.ZombiePrefab, spawnPosition, Quaternion.identity);
             }
-            _isSpawned = true;
             _amountText.text = "0";
+            StartCoroutine(WaitForZombiesSpawn()); // Allow zombies to spawn before checking if there are any zombies left to spawn.
         }
         else
         {
             _zombieSprite.color = new Color(1, 1, 1, 1);
         }
+    }
+
+    private IEnumerator WaitForZombiesSpawn()
+    {
+        yield return new WaitForSeconds(0.3f);
+        _isSpawned = true;
     }
 
     private bool IsGround()

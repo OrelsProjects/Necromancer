@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51dc1b32826047c4a80991ca4e6fdc84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CivillianWorkerPrefab: {fileID: 0}
-  DefenderMeleePrefab: {fileID: 0}
-  CivilianWorkerZombiePrefab: {fileID: 0}
-  DefenderMeleeZombiePrefab: {fileID: 0}
+  CivillianWorkerPrefab: {fileID: 5192329618666744031, guid: eb3e9be8383c3dc4098e68e9581a304a, type: 3}
+  DefenderMeleePrefab: {fileID: 1036798099327359381, guid: b7d9b46f89195e34a9046014811d135b, type: 3}
+  CivilianWorkerZombiePrefab: {fileID: 5369073117181453503, guid: 53c3b6e8f4813a7498fc7c08c09d0aef, type: 3}
+  DefenderMeleeZombiePrefab: {fileID: 6028943000780815030, guid: aee4b231a7695a24f8dc6df5110edce1, type: 3}

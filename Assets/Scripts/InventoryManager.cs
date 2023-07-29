@@ -12,7 +12,7 @@ public class InventoryManager : MonoBehaviour
         {
             Instance = this;
             Currency = 10;
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject.transform.parent.gameObject);
         }
     }
 
