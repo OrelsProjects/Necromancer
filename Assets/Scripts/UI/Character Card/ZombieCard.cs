@@ -19,6 +19,10 @@ public class ZombieCard : MonoBehaviour
     private TextMeshProUGUI _costText;
     [SerializeField]
     private TextMeshProUGUI _amountText;
+    [SerializeField]
+    private GameObject _buyButton;
+    [SerializeField]
+    private GameObject _addObject;
 
 
     private void Awake()
@@ -29,6 +33,17 @@ public class ZombieCard : MonoBehaviour
         _damageText.text = _data.Power.ToString();
         _costText.text = _data.Cost.ToString();
         _amountText.text = 0.ToString();
+
+        if (_data.CardType == CardType.Buy)
+        {
+            _buyButton.SetActive(true);
+            _addObject.SetActive(false);
+        }
+        else if (_data.CardType == CardType.Add)
+        {
+            _buyButton.SetActive(false);
+            _addObject.SetActive(true);
+        }
     }
 
     public void IncreaseAmount(int amount)

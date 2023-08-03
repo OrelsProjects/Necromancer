@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21ba84bfde456f044918bba0e6cd62e2, type: 3}
   m_Name: Basic Zombie Card
   m_EditorClassIdentifier: 
-  _amount: 0
   _name: Basic Zombie
   _health: 100
   _speed: 1
   _power: 30
-  _cost: 2
+  _cost: 1
+  _cardType: 0

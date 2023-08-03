@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "ZombieHolder", menuName = "Necromancer/Zombie Holder", order = 1)]
+[CreateAssetMenu(fileName = "ZombieHolder", menuName = "Necromancer/Zombie Holder", order = 2)]
 public class ZombieHolder : ScriptableObject
 {
     [SerializeField]

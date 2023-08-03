@@ -1,5 +1,10 @@
 using UnityEngine;
 
+public enum CardType
+{
+    Buy,
+    Add // To add more zombies for the round
+}
 [CreateAssetMenu(fileName = "ZombieCardData", menuName = "Necromancer/Cards/Zombie", order = 1)]
 public class ZombieCardData : ScriptableObject
 {
@@ -13,7 +18,9 @@ public class ZombieCardData : ScriptableObject
     private int _power;
     [SerializeField]
     private int _cost;
-    
+    [SerializeField]
+    private CardType _cardType;
+
     public string Name
     {
         get => _name;
@@ -42,5 +49,11 @@ public class ZombieCardData : ScriptableObject
     {
         get => _cost;
         set => _cost = value;
+    }
+
+    public CardType CardType
+    {
+        get => _cardType;
+        set => _cardType = value;
     }
 }
