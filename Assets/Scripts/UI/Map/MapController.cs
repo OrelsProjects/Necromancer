@@ -1,28 +1,37 @@
+using System.Collections.Generic;
 using UnityEngine;
+
+public enum Maps
+{
+    Area1
+}
 
 public class Map : MonoBehaviour
 {
 
     public static Map Instance { get; private set; }
 
-    [SerializeField]
-    private Grid _map;
+    private Dictionary<Maps, string> _maps = new Dictionary<Maps, string>()
+    {
+        { Maps.Area1, "Round Scene" }
+    };
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(this);
         }
-        _map = new Grid(14, 8, 10f);
     }
 
-    private void Update()
+    public void LoadArea1()
     {
-        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);        // On mouse click, color the cell under the mouse
-        if (Input.GetMouseButtonDown(0))
-        {
-            _map.ColorCell(mouseWorldPosition, Color.cyan);
-        }
+        LoadMap(Maps.Area1);
+    }
+
+    public void LoadMap(Maps map)
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(_maps[map]);
     }
 }

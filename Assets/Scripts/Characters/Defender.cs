@@ -36,8 +36,6 @@ public abstract class Defender : MonoBehaviour, IChaser<Zombie>
 
     public virtual void Start()
     {
-        RoundManager.Instance.AddDefender(this);
-
         _movementController = GetComponent<MovementController>();
         _chaser = GetComponent<DefenderChaser>();
         _wanderController = GetComponent<WanderController>();

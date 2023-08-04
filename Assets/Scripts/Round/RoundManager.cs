@@ -20,7 +20,7 @@ public class RoundManager : MonoBehaviour
     private RoundData _roundData;
     [Header("UI")]
     [SerializeField]
-    private GameObject _roundResultsZombiesWon;
+    private GameObject _roundResultsUI;
 
     [Header("Sound")]
     [SerializeField]
@@ -29,7 +29,7 @@ public class RoundManager : MonoBehaviour
     private AudioClip _loseSound;
     [SerializeField]
     private AudioClip _zombiesSpawnedSound;
-
+    [SerializeField]
     private AudioSource _audioSource;
 
     private List<Zombie> _zombies = new();
@@ -54,20 +54,13 @@ public class RoundManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            _zombiesParent = new GameObject("Zombies");
-            _zombifiablesParent = new GameObject("Zombifiables");
-            _defendersParent = new GameObject("Defenders");
-            _audioSource = GetComponent<AudioSource>();
-        }
-        else
-        {
-            Destroy(gameObject);
         }
     }
 
     private void Start()
     {
         StartRound();
+        Debug.Log("RoundManager.Start()");
     }
 
     public Vector3? GetClosestZombiePosition(Vector3 position)
@@ -91,7 +84,7 @@ public class RoundManager : MonoBehaviour
         switch (_state)
         {
             case RoundState.NotStarted:
-                _state = AreThereZombies() ? RoundState.Started : RoundState.NotStarted;
+                _state = AreThereZombiesAlive() ? RoundState.Started : RoundState.NotStarted;
                 break;
             case RoundState.Started:
                 HandleStartedState();
@@ -133,14 +126,14 @@ public class RoundManager : MonoBehaviour
     private void HandleZombiesWonState()
     {
         AudioSource.PlayClipAtPoint(_loseSound, Vector3.zero);
-        _roundResultsZombiesWon.SetActive(true);
+        _roundResultsUI.SetActive(true);
         _state = RoundState.Won;
     }
 
     private void HandleDefendersWonState()
     {
         AudioSource.PlayClipAtPoint(_winSound, Vector3.zero);
-        _roundResultsZombiesWon.SetActive(true);
+        _roundResultsUI.SetActive(true);
         _state = RoundState.Lost;
     }
 
@@ -173,6 +166,7 @@ public class RoundManager : MonoBehaviour
 
     public void StartRound()
     {
+        _defendersParent = new GameObject("Defenders");
         PlayBackgroundMusic();
         for (int i = 0; i < _roundData.CiviliansCount; i++)
         {
@@ -180,18 +174,23 @@ public class RoundManager : MonoBehaviour
             Vector3 randomPosition = new(Random.Range(-5, 5), Random.Range(-5, 5));
             Zombifiable civilianPrefab = _roundData.CiviliansPrefabs[randomCivilianIndex];
             Zombifiable zombifiableInstance = Instantiate(civilianPrefab, randomPosition, Quaternion.identity);
-            zombifiableInstance.transform.SetParent(_zombifiablesParent.transform);
+            AddZombifiable(zombifiableInstance);
         }
 
         _roundData.Defenders.ForEach(defender =>
         {
             Defender defenderInstance = Instantiate(defender, Vector3.zero, Quaternion.identity);
-            defenderInstance.transform.SetParent(_defendersParent.transform);
+            AddDefender(defenderInstance);
         });
+        _state = RoundState.NotStarted;
     }
 
     public void AddZombie(Zombie zombie)
     {
+        if (_zombies.Count == 0)
+        {
+            _zombiesParent = new GameObject("Zombies");
+        }
         zombie.gameObject.transform.SetParent(_zombiesParent.transform);
         _zombies.Add(zombie);
         _areDefendersIdle = true;
@@ -199,12 +198,20 @@ public class RoundManager : MonoBehaviour
 
     public void AddZombifiable(Zombifiable zombifiable)
     {
+        if (_zombifiables.Count == 0)
+        {
+            _zombifiablesParent = new GameObject("Zombifiables");
+        }
         zombifiable.gameObject.transform.SetParent(_zombifiablesParent.transform);
         _zombifiables.Add(zombifiable);
     }
 
     public void AddDefender(Defender defender)
     {
+        if (_defenders.Count == 0)
+        {
+            _defendersParent = new GameObject("Defenders");
+        }
         defender.gameObject.transform.SetParent(_defendersParent.transform);
         _defenders.Add(defender);
     }
@@ -212,28 +219,21 @@ public class RoundManager : MonoBehaviour
     public void RemoveZombie(Zombie zombie)
     {
         _zombies.Remove(zombie);
-        if (!AreThereZombies())
-        {
-            Destroy(_zombiesParent);
-        }
     }
 
     public void RemoveZombifiable(Zombifiable zombifiable)
     {
         _zombifiables.Remove(zombifiable);
-        if (_zombifiables.Count == 0)
-        {
-            Destroy(_zombifiablesParent);
-        }
     }
 
     public void RemoveDefender(Defender defender)
     {
         _defenders.Remove(defender);
-        if (_defenders.Count == 0)
-        {
-            Destroy(_defendersParent);
-        }
+    }
+
+    public void FinishRound()
+    {
+        Destroy(gameObject);
     }
 
     private bool ShouldPlayZombiesSound()

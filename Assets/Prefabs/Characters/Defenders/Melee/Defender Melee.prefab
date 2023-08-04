@@ -40,7 +40,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2845085499663975967
 Animator:
@@ -269,7 +269,7 @@ MonoBehaviour:
   _attackSound: {fileID: 8300000, guid: 541d0be8fda7de14c95c0de081d10354, type: 3}
   _health: 100
   _damage: 91
-  _speed: 3
+  _speed: 4.26
   _attackSpeed: 1
 --- !u!114 &3690822906193468867
 MonoBehaviour:
@@ -286,7 +286,6 @@ MonoBehaviour:
   _hitsToZombify: 3
   _movementBlockedTimeAfterAttack: 1.2
   _zombiePrefab: {fileID: 8290909719328425396, guid: aee4b231a7695a24f8dc6df5110edce1, type: 3}
-  _hitSound: {fileID: 0}
   _deathSound: {fileID: 8300000, guid: a6c96b765543a694a803e5c7e8a6f715, type: 3}
 --- !u!70 &6605930328438912686
 CapsuleCollider2D:

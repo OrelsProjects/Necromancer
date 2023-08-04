@@ -42,6 +42,7 @@ public class RoundResults : MonoBehaviour
     {
         _title.gameObject.SetActive(true);
         _currentGoldText.text = InventoryManager.Instance.Currency.ToString();
+        _continueButton.onClick.AddListener(() => FinishRound());
         if (RoundManager.Instance.State == RoundState.Lost)
         {
             SetUpLose();
@@ -59,7 +60,6 @@ public class RoundResults : MonoBehaviour
         _title.text = _winTitle;
 
         _title.GetComponent<Animator>().SetBool("Win", true);
-        _continueButton.onClick.AddListener(() => Debug.Log("Continue"));
 
         StartCoroutine(ShowRewardCoroutine());
     }
@@ -72,7 +72,12 @@ public class RoundResults : MonoBehaviour
 
         _title.GetComponent<Animator>().SetBool("Win", false);
         _title.GetComponent<Animator>().SetBool("Lose", true);
-        _continueButton.onClick.AddListener(() => Debug.Log("Continue"));
+    }
+
+    private void FinishRound()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Map");
+        RoundManager.Instance.FinishRound();
     }
 
     private IEnumerator ShowRewardCoroutine()

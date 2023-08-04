@@ -30,8 +30,7 @@ public class Zombifiable : MonoBehaviour, IChaseable
     }
 
     private void Start()
-    {
-        RoundManager.Instance.AddZombifiable(this);
+{
         _animator = GetComponent<Animator>();
         _movementController = GetComponent<MovementController>();
         _animationHelper = new AnimationHelper(_animator);

@@ -14,6 +14,14 @@ public class ZombiesSpawnBar : MonoBehaviour
         return _zombiePlaceholders.Find(ZombiePlaceholder => ZombiePlaceholder.IsAvailable) != null;
     }
 
+    public void Init()
+    {
+        _zombiePlaceholders.ForEach(zombiePlaceholder =>
+        {
+            zombiePlaceholder.Init();
+        });
+    }
+
     private void Awake()
     {
         if (Instance == null)

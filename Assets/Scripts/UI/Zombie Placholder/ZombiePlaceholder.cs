@@ -26,6 +26,11 @@ public class ZombiePlaceholder : MonoBehaviour, IEndDragHandler, IDragHandler
         _initialSpritePosition = _zombieSprite.transform.position;
     }
 
+    public void Init()
+    {
+        _isSpawned = false;
+    }
+
     public void OnDrag(PointerEventData eventData)
     {
         if (_isSpawned)
