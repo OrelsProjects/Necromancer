@@ -27,7 +27,6 @@ public class SaveManager : MonoBehaviour
     void Start()
     {
         InitSaveables();
-        // InitiateLoad();
     }
 
     private void InitSaveables()

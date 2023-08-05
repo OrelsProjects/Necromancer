@@ -18,9 +18,12 @@ public enum ZombieState
 [RequireComponent(typeof(Animator))]
 public class Zombie : MonoBehaviour, IChaseable
 {
-    [SerializeField] private float _speed = 2.5f;
-    [SerializeField] private float _attackSpeed = 1f;
-    [SerializeField] private float _health = 100f;
+
+    [SerializeField]
+    private int _currentLevel;
+
+    [SerializeField]
+    private ZombieData _data;
 
     [Header("Sound")]
     [SerializeField]
@@ -40,6 +43,9 @@ public class Zombie : MonoBehaviour, IChaseable
     private WanderController _wanderController;
     private AnimationHelper _animationHelper;
     private ZombieState _state = ZombieState.Idle;
+    
+    private ZombieLevelDTO levelData;
+    private float _currentHealth;
 
     private void Awake()
     {
@@ -49,6 +55,8 @@ public class Zombie : MonoBehaviour, IChaseable
         _chaser = GetComponent<ZombieChaser>();
         _wanderController = GetComponent<WanderController>();
         _animationHelper = new AnimationHelper(_animator);
+        levelData = _data.GetLevel(_currentLevel);
+        _currentHealth = levelData.Health;
     }
 
     private void Start()
@@ -110,7 +118,7 @@ public class Zombie : MonoBehaviour, IChaseable
         }
         else
         {
-            _movementController.Move(_speed, _chaser.Target.gameObject);
+            _movementController.Move(levelData.Speed, _chaser.Target.gameObject);
             _animationHelper.PlayAnimation(AnimationType.Running);
         }
     }
@@ -133,7 +141,7 @@ public class Zombie : MonoBehaviour, IChaseable
         _animationHelper.PlayAnimation(AnimationType.AttackMelee);
         _chaser.Target.Zombify();
         AudioSource.PlayClipAtPoint(_hitSound, transform.position);
-        yield return new WaitForSeconds(1 / _attackSpeed);
+        yield return new WaitForSeconds(1 / levelData.AttackSpeed);
 
         if (_state == ZombieState.Attacking)
         {
@@ -157,7 +165,7 @@ public class Zombie : MonoBehaviour, IChaseable
 
     private IEnumerator AttackSoundCooldown()
     {
-        yield return new WaitForSeconds(1 / _attackSpeed);
+        yield return new WaitForSeconds(1 / levelData.AttackSpeed);
         _isAttackSoundPlaying = false;
     }
 
@@ -183,8 +191,8 @@ public class Zombie : MonoBehaviour, IChaseable
     public void TakeDamage(float damage)
     {
         _animationHelper.PlayAnimation(AnimationType.Hit);
-        _health -= damage;
-        if (_health <= 0 && _state != ZombieState.AboutToDie)
+        _currentHealth -= damage;
+        if (_currentHealth <= 0 && _state != ZombieState.AboutToDie)
         {
             SetState(ZombieState.AboutToDie);
         }
@@ -193,12 +201,12 @@ public class Zombie : MonoBehaviour, IChaseable
     public void Heal(float health)
     {
         _animationHelper.PlayAnimation(AnimationType.Heal);
-        _health += health;
+        _currentHealth += health;
     }
 
-    public bool IsAlive() => _health > 0;
+    public bool IsAlive() => _currentHealth > 0;
 
-    public bool IsAvailable() => _health > 0;
+    public bool IsAvailable() => _currentHealth > 0;
 
     public Transform GetTransform() => transform;
 }

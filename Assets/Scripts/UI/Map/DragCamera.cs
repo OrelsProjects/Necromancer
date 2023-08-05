@@ -37,6 +37,7 @@ public class DragCamera : MonoBehaviour
         {
             Camera.main.orthographicSize -= scroll * zoomSpeed;
             Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, zoomMin, zoomMax);
+            ClampPosition();
         }
     }
 
@@ -44,9 +45,13 @@ public class DragCamera : MonoBehaviour
     {
         Vector3 position = Camera.main.ScreenToViewportPoint(lastMousePosition - Input.mousePosition);
         Vector3 move = new Vector3(position.x * dragSpeed, position.y * dragSpeed, 0);
-
         transform.Translate(move, Space.World);
+        ClampPosition();
+        lastMousePosition = Input.mousePosition;
+    }
 
+    private void ClampPosition()
+    {
         // Calculate current camera bounds
         float vertExtent = Camera.main.orthographicSize;
         float horzExtent = vertExtent * Screen.width / Screen.height;
@@ -61,8 +66,6 @@ public class DragCamera : MonoBehaviour
         clampedPosition.x = Mathf.Clamp(clampedPosition.x, minX, maxX);
         clampedPosition.y = Mathf.Clamp(clampedPosition.y, minY, maxY);
         transform.position = clampedPosition;
-
-        lastMousePosition = Input.mousePosition;
     }
 
     private bool IsMapClicked()
@@ -70,7 +73,7 @@ public class DragCamera : MonoBehaviour
         int layerMask = 1 << 8;
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
-        
+
         if (Physics2D.Raycast(mousePosition, Vector2.zero, Mathf.Infinity, layerMask))
         {
             return true;
