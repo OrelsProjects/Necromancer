@@ -280,9 +280,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddf2ece95b5b0f64bb956167c52db66c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 2.5
-  _attackSpeed: 1
-  _health: 100
+  _currentLevel: 1
+  _data: {fileID: 11400000, guid: 039a34adfdf9b1e4b8c08834ad5370e4, type: 2}
   _spawnSound: {fileID: 8300000, guid: da34b283cf7f0d64bb59a8e36a08937f, type: 3}
   _attackSounds:
   - {fileID: 8300000, guid: 592ab58b002a7284f9835145a50eff72, type: 3}
