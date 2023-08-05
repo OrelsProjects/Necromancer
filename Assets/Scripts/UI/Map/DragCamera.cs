@@ -26,25 +26,22 @@ public class DragCamera : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-            SetNewPosition();
+            if (IsMapClicked())
+            {
+                SetNewPosition();
+            }
         }
-        // On scroll zoom in and out
+
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         if (scroll != 0)
         {
             Camera.main.orthographicSize -= scroll * zoomSpeed;
             Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, zoomMin, zoomMax);
-            SetNewPosition();
         }
     }
 
     private void SetNewPosition()
     {
-        if (!IsMapClicked())
-        {
-            return;
-        }
-        Vector3 delta = Input.mousePosition - lastMousePosition;
         Vector3 position = Camera.main.ScreenToViewportPoint(lastMousePosition - Input.mousePosition);
         Vector3 move = new Vector3(position.x * dragSpeed, position.y * dragSpeed, 0);
 
@@ -73,7 +70,7 @@ public class DragCamera : MonoBehaviour
         int layerMask = 1 << 8;
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
-        Debug.Log("Hit: " + hit.collider);
+        
         if (Physics2D.Raycast(mousePosition, Vector2.zero, Mathf.Infinity, layerMask))
         {
             return true;

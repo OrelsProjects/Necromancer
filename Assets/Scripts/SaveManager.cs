@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-
+using Newtonsoft.Json;
 
 public class SaveManager : MonoBehaviour
 {
@@ -12,7 +12,7 @@ public class SaveManager : MonoBehaviour
 
     public List<ISaveable> _saveables;
 
-    private Dictionary<string, string> _data;
+    private List<IDTO> _data;
 
     private void Awake()
     {
@@ -26,70 +26,79 @@ public class SaveManager : MonoBehaviour
 
     void Start()
     {
+        InitSaveables();
+        // InitiateLoad();
+    }
+
+    private void InitSaveables()
+    {
+        _saveables = new List<ISaveable>();
         _saveablesObjects.ForEach(saveableObject =>
         {
-            _saveables.AddRange(saveableObject.GetComponentsInChildren<ISaveable>());
+            ISaveable saveable = saveableObject.GetComponent<ISaveable>();
+            if (saveable != null)
+            {
+                _saveables.Add(saveable);
+            }
         });
-        
+    }
+
+    public void InitiateLoad()
+    {
         string saveFileLocation = Application.persistentDataPath + "/savefile.dat";
         if (File.Exists(saveFileLocation))
         {
-            StreamReader reader = new StreamReader(saveFileLocation);
-            string saveData = reader.ReadToEnd();
-            reader.Close();
-            _data = JsonUtility.FromJson<Dictionary<string, string>>(saveData);
+            string saveData = File.ReadAllText(saveFileLocation);
+            _data = JsonConvert.DeserializeObject<List<IDTO>>(saveData, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto
+            });
         }
         else
         {
-            _data = new Dictionary<string, string>();
+            _data = new List<IDTO>();
         }
-        InitiateLoad();
-    }
 
-    private void InitiateLoad()
-    {
         _saveables.ForEach(s =>
         {
             s.LoadData();
         });
     }
 
+
     public void InitiateSave()
     {
-        _data = new Dictionary<string, string>();
-        _saveables = new List<ISaveable>();
-
+        _data = new List<IDTO>();
         _saveables.ForEach(s =>
         {
-            Dictionary<string, string> data = s.GetData();
-            foreach (KeyValuePair<string, string> d in data)
-            {
-                _data.Add(d.Key, d.Value);
-            }
+            IDTO data = s.GetData();
+            _data.Add(data);
         });
-        string saveData = JsonUtility.ToJson(_data);
+
+        string saveData = JsonConvert.SerializeObject(_data, new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Auto
+        });
+
         string saveFileLocation = Application.persistentDataPath + "/savefile.dat";
-        StreamWriter writer = new StreamWriter(saveFileLocation, false);
-        writer.Write(saveData);
-        writer.Close();
+        File.WriteAllText(saveFileLocation, saveData);
     }
 
-    public Dictionary<string, string> GetData(List<string> keys)
+    public T GetData<T>() where T : IDTO
     {
-        Dictionary<string, string> dataRequested = new();
-        keys.ForEach(k =>
+        foreach (IDTO item in _data)
         {
-            if (_data.ContainsKey(k))
+            if (item is T tItem)
             {
-                dataRequested.Add(k, _data[k]);
+                return tItem;
             }
-        });
-        return dataRequested;
+        }
+
+        return default;
     }
 
     private void OnDestroy()
     {
         InitiateSave();
     }
-
 }

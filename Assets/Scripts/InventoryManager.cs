@@ -12,7 +12,7 @@ public class InventoryManager : MonoBehaviour, ISaveable
         if (Instance == null)
         {
             Instance = this;
-            Currency = 10;
+            Currency = 0;
             DontDestroyOnLoad(this);
         }
     }
@@ -37,18 +37,20 @@ public class InventoryManager : MonoBehaviour, ISaveable
         return true;
     }
 
-    public Dictionary<string, string> GetData()
+    public IDTO GetData()
     {
-        return new Dictionary<string, string>()
+        return new InventoryDTO
         {
-            { "Currency", Currency.ToString() }
+            Currency = 2932
         };
     }
 
     public void LoadData()
     {
-        Dictionary<string, string> newCurrency = SaveManager.Instance.GetData(new List<string>() { "Currency" });
-        // if newCurrency has "Currency", set Currency to newCurrency["Currency"] else set Currency to 0
-        Currency = newCurrency.ContainsKey("Currency") ? int.Parse(newCurrency["Currency"]) : 0;
+        InventoryDTO inventoryDTO = SaveManager.Instance.GetData<InventoryDTO>();
+        if (inventoryDTO != null)
+        {
+            Currency = inventoryDTO.Currency;
+        }
     }
 }

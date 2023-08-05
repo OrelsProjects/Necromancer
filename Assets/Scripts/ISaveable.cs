@@ -2,7 +2,7 @@
 
 public interface ISaveable
 {
-    public Dictionary<string, string> GetData();
+    public IDTO GetData();
     /// <summary>
     /// Called to let the component know it should get the relevant data.
     /// </summary>
