@@ -1,12 +1,22 @@
 using UnityEngine;
 
+public enum Sounds
+{
+    BackgroundMusic,
+    ButtonClick
+}
+
 public class SoundsManager : MonoBehaviour
 {
 
     public static SoundsManager Instance;
 
+    [Header("Audio Clips")]
     [SerializeField]
     private AudioClip _backgroundMusic;
+    [SerializeField]
+    private AudioClip _buttonClickSound;
+
 
     [Header("Audio Listeners")]
     [SerializeField]
@@ -19,6 +29,7 @@ public class SoundsManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(this);
         }
     }
 
@@ -69,5 +80,18 @@ public class SoundsManager : MonoBehaviour
     public void StopBackgroundMusicFadeOut(float duration)
     {
         _backgroundAudioSource.FadeOut(duration);
+    }
+
+    public void PlaySound(Sounds sounds)
+    {
+        switch (sounds)
+        {
+            case Sounds.BackgroundMusic:
+                _backgroundAudioSource.Play();
+                break;
+            case Sounds.ButtonClick:
+                _backgroundAudioSource.PlayOneShot(_buttonClickSound);
+                break;
+        }
     }
 }

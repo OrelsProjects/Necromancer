@@ -60,7 +60,6 @@ public class RoundManager : MonoBehaviour
     private void Start()
     {
         StartRound();
-        Debug.Log("RoundManager.Start()");
     }
 
     public Vector3? GetClosestZombiePosition(Vector3 position)

@@ -11,11 +11,7 @@ public class DragCamera : MonoBehaviour
     public Vector2 maxPos = new Vector2(112, 64);
 
     private Vector3 lastMousePosition;
-    /**
-X min:
-11 - 6
-38 - 20
-    **/
+
     void Update()
     {
         Navigate();
@@ -44,6 +40,10 @@ X min:
 
     private void SetNewPosition()
     {
+        if (!IsMapClicked())
+        {
+            return;
+        }
         Vector3 delta = Input.mousePosition - lastMousePosition;
         Vector3 position = Camera.main.ScreenToViewportPoint(lastMousePosition - Input.mousePosition);
         Vector3 move = new Vector3(position.x * dragSpeed, position.y * dragSpeed, 0);
@@ -59,12 +59,25 @@ X min:
         float maxX = maxPos.x - horzExtent;
         float minY = minPos.y + vertExtent;
         float maxY = maxPos.y - vertExtent;
-        
+
         Vector3 clampedPosition = transform.position;
         clampedPosition.x = Mathf.Clamp(clampedPosition.x, minX, maxX);
         clampedPosition.y = Mathf.Clamp(clampedPosition.y, minY, maxY);
         transform.position = clampedPosition;
 
         lastMousePosition = Input.mousePosition;
+    }
+
+    private bool IsMapClicked()
+    {
+        int layerMask = 1 << 8;
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+        Debug.Log("Hit: " + hit.collider);
+        if (Physics2D.Raycast(mousePosition, Vector2.zero, Mathf.Infinity, layerMask))
+        {
+            return true;
+        }
+        return false;
     }
 }

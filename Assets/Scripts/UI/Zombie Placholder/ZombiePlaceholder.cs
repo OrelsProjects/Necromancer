@@ -13,6 +13,7 @@ public class ZombiePlaceholder : MonoBehaviour, IEndDragHandler, IDragHandler
     private TextMeshProUGUI _amountText; // Serialized reference to the TextMeshPro GameObject.
 
     private bool _isSpawned = false;
+    private bool _isSpawning = false;
     private Vector2 _initialSpritePosition;
     private Vector2 _currentTempSpritePosition;
     private SpriteRenderer _tempZombieSprite;
@@ -33,7 +34,7 @@ public class ZombiePlaceholder : MonoBehaviour, IEndDragHandler, IDragHandler
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (_isSpawned)
+        if (_isSpawned || _isSpawning)
         {
             return;
         }
@@ -61,20 +62,23 @@ public class ZombiePlaceholder : MonoBehaviour, IEndDragHandler, IDragHandler
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (_isSpawned || _tempZombieSprite == null)
+        if (_isSpawned || _tempZombieSprite == null || _isSpawning)
         {
             return;
         }
-        Vector2 spawnPosition = _tempZombieSprite.transform.position;
-        Destroy(_tempZombieSprite.gameObject);
-        _tempZombieSprite = null;
 
         if (IsGround())
         {
+            _isSpawning = true;
+            Vector2 spawnPosition = _tempZombieSprite.transform.position;
+            Destroy(_tempZombieSprite.gameObject);
+            _tempZombieSprite = null;
+
             for (int i = 0; i < _zombieHolder.Amount; i++)
             {
                 Instantiate(_zombieHolder.ZombiePrefab, spawnPosition, Quaternion.identity);
             }
+
             _amountText.text = "0";
             StartCoroutine(WaitForZombiesSpawn()); // Allow zombies to spawn before checking if there are any zombies left to spawn.
         }
@@ -88,6 +92,7 @@ public class ZombiePlaceholder : MonoBehaviour, IEndDragHandler, IDragHandler
     {
         yield return new WaitForSeconds(0.3f);
         _isSpawned = true;
+        _isSpawning = false;
     }
 
     private bool IsGround()

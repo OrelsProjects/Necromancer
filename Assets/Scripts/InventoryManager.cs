@@ -1,6 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class InventoryManager : MonoBehaviour
+public class InventoryManager : MonoBehaviour, ISaveable
 {
     public static InventoryManager Instance { get; private set; }
 
@@ -12,7 +13,7 @@ public class InventoryManager : MonoBehaviour
         {
             Instance = this;
             Currency = 10;
-            DontDestroyOnLoad(gameObject.transform.parent.gameObject);
+            DontDestroyOnLoad(this);
         }
     }
 
@@ -34,5 +35,20 @@ public class InventoryManager : MonoBehaviour
         }
         Currency -= amount;
         return true;
+    }
+
+    public Dictionary<string, string> GetData()
+    {
+        return new Dictionary<string, string>()
+        {
+            { "Currency", Currency.ToString() }
+        };
+    }
+
+    public void LoadData()
+    {
+        Dictionary<string, string> newCurrency = SaveManager.Instance.GetData(new List<string>() { "Currency" });
+        // if newCurrency has "Currency", set Currency to newCurrency["Currency"] else set Currency to 0
+        Currency = newCurrency.ContainsKey("Currency") ? int.Parse(newCurrency["Currency"]) : 0;
     }
 }
