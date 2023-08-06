@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum Sounds
+public enum SoundTypes
 {
     BackgroundMusic,
     ButtonClick
@@ -82,14 +82,19 @@ public class SoundsManager : MonoBehaviour
         _backgroundAudioSource.FadeOut(duration);
     }
 
-    public void PlaySound(Sounds sounds)
+    public void PlayPressSound()
+    {
+        PlaySound(SoundTypes.ButtonClick);
+    }
+
+    public void PlaySound(SoundTypes sounds)
     {
         switch (sounds)
         {
-            case Sounds.BackgroundMusic:
+            case SoundTypes.BackgroundMusic:
                 _backgroundAudioSource.Play();
                 break;
-            case Sounds.ButtonClick:
+            case SoundTypes.ButtonClick:
                 _backgroundAudioSource.PlayOneShot(_buttonClickSound);
                 break;
         }

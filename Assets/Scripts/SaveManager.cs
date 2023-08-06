@@ -27,6 +27,7 @@ public class SaveManager : MonoBehaviour
     void Start()
     {
         InitSaveables();
+        InitiateLoad();  
     }
 
     private void InitSaveables()
@@ -62,6 +63,7 @@ public class SaveManager : MonoBehaviour
         {
             s.LoadData();
         });
+        UIController.Instance.UpdateUI();
     }
 
 

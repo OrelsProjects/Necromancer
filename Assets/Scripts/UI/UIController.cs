@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class UIController : MonoBehaviour
@@ -7,6 +8,8 @@ public class UIController : MonoBehaviour
 
     [SerializeField]
     private GameObject _zombiesUpgradeUI;
+    [SerializeField] 
+    private TextMeshProUGUI _currencyText;
 
     private void Awake()
     {
@@ -16,6 +19,15 @@ public class UIController : MonoBehaviour
         }
     }
 
+    private void Start() {
+        UpdateUI();
+    }
+
+    public void UpdateUI()
+    {
+        _currencyText.text = InventoryManager.Instance.Currency.ToString();
+    }
+
     public void ShowZombiesUpgrade()
     {
         _zombiesUpgradeUI.SetActive(!_zombiesUpgradeUI.activeSelf);
@@ -23,6 +35,6 @@ public class UIController : MonoBehaviour
 
     public void PlayButtonClickSound()
     {
-        SoundsManager.Instance.PlaySound(Sounds.ButtonClick);
+        SoundsManager.Instance.PlaySound(SoundTypes.ButtonClick);
     }
 }

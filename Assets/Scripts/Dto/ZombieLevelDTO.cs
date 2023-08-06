@@ -19,4 +19,16 @@ public class ZombieLevelDTO : ScriptableObject, IDTO
     public int PriceToUse; // Price to include in a raid
     [Tooltip("Price to upgrade to this level")]
     public int PriceToUpgrade; // Price to upgrade to this level
+
+    public ZombieLevelDTO()
+    {
+        Level = 1;
+        Damage = 1;
+        Health = 1;
+        Speed = 1;
+        AttackSpeed = 1;
+        AmountSpawned = 1;
+        PriceToUse = 1;
+        PriceToUpgrade = 1;
+    }
 }

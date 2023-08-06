@@ -268,8 +268,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _attackSound: {fileID: 8300000, guid: 541d0be8fda7de14c95c0de081d10354, type: 3}
   _health: 100
-  _damage: 91
-  _speed: 4.26
+  _damage: 25
+  _speed: 1.5
   _attackSpeed: 1
 --- !u!114 &3690822906193468867
 MonoBehaviour:
