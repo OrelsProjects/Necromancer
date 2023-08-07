@@ -24,6 +24,8 @@ public class UpgradeController : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _upgradeCost;
     [SerializeField]
+    private Image _upgradeCostIcon;
+    [SerializeField]
     private Button _upgradeButton;
 
     private ZombieType _selectedZombieType = ZombieType.ZombieLab;
@@ -49,21 +51,29 @@ public class UpgradeController : MonoBehaviour
         _currentDamage.text = selectedZombieCurrentLevel.Damage.ToString();
         _currentHealth.text = selectedZombieCurrentLevel.Health.ToString();
         _currentSpeed.text = selectedZombieCurrentLevel.Speed.ToString();
-        _upgradeCost.text = selectedZombieCurrentLevel.PriceToUpgrade.ToString();
+        if (CharactersManager.Instance.IsZombieMaxLevel(_selectedZombieType))
+        {
+            _upgradeCost.text = "MAXED";
+            _upgradeButton.interactable = false;
+            _upgradeButton.GetComponent<Image>().sprite = null;
+            _upgradeCostIcon.enabled = false;
+            return;
+        }
 
         ZombieLevel selectedZombieNextLevel = CharactersManager.Instance.GetZombieDataNextLevel(_selectedZombieType);
         _nextAttackSpeed.text = selectedZombieNextLevel.AttackSpeed.ToString();
         _nextDamage.text = selectedZombieNextLevel.Damage.ToString();
         _nextHealth.text = selectedZombieNextLevel.Health.ToString();
         _nextSpeed.text = selectedZombieNextLevel.Speed.ToString();
+        _upgradeCost.text = selectedZombieCurrentLevel.PriceToUpgrade.ToString();
 
         if (InventoryManager.Instance.CanAfford(selectedZombieCurrentLevel.PriceToUpgrade))
         {
-            _upgradeButton.enabled = true;
+            _upgradeButton.interactable = true;
         }
         else
         {
-            _upgradeButton.enabled = false;
+            _upgradeButton.interactable = false;
         }
     }
 }

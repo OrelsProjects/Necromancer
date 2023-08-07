@@ -67,6 +67,15 @@ public class CharactersManager : MonoBehaviour, ISaveable
         };
     }
 
+    public bool IsZombieMaxLevel(ZombieType type)
+    {
+        return type switch
+        {
+            ZombieType.ZombieLab => BasicZombieLevel >= _basicZombieData.MaxLevel,
+            _ => false,
+        };
+    }
+
     public ZombieLevel GetZombieDataNextLevel(ZombieType type)
     {
         return type switch

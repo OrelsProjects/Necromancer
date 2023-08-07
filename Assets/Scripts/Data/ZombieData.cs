@@ -7,6 +7,11 @@ public class ZombieData : ScriptableObject
     [SerializeField]
     private ZombieLevel[] _levels;
 
+    public int MaxLevel
+    {
+        get { return _levels.Length; }
+    }
+
     public ZombieLevel GetLevel(int level)
     {
         if (_levels != null)
