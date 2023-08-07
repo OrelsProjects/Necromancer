@@ -27,7 +27,7 @@ public class SaveManager : MonoBehaviour
 
     void Start()
     {
-        InitiateLoad();
+        StartCoroutine(InitiateLoadCore(0f));
     }
 
     private void InitSaveables()
@@ -82,9 +82,9 @@ public class SaveManager : MonoBehaviour
         });
     }
 
-    private IEnumerator InitiateLoadCore()
+    private IEnumerator InitiateLoadCore(float delay = 0.5f)
     {
-        yield return new WaitForSeconds(0.5f); // Let other processes run before loading
+        yield return new WaitForSeconds(delay); // Let other processes run before loading
         _saveables?.ForEach(s =>
         {
             ISaveableObject data = s.GetData();
@@ -103,10 +103,6 @@ public class SaveManager : MonoBehaviour
                 }
                 Debug.Log("Loading " + stringData + " from " + saveFileLocation);
                 s.LoadData(data);
-            }
-            else
-            {
-                Debug.LogError("Save file is corrupted!");
             }
         });
     }

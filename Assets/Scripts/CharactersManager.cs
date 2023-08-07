@@ -19,16 +19,35 @@ public class CharactersManager : MonoBehaviour, ISaveable
 {
     public static CharactersManager Instance;
 
-    private InventoryManager _inventory;
 
     [SerializeField]
     private GameObject _basicZombiePrefab;
     [SerializeField]
     private Sprite _basicZombieSprite;
     [SerializeField]
-    private ZombieData _basicZombieData;
+    private ZombieData _basicZombieData; // TODO: Maybe change it and make the data inside immutable (The _currentLevel)
 
-    private int _basicZombieLevel;
+    private int _basicZombieLevel = 1;
+
+    public int BasicZombieLevel
+    {
+        get { return _basicZombieLevel; }
+        private set
+        {
+            if (_basicZombieLevel != value)
+            {
+                if (value <= 0)
+                {
+                    _basicZombieLevel = 1;
+                }
+                else
+                {
+                    _basicZombieLevel = value;
+                }
+                SaveManager.Instance.InitiateSave();
+            }
+        }
+    }
 
     private void Awake()
     {
@@ -39,21 +58,20 @@ public class CharactersManager : MonoBehaviour, ISaveable
         }
     }
 
-    private void Start()
-    {
-        _inventory = InventoryManager.Instance;
-    }
-
-    private void InitZombies()
-    {
-        _basicZombieData.SetCurrentLevel(_basicZombieLevel);
-    }
-
     public ZombieLevel GetZombieData(ZombieType type)
     {
         return type switch
         {
-            ZombieType.ZombieLab => _basicZombieData.GetCurrentLevel(),
+            ZombieType.ZombieLab => _basicZombieData.GetLevel(BasicZombieLevel),
+            _ => new(),
+        };
+    }
+
+    public ZombieLevel GetZombieDataNextLevel(ZombieType type)
+    {
+        return type switch
+        {
+            ZombieType.ZombieLab => _basicZombieData.GetLevel(BasicZombieLevel + 1),
             _ => new(),
         };
     }
@@ -80,21 +98,29 @@ public class CharactersManager : MonoBehaviour, ISaveable
     {
         if (item is CharacterData data)
         {
-            _basicZombieLevel = data.BasicZombieLevel;
-            _basicZombieLevel = 4;
+            BasicZombieLevel = data.BasicZombieLevel;
         }
         else
         {
-            _basicZombieLevel = 1;
+            BasicZombieLevel = 1;
         }
-        InitZombies();
     }
 
     public ISaveableObject GetData()
     {
         return new CharacterData
         {
-            BasicZombieLevel = _basicZombieLevel,
+            BasicZombieLevel = BasicZombieLevel,
         };
+    }
+
+    public void UpgradeZombie(ZombieType type)
+    {
+        switch (type)
+        {
+            case ZombieType.ZombieLab:
+                BasicZombieLevel++;
+                break;
+        }
     }
 }

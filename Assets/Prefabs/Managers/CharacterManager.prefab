@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8404060354284979803}
-  - component: {fileID: 4023338659477277348}
+  - component: {fileID: 3156410541805276907}
   m_Layer: 0
   m_Name: CharacterManager
   m_TagString: Untagged
@@ -30,9 +30,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4023338659477277348
+--- !u!114 &3156410541805276907
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,10 +41,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2495059616279415576}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51dc1b32826047c4a80991ca4e6fdc84, type: 3}
+  m_Script: {fileID: 11500000, guid: c341cf05e557519449d79c3da1aab99f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CivillianWorkerPrefab: {fileID: 5192329618666744031, guid: eb3e9be8383c3dc4098e68e9581a304a, type: 3}
-  DefenderMeleePrefab: {fileID: 1036798099327359381, guid: b7d9b46f89195e34a9046014811d135b, type: 3}
-  CivilianWorkerZombiePrefab: {fileID: 5369073117181453503, guid: 53c3b6e8f4813a7498fc7c08c09d0aef, type: 3}
-  DefenderMeleeZombiePrefab: {fileID: 6028943000780815030, guid: aee4b231a7695a24f8dc6df5110edce1, type: 3}
+  _basicZombiePrefab: {fileID: 0}
+  _basicZombieSprite: {fileID: 0}
+  _basicZombieData: {fileID: 0}

@@ -58,12 +58,12 @@ public class InventoryManager : MonoBehaviour, ISaveable
 
     public bool UseCurrency(int amount)
     {
-        if (Currency < amount)
+        if (CanAfford(amount))
         {
-            return false;
+            Currency -= amount;
+            return true;
         }
-        Currency -= amount;
-        return true;
+        return false;
     }
 
     public ISaveableObject GetData()
