@@ -6,9 +6,10 @@ using UnityEngine.EventSystems;
 public class ZombiePlaceholder : MonoBehaviour, IEndDragHandler, IDragHandler
 {
     [SerializeField]
-    SpriteRenderer _zombieSprite;
+    private ZombieType _type;
     [SerializeField]
-    ZombieHolder _zombieHolder;
+    private SpriteRenderer _zombieSprite;
+
     [SerializeField]
     private TextMeshProUGUI _amountText; // Serialized reference to the TextMeshPro GameObject.
 
@@ -22,8 +23,8 @@ public class ZombiePlaceholder : MonoBehaviour, IEndDragHandler, IDragHandler
 
     void Start()
     {
-        _amountText.text = _zombieHolder.Amount.ToString();
-        _zombieSprite.sprite = _zombieHolder.ZombieSprite;
+        _amountText.text = CharactersManager.Instance.GetZombieData(_type).AmountSpawned.ToString();
+        _zombieSprite.sprite = CharactersManager.Instance.GetZombieSprite(_type);
         _initialSpritePosition = _zombieSprite.transform.position;
     }
 
@@ -73,10 +74,10 @@ public class ZombiePlaceholder : MonoBehaviour, IEndDragHandler, IDragHandler
             Vector2 spawnPosition = _tempZombieSprite.transform.position;
             Destroy(_tempZombieSprite.gameObject);
             _tempZombieSprite = null;
-
-            for (int i = 0; i < _zombieHolder.Amount; i++)
+            int amountToSpawn = CharactersManager.Instance.GetZombieData(_type).AmountSpawned;
+            for (int i = 0; i < amountToSpawn; i++)
             {
-                Instantiate(_zombieHolder.ZombiePrefab, spawnPosition, Quaternion.identity);
+                Instantiate(CharactersManager.Instance.GetZombiePrefab(_type), spawnPosition, Quaternion.identity);
             }
 
             _amountText.text = "0";

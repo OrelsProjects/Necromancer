@@ -6,8 +6,6 @@ public class UpgradeZombieData : ScriptableObject
     [SerializeField]
     private Sprite _currentZombieSprite;
     [SerializeField]
-    private Sprite _newZombieSprite;
-    [SerializeField]
     private int _cost;
 
 
@@ -15,12 +13,6 @@ public class UpgradeZombieData : ScriptableObject
     {
         get => _currentZombieSprite;
         set => _currentZombieSprite = value;
-    }
-
-    public Sprite NewZombieSprite
-    {
-        get => _newZombieSprite;
-        set => _newZombieSprite = value;
     }
 
     public int Cost

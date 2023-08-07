@@ -12,13 +12,14 @@ public class SaveManager : MonoBehaviour
 
     public List<ISaveable> _saveables;
 
-    private List<IDTO> _data;
+    private List<ISaveableObject> _data;
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+            InitSaveables();
             DontDestroyOnLoad(gameObject);
             return;
         }
@@ -26,8 +27,7 @@ public class SaveManager : MonoBehaviour
 
     void Start()
     {
-        InitSaveables();
-        InitiateLoad();  
+        InitiateLoad();
     }
 
     private void InitSaveables()
@@ -46,17 +46,18 @@ public class SaveManager : MonoBehaviour
     public void InitiateLoad()
     {
         string saveFileLocation = Application.persistentDataPath + "/savefile.dat";
+        File.Delete(saveFileLocation);
         if (File.Exists(saveFileLocation))
         {
             string saveData = File.ReadAllText(saveFileLocation);
-            _data = JsonConvert.DeserializeObject<List<IDTO>>(saveData, new JsonSerializerSettings
+            _data = JsonConvert.DeserializeObject<List<ISaveableObject>>(saveData, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Auto
             });
         }
         else
         {
-            _data = new List<IDTO>();
+            _data = new List<ISaveableObject>();
         }
 
         _saveables.ForEach(s =>
@@ -69,10 +70,10 @@ public class SaveManager : MonoBehaviour
 
     public void InitiateSave()
     {
-        _data = new List<IDTO>();
+        _data = new List<ISaveableObject>();
         _saveables.ForEach(s =>
         {
-            IDTO data = s.GetData();
+            ISaveableObject data = s.GetData();
             _data.Add(data);
         });
 
@@ -85,9 +86,9 @@ public class SaveManager : MonoBehaviour
         File.WriteAllText(saveFileLocation, saveData);
     }
 
-    public T GetData<T>() where T : IDTO
+    public T GetData<T>()
     {
-        foreach (IDTO item in _data)
+        foreach (var item in _data)
         {
             if (item is T tItem)
             {

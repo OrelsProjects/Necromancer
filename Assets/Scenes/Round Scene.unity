@@ -237,6 +237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _backgroundMusic: {fileID: 8300000, guid: 71006b454f6a70c46ba9b40a6deefc15, type: 3}
+  _buttonClickSound: {fileID: 0}
   _stepsAudioSource: {fileID: 1711794973}
   _backgroundAudioSource: {fileID: 490576180}
 --- !u!1 &342149248
@@ -6245,6 +6246,18 @@ PrefabInstance:
     - target: {fileID: 4894977539745156769, guid: 7572aa69252109d4fa6d4801097e91dc, type: 3}
       propertyPath: m_Name
       value: Zombies Spawn Bar
+      objectReference: {fileID: 0}
+    - target: {fileID: 7787061015437791497, guid: 7572aa69252109d4fa6d4801097e91dc, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7787061015437791497, guid: 7572aa69252109d4fa6d4801097e91dc, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7787061015437791497, guid: 7572aa69252109d4fa6d4801097e91dc, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8306706461335864857, guid: 7572aa69252109d4fa6d4801097e91dc, type: 3}
       propertyPath: m_Pivot.x

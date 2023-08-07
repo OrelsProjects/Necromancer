@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
-
-public interface ISaveable
+﻿public interface ISaveable
 {
-    public IDTO GetData();
+    public ISaveableObject GetData();
     /// <summary>
     /// Called to let the component know it should get the relevant data.
     /// </summary>
     public void LoadData();
+}
+
+public interface ISaveableObject
+{
+
 }

@@ -79,7 +79,7 @@ public class SoundsManager : MonoBehaviour
 
     public void StopBackgroundMusicFadeOut(float duration)
     {
-        _backgroundAudioSource.FadeOut(duration);
+        //_backgroundAudioSource.FadeOut(duration);
     }
 
     public void PlayPressSound()

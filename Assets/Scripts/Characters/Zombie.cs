@@ -18,12 +18,8 @@ public enum ZombieState
 [RequireComponent(typeof(Animator))]
 public class Zombie : MonoBehaviour, IChaseable
 {
-
     [SerializeField]
-    private int _currentLevel;
-
-    [SerializeField]
-    private ZombieData _data;
+    private ZombieType _type;
 
     [Header("Sound")]
     [SerializeField]
@@ -35,6 +31,8 @@ public class Zombie : MonoBehaviour, IChaseable
     [SerializeField]
     private AudioClip _deathSound;
 
+    private ZombieLevel _data;
+
     private bool _isAttackSoundPlaying = false;
 
     private MovementController _movementController;
@@ -43,8 +41,7 @@ public class Zombie : MonoBehaviour, IChaseable
     private WanderController _wanderController;
     private AnimationHelper _animationHelper;
     private ZombieState _state = ZombieState.Idle;
-    
-    private ZombieLevelDTO levelData;
+
     private float _currentHealth;
 
     private void Awake()
@@ -55,14 +52,14 @@ public class Zombie : MonoBehaviour, IChaseable
         _chaser = GetComponent<ZombieChaser>();
         _wanderController = GetComponent<WanderController>();
         _animationHelper = new AnimationHelper(_animator);
-        levelData = _data.GetLevel(_currentLevel);
-        _currentHealth = levelData.Health;
     }
 
     private void Start()
     {
         RoundManager.Instance.AddZombie(this);
         AudioSource.PlayClipAtPoint(_spawnSound, transform.position);
+        _data = CharactersManager.Instance.GetZombieData(_type);
+        _currentHealth = _data.Health;
     }
 
     private void OnDestroy()
@@ -118,7 +115,7 @@ public class Zombie : MonoBehaviour, IChaseable
         }
         else
         {
-            _movementController.Move(levelData.Speed, _chaser.Target.gameObject);
+            _movementController.Move(_data.Speed, _chaser.Target.gameObject);
             _animationHelper.PlayAnimation(AnimationType.Running);
         }
     }
@@ -141,7 +138,7 @@ public class Zombie : MonoBehaviour, IChaseable
         _animationHelper.PlayAnimation(AnimationType.AttackMelee);
         _chaser.Target.Zombify();
         AudioSource.PlayClipAtPoint(_hitSound, transform.position);
-        yield return new WaitForSeconds(1 / levelData.AttackSpeed);
+        yield return new WaitForSeconds(1 / _data.AttackSpeed);
 
         if (_state == ZombieState.Attacking)
         {
@@ -165,7 +162,7 @@ public class Zombie : MonoBehaviour, IChaseable
 
     private IEnumerator AttackSoundCooldown()
     {
-        yield return new WaitForSeconds(1 / levelData.AttackSpeed);
+        yield return new WaitForSeconds(1 / _data.AttackSpeed);
         _isAttackSoundPlaying = false;
     }
 

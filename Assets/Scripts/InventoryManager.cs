@@ -1,5 +1,9 @@
-using System.Collections.Generic;
 using UnityEngine;
+
+public struct InventoryData : ISaveableObject
+{
+    public int Currency;
+}
 
 public class InventoryManager : MonoBehaviour, ISaveable
 {
@@ -12,7 +16,7 @@ public class InventoryManager : MonoBehaviour, ISaveable
         if (Instance == null)
         {
             Instance = this;
-            Currency = 0;
+            Currency = 10;
             DontDestroyOnLoad(this);
         }
     }
@@ -37,20 +41,16 @@ public class InventoryManager : MonoBehaviour, ISaveable
         return true;
     }
 
-    public IDTO GetData()
+    public ISaveableObject GetData()
     {
-        return new InventoryDTO
+        return new InventoryData
         {
-            Currency = 2932
+            Currency = Currency
         };
     }
 
     public void LoadData()
     {
-        InventoryDTO inventoryDTO = SaveManager.Instance.GetData<InventoryDTO>();
-        if (inventoryDTO != null)
-        {
-            Currency = inventoryDTO.Currency;
-        }
+        Currency = SaveManager.Instance.GetData<InventoryData>().Currency;
     }
 }

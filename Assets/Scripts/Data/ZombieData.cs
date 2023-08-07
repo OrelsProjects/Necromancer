@@ -1,34 +1,37 @@
-﻿using UnityEditor;
+﻿using System.Linq;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Zombie Data", menuName = "Necromancer/Zombie/Data", order = 2)]
+[CreateAssetMenu(fileName = "Data", menuName = "Necromancer/Zombie/Data", order = 2)]
 public class ZombieData : ScriptableObject
 {
     [SerializeField]
-    private ZombieLevels _levels;
+    private ZombieLevel[] _levels;
     [SerializeField]
     private int _currentLevel;
 
-    public ZombieData(int level)
+    public void SetCurrentLevel(int level)
     {
         _currentLevel = level;
     }
 
-    private ZombieLevelDTO GetLevel(int level)
+    private ZombieLevel GetLevel(int level)
     {
-        if (level < 0 || level >= _levels.LevelsArray.Length)
+        if (_levels != null)
         {
-            return null;
+            return _levels.FirstOrDefault(x => x.Level == level);
         }
-        return _levels.LevelsArray[level];
+        else
+        {
+            return new();
+        }
     }
 
-    public ZombieLevelDTO GetCurrentLevel()
+    public ZombieLevel GetCurrentLevel()
     {
         return GetLevel(_currentLevel);
     }
 
-    public ZombieLevelDTO GetNextLevel()
+    public ZombieLevel GetNextLevel()
     {
         return GetLevel(_currentLevel + 1);
     }
