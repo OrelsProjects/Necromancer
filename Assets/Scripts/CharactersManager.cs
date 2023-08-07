@@ -8,6 +8,11 @@ public enum ZombieType
 public struct CharacterData : ISaveableObject
 {
     public int BasicZombieLevel;
+
+    public string GetObjectType()
+    {
+        return GetType().FullName;
+    }
 }
 
 public class CharactersManager : MonoBehaviour, ISaveable
@@ -30,7 +35,6 @@ public class CharactersManager : MonoBehaviour, ISaveable
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
             return;
         }
     }
@@ -72,10 +76,17 @@ public class CharactersManager : MonoBehaviour, ISaveable
         };
     }
 
-    public void LoadData()
+    public void LoadData(ISaveableObject item)
     {
-        _basicZombieLevel = SaveManager.Instance.GetData<CharacterData>().BasicZombieLevel;
-        _basicZombieLevel = 4;
+        if (item is CharacterData data)
+        {
+            _basicZombieLevel = data.BasicZombieLevel;
+            _basicZombieLevel = 4;
+        }
+        else
+        {
+            _basicZombieLevel = 1;
+        }
         InitZombies();
     }
 

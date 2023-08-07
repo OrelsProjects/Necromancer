@@ -2,6 +2,9 @@
 using System.IO;
 using UnityEngine;
 using Newtonsoft.Json;
+using static UnityEditor.Progress;
+using System;
+using System.Collections;
 
 public class SaveManager : MonoBehaviour
 {
@@ -12,15 +15,12 @@ public class SaveManager : MonoBehaviour
 
     public List<ISaveable> _saveables;
 
-    private List<ISaveableObject> _data;
-
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
             InitSaveables();
-            DontDestroyOnLoad(gameObject);
             return;
         }
     }
@@ -35,72 +35,79 @@ public class SaveManager : MonoBehaviour
         _saveables = new List<ISaveable>();
         _saveablesObjects.ForEach(saveableObject =>
         {
-            ISaveable saveable = saveableObject.GetComponent<ISaveable>();
-            if (saveable != null)
+            if (saveableObject.TryGetComponent<ISaveable>(out var saveable))
             {
                 _saveables.Add(saveable);
             }
         });
     }
 
+    private string BuildSaveFileName(ISaveableObject saveableObject)
+    {
+        return Application.persistentDataPath + "/" + saveableObject.ToString() + ".dat";
+    }
     public void InitiateLoad()
     {
-        string saveFileLocation = Application.persistentDataPath + "/savefile.dat";
-        File.Delete(saveFileLocation);
-        if (File.Exists(saveFileLocation))
-        {
-            string saveData = File.ReadAllText(saveFileLocation);
-            _data = JsonConvert.DeserializeObject<List<ISaveableObject>>(saveData, new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.Auto
-            });
-        }
-        else
-        {
-            _data = new List<ISaveableObject>();
-        }
-
-        _saveables.ForEach(s =>
-        {
-            s.LoadData();
-        });
-        UIController.Instance.UpdateUI();
+        StartCoroutine(InitiateLoadCore());
     }
-
 
     public void InitiateSave()
     {
-        _data = new List<ISaveableObject>();
-        _saveables.ForEach(s =>
+        StartCoroutine(InitiateSaveCore());
+    }
+
+    public void SaveItem(ISaveableObject item)
+    {
+        var saveData = new Dictionary<string, string>
+    {
+        { "ObjectType", item.GetObjectType() },
+        { "Data", JsonConvert.SerializeObject(item, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto
+            })
+        }
+    };
+        string stringSaveData = JsonConvert.SerializeObject(saveData);
+        Debug.Log("Saving " + stringSaveData + " to " + BuildSaveFileName(item));
+        File.WriteAllText(BuildSaveFileName(item), stringSaveData);
+    }
+
+    private IEnumerator InitiateSaveCore()
+    {
+        yield return new WaitForSeconds(0.5f); // Let other processes run before saving
+        _saveables?.ForEach(s =>
         {
             ISaveableObject data = s.GetData();
-            _data.Add(data);
+            SaveItem(data);
         });
-
-        string saveData = JsonConvert.SerializeObject(_data, new JsonSerializerSettings
-        {
-            TypeNameHandling = TypeNameHandling.Auto
-        });
-
-        string saveFileLocation = Application.persistentDataPath + "/savefile.dat";
-        File.WriteAllText(saveFileLocation, saveData);
     }
 
-    public T GetData<T>()
+    private IEnumerator InitiateLoadCore()
     {
-        foreach (var item in _data)
+        yield return new WaitForSeconds(0.5f); // Let other processes run before loading
+        _saveables?.ForEach(s =>
         {
-            if (item is T tItem)
+            ISaveableObject data = s.GetData();
+            string saveFileLocation = BuildSaveFileName(data);
+            if (File.Exists(saveFileLocation))
             {
-                return tItem;
+                string stringData = File.ReadAllText(saveFileLocation);
+                var saveData = JsonConvert.DeserializeObject<Dictionary<string, string>>(stringData);
+                if (saveData.ContainsKey("ObjectType"))
+                {
+                    var type = Type.GetType(saveData["ObjectType"]);
+                    data = (ISaveableObject)JsonConvert.DeserializeObject(saveData["Data"], type, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    });
+                }
+                Debug.Log("Loading " + stringData + " from " + saveFileLocation);
+                s.LoadData(data);
             }
-        }
-
-        return default;
-    }
-
-    private void OnDestroy()
-    {
-        InitiateSave();
+            else
+            {
+                Debug.LogError("Save file is corrupted!");
+            }
+        });
     }
 }

@@ -45,7 +45,7 @@ public class RoundManager : MonoBehaviour
 
     private RoundState _state = RoundState.NotStarted;
 
-    public float Reward => _roundData.Reward;
+    public int Reward => _roundData.Reward;
 
     public RoundState State => _state;
 

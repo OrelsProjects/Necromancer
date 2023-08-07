@@ -8,7 +8,7 @@ public class UIController : MonoBehaviour
 
     [SerializeField]
     private GameObject _zombiesUpgradeUI;
-    [SerializeField] 
+    [SerializeField]
     private TextMeshProUGUI _currencyText;
 
     private void Awake()
@@ -18,8 +18,24 @@ public class UIController : MonoBehaviour
             Instance = this;
         }
     }
+    private void OnEnable()
+    {
+        InventoryManager.Instance.OnCurrencyChanged += OnCurrencyChanged;
 
-    private void Start() {
+        OnCurrencyChanged(InventoryManager.Instance.Currency);
+    }
+
+    private void OnDisable()
+    {
+        InventoryManager.Instance.OnCurrencyChanged -= OnCurrencyChanged;
+    }
+    private void OnCurrencyChanged(int newCurrency)
+    {
+        _currencyText.text = newCurrency.ToString();
+    }
+
+    private void Start()
+    {
         UpdateUI();
     }
 

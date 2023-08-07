@@ -36,7 +36,7 @@ public class RoundResults : MonoBehaviour
     [SerializeField]
     private ParticleImage _rewardParticles;
 
-    private float _timeToShowReward = 3f;
+    private readonly float _timeToShowReward = 3f;
 
     private void Start()
     {
@@ -60,6 +60,7 @@ public class RoundResults : MonoBehaviour
         _title.text = _winTitle;
 
         _title.GetComponent<Animator>().SetBool("Win", true);
+        InventoryManager.Instance.AddCurrency(RoundManager.Instance.Reward);
 
         StartCoroutine(ShowRewardCoroutine());
     }
@@ -103,10 +104,8 @@ public class RoundResults : MonoBehaviour
 
     public void UpdateGoldText()
     {
-        float currentCurrency = InventoryManager.Instance.Currency;
-        // float currentCurrency = 10;
         float reward = RoundManager.Instance.Reward;
-        // float reward = 240;
+        float currentCurrency = int.Parse(_currentGoldText.text);
         float newCurrency = currentCurrency + reward;
         float timeToUpdate = _rewardParticles.lifetime.constant + 0.3f;
         StartCoroutine(UpdateGoldTextCoroutine(currentCurrency, newCurrency, timeToUpdate));
