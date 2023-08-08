@@ -17,7 +17,7 @@ public class RoundManager : MonoBehaviour
     public static RoundManager Instance;
 
     [SerializeField]
-    private RoundData _roundData;
+    private AreaData _data;
     [Header("UI")]
     [SerializeField]
     private GameObject _roundResultsUI;
@@ -32,9 +32,9 @@ public class RoundManager : MonoBehaviour
     [SerializeField]
     private AudioSource _audioSource;
 
-    private List<Zombie> _zombies = new();
-    private List<Zombifiable> _zombifiables = new();
-    private List<Defender> _defenders = new();
+    private readonly List<Zombie> _zombies = new();
+    private readonly List<Zombifiable> _zombifiables = new();
+    private readonly List<Defender> _defenders = new();
 
     private GameObject _zombiesParent;
     private GameObject _zombifiablesParent;
@@ -45,7 +45,7 @@ public class RoundManager : MonoBehaviour
 
     private RoundState _state = RoundState.NotStarted;
 
-    public int Reward => _roundData.Reward;
+    public int Reward => _data.RoundData.Reward;
 
     public RoundState State => _state;
 
@@ -55,11 +55,6 @@ public class RoundManager : MonoBehaviour
         {
             Instance = this;
         }
-    }
-
-    private void Start()
-    {
-        StartRound();
     }
 
     public Vector3? GetClosestZombiePosition(Vector3 position)
@@ -100,6 +95,11 @@ public class RoundManager : MonoBehaviour
         {
             SendDefenders();
         }
+    }
+
+    private void Start()
+    {
+        StartRound();
     }
 
     private void HandleStartedState()
@@ -167,16 +167,17 @@ public class RoundManager : MonoBehaviour
     {
         _defendersParent = new GameObject("Defenders");
         PlayBackgroundMusic();
-        for (int i = 0; i < _roundData.CiviliansCount; i++)
+        Debug.Log("Round started: civs: " + _data.RoundData.CiviliansCount + ", defs: " + _data.RoundData.Defenders);
+        for (int i = 0; i < _data.RoundData.CiviliansCount; i++)
         {
-            int randomCivilianIndex = Random.Range(0, _roundData.CiviliansPrefabs.Count);
+            int randomCivilianIndex = Random.Range(0, _data.RoundData.CiviliansPrefabs.Count);
             Vector3 randomPosition = new(Random.Range(-5, 5), Random.Range(-5, 5));
-            Zombifiable civilianPrefab = _roundData.CiviliansPrefabs[randomCivilianIndex];
+            Zombifiable civilianPrefab = _data.RoundData.CiviliansPrefabs[randomCivilianIndex];
             Zombifiable zombifiableInstance = Instantiate(civilianPrefab, randomPosition, Quaternion.identity);
             AddZombifiable(zombifiableInstance);
         }
 
-        _roundData.Defenders.ForEach(defender =>
+        _data.RoundData.Defenders.ForEach(defender =>
         {
             Defender defenderInstance = Instantiate(defender, Vector3.zero, Quaternion.identity);
             AddDefender(defenderInstance);
@@ -232,6 +233,10 @@ public class RoundManager : MonoBehaviour
 
     public void FinishRound()
     {
+        if (_state == RoundState.Won)
+        {
+            AreasManager.Instance.AreaZombified(_data.Area);
+        }
         Destroy(gameObject);
     }
 

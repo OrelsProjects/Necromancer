@@ -17,5 +17,6 @@ MonoBehaviour:
   - {fileID: 8509284048829225676, guid: eb3e9be8383c3dc4098e68e9581a304a, type: 3}
   Defenders:
   - {fileID: 4374274779998677368, guid: b7d9b46f89195e34a9046014811d135b, type: 3}
+  - {fileID: 4374274779998677368, guid: b7d9b46f89195e34a9046014811d135b, type: 3}
   Reward: 10
   BackgroundMusic: {fileID: 8300000, guid: 71006b454f6a70c46ba9b40a6deefc15, type: 3}

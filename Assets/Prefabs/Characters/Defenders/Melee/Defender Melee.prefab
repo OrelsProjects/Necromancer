@@ -266,11 +266,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b03cf02645f619c4f9624978dd3a1c39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Data: {fileID: 11400000, guid: a6dace0a60998e4468cd9462d51b1c6e, type: 2}
   _attackSound: {fileID: 8300000, guid: 541d0be8fda7de14c95c0de081d10354, type: 3}
-  _health: 100
-  _damage: 25
-  _speed: 1.5
-  _attackSpeed: 1
 --- !u!114 &3690822906193468867
 MonoBehaviour:
   m_ObjectHideFlags: 0

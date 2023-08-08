@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public struct InventoryData : ISaveableObject
@@ -15,10 +14,8 @@ public class InventoryManager : MonoBehaviour, ISaveable
 {
     public static InventoryManager Instance { get; private set; }
 
-    // Define a delegate for the currency change event
     public delegate void CurrencyChangedDelegate(int newCurrency);
 
-    // Declare the currency change event using the delegate
     public event CurrencyChangedDelegate OnCurrencyChanged;
 
     private int _currency;

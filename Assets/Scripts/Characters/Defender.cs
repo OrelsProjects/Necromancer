@@ -17,11 +17,10 @@ public enum DefenderState
 [RequireComponent(typeof(Zombifiable))]
 public abstract class Defender : MonoBehaviour, IChaser<Zombie>
 {
+    [SerializeField]
+    protected DefenderData Data;
+    
     abstract public AudioClip AttackSound { get; set; }
-    abstract public int Health { get; set; }
-    abstract public int Damage { get; set; }
-    abstract public float Speed { get; set; }
-    abstract public float AttackSpeed { get; set; }
 
     private MovementController _movementController;
     private DefenderChaser _chaser;
@@ -114,7 +113,7 @@ public abstract class Defender : MonoBehaviour, IChaser<Zombie>
             }
             else
             {
-                _movementController.Move(Speed, _chaser.Target.gameObject);
+                _movementController.Move(Data.Speed, _chaser.Target.gameObject);
                 _animationHelper.PlayAnimation(AnimationType.Running);
             }
         }
@@ -131,8 +130,8 @@ public abstract class Defender : MonoBehaviour, IChaser<Zombie>
         SetState(DefenderState.Attacking);
         Attack();
         AudioSource.PlayClipAtPoint(AttackSound, transform.position);
-        _chaser.Target.TakeDamage(Damage);
-        yield return new WaitForSeconds(AttackSpeed);
+        _chaser.Target.TakeDamage(Data.Damage);
+        yield return new WaitForSeconds(Data.AttackSpeed);
         SetState(DefenderState.Chasing);
     }
 
@@ -149,8 +148,8 @@ public abstract class Defender : MonoBehaviour, IChaser<Zombie>
 
     public void TakeDamage(int damage)
     {
-        Health = Mathf.Max(Health - damage, 0);
-        if (Health <= 0 && _state != DefenderState.AboutToDie)
+        Data.Health = Mathf.Max(Data.Health - damage, 0);
+        if (Data.Health <= 0 && _state != DefenderState.AboutToDie)
         {
             SetState(DefenderState.AboutToDie);
         }

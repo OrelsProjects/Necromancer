@@ -1,20 +1,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Maps
-{
-    Area1
-}
-
 public class Map : MonoBehaviour
 {
-
     public static Map Instance { get; private set; }
 
-    private Dictionary<Maps, string> _maps = new Dictionary<Maps, string>()
-    {
-        { Maps.Area1, "Round Scene" }
-    };
+    [SerializeField]
+    private List<AreaData> _areas = new();
+
+
+    [SerializeField]
+    private GameObject _area1;
+    [SerializeField]
+    private GameObject _area1Zombified;
 
     private void Awake()
     {
@@ -26,11 +24,15 @@ public class Map : MonoBehaviour
 
     public void LoadArea1()
     {
-        LoadMap(Maps.Area1);
+        LoadArea(Areas.Area1);
     }
 
-    public void LoadMap(Maps map)
+    public void LoadArea(Areas area)
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(_maps[map]);
+        AreaData areaData = _areas.Find(a => a.Area == area);
+        if (areaData != null)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(areaData.AreaNameString);
+        }
     }
 }
