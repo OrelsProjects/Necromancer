@@ -18,6 +18,7 @@ public enum ZombieState
 [RequireComponent(typeof(Animator))]
 public class Zombie : MonoBehaviour, IChaseable
 {
+
     [SerializeField]
     private ZombieType _type;
 
@@ -30,6 +31,11 @@ public class Zombie : MonoBehaviour, IChaseable
     private AudioClip _hitSound;
     [SerializeField]
     private AudioClip _deathSound;
+
+    [Header("Playground")]
+    [Tooltip("To have zombies that are not attacking the player, set this to true")]
+    [SerializeField]
+    private bool _playground = false;
 
     private ZombieLevel _data;
 
@@ -58,8 +64,13 @@ public class Zombie : MonoBehaviour, IChaseable
     {
         RoundManager.Instance.AddZombie(this);
         AudioSource.PlayClipAtPoint(_spawnSound, transform.position);
+        if (_playground)
+        {
+            return;
+        }
         _data = CharactersManager.Instance.GetZombieData(_type);
         _currentHealth = _data.Health;
+
     }
 
     private void OnDestroy()
@@ -69,6 +80,10 @@ public class Zombie : MonoBehaviour, IChaseable
 
     private void Update()
     {
+        if (_playground)
+        {
+            return;
+        }
         if (_chaser.Target == null && _state != ZombieState.RoundOver)
         {
             SetState(ZombieState.Idle);
@@ -108,6 +123,10 @@ public class Zombie : MonoBehaviour, IChaseable
 
     private void Chase()
     {
+        if (!_chaser.Target.IsAvailable())
+        {
+            SetState(ZombieState.Idle);
+        }
         if (_chaser.IsTargetReached())
         {
             _movementController.Move(0, _chaser.Target.gameObject);
@@ -136,7 +155,7 @@ public class Zombie : MonoBehaviour, IChaseable
 
         SetState(ZombieState.Attacking);
         _animationHelper.PlayAnimation(AnimationType.AttackMelee);
-        _chaser.Target.Zombify();
+        _chaser.Target.Zombify(gameObject, _data.Damage);
         AudioSource.PlayClipAtPoint(_hitSound, transform.position);
         yield return new WaitForSeconds(1 / _data.AttackSpeed);
 

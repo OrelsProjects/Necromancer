@@ -11,7 +11,7 @@ public class ZombiePlaceholder : MonoBehaviour, IEndDragHandler, IDragHandler
     private SpriteRenderer _zombieSprite;
 
     [SerializeField]
-    private TextMeshProUGUI _amountText; // Serialized reference to the TextMeshPro GameObject.
+    private TextMeshProUGUI _amountText;
 
     private bool _isSpawned = false;
     private bool _isSpawning = false;

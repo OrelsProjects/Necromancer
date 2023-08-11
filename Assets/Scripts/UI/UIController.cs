@@ -9,6 +9,8 @@ public class UIController : MonoBehaviour
     [SerializeField]
     private GameObject _zombiesUpgradeUI;
     [SerializeField]
+    private GameObject _areaUpgradeUI;
+    [SerializeField]
     private TextMeshProUGUI _currencyText;
 
     private void Awake()
@@ -47,6 +49,25 @@ public class UIController : MonoBehaviour
     public void ShowZombiesUpgrade()
     {
         _zombiesUpgradeUI.SetActive(!_zombiesUpgradeUI.activeSelf);
+        if (_zombiesUpgradeUI.activeSelf)
+        {
+            Map.Instance.DisableMovement();
+        }
+        else
+        {
+            Map.Instance.EnableMovement();
+        }
+    }
+
+    public void ShowAreaUpgrade(Areas area)
+    {
+        _areaUpgradeUI.GetComponent<AreaUpgradeController>().Enable(area);
+        Map.Instance.DisableMovement();
+    }
+    public void HideAreaUpgrade()
+    {
+        _areaUpgradeUI.GetComponent<AreaUpgradeController>().Disable();
+        Map.Instance.EnableMovement();
     }
 
     public void PlayButtonClickSound()

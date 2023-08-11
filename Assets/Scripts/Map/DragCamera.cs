@@ -12,6 +12,7 @@ public class DragCamera : MonoBehaviour
 
     private Vector3 lastMousePosition;
 
+    private bool _canMove;
     void Update()
     {
         Navigate();
@@ -19,6 +20,10 @@ public class DragCamera : MonoBehaviour
 
     private void Navigate()
     {
+        if (!_canMove)
+        {
+            return;
+        }
         if (Input.GetMouseButtonDown(0))
         {
             lastMousePosition = Input.mousePosition;
@@ -80,4 +85,15 @@ public class DragCamera : MonoBehaviour
         }
         return false;
     }
+
+    public void DisableMovement()
+    {
+        _canMove = false;
+    }
+
+    public void EnableMovement()
+    {
+        _canMove = true;
+    }
+
 }

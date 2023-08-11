@@ -5,18 +5,14 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class Zombifiable : MonoBehaviour, IChaseable
 {
-    [SerializeField]
-    private int _hitsToZombify = 3;
-    [SerializeField]
-    private float _movementBlockedTimeAfterAttack = 1.2f;
-    [SerializeField]
-    private Zombie _zombiePrefab;
 
-    [Header("Sound")]
     [SerializeField]
-    private AudioClip _deathSound;
+    private ZombifiableData _data;
 
+    private int _hitsToZombify;
+    private float _movementBlockedTimeAfterAttack;
     private float _lastHitTime = 0f;
+    private bool _isTurning = false;
 
     MovementController _movementController;
     Animator _animator;
@@ -26,17 +22,14 @@ public class Zombifiable : MonoBehaviour, IChaseable
     private void Awake()
     {
         gameObject.tag = "Zombifiable";
-
-    }
-
-    private void Start()
-{
         _animator = GetComponent<Animator>();
         _movementController = GetComponent<MovementController>();
         _animationHelper = new AnimationHelper(_animator);
+        _hitsToZombify = _data.HitsToZombify;
+        _movementBlockedTimeAfterAttack = _data.MovementBlockedTimeAfterAttack;
     }
 
-    public void Zombify(int zombifyDamage = 1)
+    public void Zombify(GameObject zombiePrefab, int zombifyDamage)
     {
         _hitsToZombify -= zombifyDamage;
         _animationHelper.PlayAnimation(AnimationType.Hit);
@@ -46,17 +39,28 @@ public class Zombifiable : MonoBehaviour, IChaseable
         }
         else
         {
-            StartCoroutine(TurnToZombie());
+            StartCoroutine(TurnToZombie(zombiePrefab));
         }
     }
 
-    private IEnumerator TurnToZombie()
+    private IEnumerator TurnToZombie(GameObject zombiePrefab)
     {
+        GameObject zombie;
+        if (!_isTurning)
+        {
+            zombie = Instantiate(zombiePrefab, transform.position, Quaternion.identity);
+            zombie.SetActive(false);
+            _isTurning = true;
+        }
+        else
+        {
+            yield break;
+        }
         _movementController.Disable();
         _animationHelper.PlayAnimation(AnimationType.Death);
-        AudioSource.PlayClipAtPoint(_deathSound, transform.position);
+        AudioSource.PlayClipAtPoint(_data.DeathSound, transform.position);
         yield return new WaitForSeconds(1f);
-        Instantiate(_zombiePrefab, transform.position, Quaternion.identity);
+        zombie.SetActive(true);
         Destroy(gameObject);
     }
 
@@ -74,7 +78,7 @@ public class Zombifiable : MonoBehaviour, IChaseable
 
     public bool IsZombified()
     {
-        return _hitsToZombify == 0;
+        return _hitsToZombify == 0 || _isTurning;
     }
 
     public bool IsAvailable()

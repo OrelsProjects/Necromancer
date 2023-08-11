@@ -65,4 +65,9 @@ public class Chaser<T> : IChaser<T> where T : MonoBehaviour, IChaseable
     {
         return Vector2.Distance(_gameObject.transform.position, _target.GetTransform().position) < _distanceFromTarget;
     }
+
+    public void SetAttackRange(float distance)
+    {
+        _distanceFromTarget = distance;
+    }
 }

@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Defender))]
 public class DefenderChaser : MonoBehaviour
 {
 
@@ -18,7 +19,8 @@ public class DefenderChaser : MonoBehaviour
 
     void Awake()
     {
-        _chaser = new Chaser<Zombie>(gameObject, distanceFromTarget);
+        Defender defender = GetComponent<Defender>();
+        _chaser = new Chaser<Zombie>(gameObject, defender.Data.AttackRange);
     }
 
     public void SetTarget()

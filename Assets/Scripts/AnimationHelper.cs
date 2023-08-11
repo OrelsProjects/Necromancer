@@ -6,6 +6,7 @@ public enum AnimationType
     Walking,
     Running,
     AttackMelee,
+    AttackArcher,
     Hit,
     Heal,
     Death
@@ -65,6 +66,10 @@ public class AnimationHelper
             case AnimationType.Death:
                 _animator.SetBool("Idle", false);
                 _animator.SetTrigger("Death");
+                break;
+            case AnimationType.AttackArcher:
+                _animator.SetTrigger("Attack Ranged");
+                _animator.SetBool("Action", true);
                 break;
         }
     }

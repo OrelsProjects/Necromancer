@@ -28,7 +28,6 @@ public class InventoryManager : MonoBehaviour, ISaveable
             if (_currency != value)
             {
                 _currency = value;
-                Debug.Log("Currency updated, new value: " + _currency.ToString());
                 OnCurrencyChanged?.Invoke(value);
                 SaveManager.Instance.InitiateSave();
             }

@@ -56,7 +56,7 @@ public class ZombieBomb : MonoBehaviour
         if (collision.gameObject.CompareTag("Zombifiable"))
         {
             Zombifiable zombifiable = collision.gameObject.GetComponent<Zombifiable>();
-            zombifiable.Zombify(3);
+            //zombifiable.Zombify(3); TODO: Fix if needed
         }
     }
 }

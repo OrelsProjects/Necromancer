@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 2970135514557612657}
   - component: {fileID: 7841506135107454363}
   - component: {fileID: 6941997120890172219}
-  - component: {fileID: 1124095128629001006}
   - component: {fileID: 8177406279206980724}
   - component: {fileID: 1819113947917521363}
   m_Layer: 9
@@ -39,7 +38,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &4139534852172144921
 Animator:
@@ -252,19 +251,6 @@ MonoBehaviour:
   _maxDistanceY: 4
   _maxDistanceX: 10
   _movementController: {fileID: 7841506135107454363}
---- !u!114 &1124095128629001006
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5369073117181453503}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42a4aa5d03fe26c4bb3209dbf505eeb4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  distanceFromTarget: 0.5
 --- !u!114 &8177406279206980724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -277,8 +263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddf2ece95b5b0f64bb956167c52db66c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentLevel: 1
-  _data: {fileID: 11400000, guid: 039a34adfdf9b1e4b8c08834ad5370e4, type: 2}
+  _type: 0
   _spawnSound: {fileID: 8300000, guid: da34b283cf7f0d64bb59a8e36a08937f, type: 3}
   _attackSounds:
   - {fileID: 8300000, guid: 592ab58b002a7284f9835145a50eff72, type: 3}

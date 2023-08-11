@@ -3,6 +3,7 @@
 public enum ZombieType
 {
     ZombieLab,
+    Playground
 }
 
 public struct CharacterData : ISaveableObject
@@ -22,6 +23,8 @@ public class CharactersManager : MonoBehaviour, ISaveable
 
     [SerializeField]
     private GameObject _basicZombiePrefab;
+    [SerializeField]
+    private GameObject _playgroundZombiePrefab;
     [SerializeField]
     private Sprite _basicZombieSprite;
     [SerializeField]
@@ -63,6 +66,7 @@ public class CharactersManager : MonoBehaviour, ISaveable
         return type switch
         {
             ZombieType.ZombieLab => _basicZombieData.GetLevel(BasicZombieLevel),
+            ZombieType.Playground => _basicZombieData.GetLevel(BasicZombieLevel),
             _ => new(),
         };
     }
@@ -72,6 +76,7 @@ public class CharactersManager : MonoBehaviour, ISaveable
         return type switch
         {
             ZombieType.ZombieLab => BasicZombieLevel >= _basicZombieData.MaxLevel,
+            ZombieType.Playground => BasicZombieLevel >= _basicZombieData.MaxLevel,
             _ => false,
         };
     }
@@ -81,6 +86,7 @@ public class CharactersManager : MonoBehaviour, ISaveable
         return type switch
         {
             ZombieType.ZombieLab => _basicZombieData.GetLevel(BasicZombieLevel + 1),
+            ZombieType.Playground=> _basicZombieData.GetLevel(BasicZombieLevel + 1),
             _ => new(),
         };
     }
@@ -90,6 +96,7 @@ public class CharactersManager : MonoBehaviour, ISaveable
         return type switch
         {
             ZombieType.ZombieLab => _basicZombiePrefab,
+            ZombieType.Playground => _playgroundZombiePrefab,
             _ => null,
         };
     }
@@ -99,6 +106,7 @@ public class CharactersManager : MonoBehaviour, ISaveable
         return type switch
         {
             ZombieType.ZombieLab => _basicZombieSprite,
+            ZombieType.Playground => _basicZombieSprite,
             _ => null,
         };
     }

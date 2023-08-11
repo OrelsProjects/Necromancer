@@ -165,9 +165,9 @@ public class RoundManager : MonoBehaviour
 
     public void StartRound()
     {
+        _data = Map.Instance.SelectedArea;
         _defendersParent = new GameObject("Defenders");
         PlayBackgroundMusic();
-        Debug.Log("Round started: civs: " + _data.RoundData.CiviliansCount + ", defs: " + _data.RoundData.Defenders);
         for (int i = 0; i < _data.RoundData.CiviliansCount; i++)
         {
             int randomCivilianIndex = Random.Range(0, _data.RoundData.CiviliansPrefabs.Count);
@@ -254,7 +254,7 @@ public class RoundManager : MonoBehaviour
 
     private void PlayZombiesSound()
     {
-        SoundsManager.Instance.StopBackgroundMusicFadeOut(1f);
+        //SoundsManager.Instance.StopBackgroundMusicFadeOut(1f);
         _audioSource.loop = true;
         _audioSource.clip = _zombiesSpawnedSound;
         _audioSource.FadeIn(0.7f);

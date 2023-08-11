@@ -82,6 +82,12 @@ public class SaveManager : MonoBehaviour
         });
     }
 
+    /// <summary>
+    /// Reads the save file and loads the data into the game. If the file does not exist, 
+    /// the load function will be called with the data it got from s.GetData();
+    /// </summary>
+    /// <param name="delay">How long to wait before initiating the load</param>
+    /// <returns></returns>
     private IEnumerator InitiateLoadCore(float delay = 0.5f)
     {
         yield return new WaitForSeconds(delay); // Let other processes run before loading
@@ -102,8 +108,8 @@ public class SaveManager : MonoBehaviour
                     });
                 }
                 Debug.Log("Loading " + stringData + " from " + saveFileLocation);
-                s.LoadData(data);
             }
+            s.LoadData(data);
         });
     }
 }

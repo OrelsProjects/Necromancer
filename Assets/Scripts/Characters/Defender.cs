@@ -12,14 +12,19 @@ public enum DefenderState
     RoundOver,
 }
 
+public enum DefenderType
+{
+    Melee, Ranged
+}
+
 [RequireComponent(typeof(MovementController))]
 [RequireComponent(typeof(DefenderChaser))]
 [RequireComponent(typeof(Zombifiable))]
 public abstract class Defender : MonoBehaviour, IChaser<Zombie>
 {
-    [SerializeField]
-    protected DefenderData Data;
-    
+    public DefenderData Data;
+    public DefenderType Type;
+
     abstract public AudioClip AttackSound { get; set; }
 
     private MovementController _movementController;
@@ -31,9 +36,10 @@ public abstract class Defender : MonoBehaviour, IChaser<Zombie>
     protected AnimationHelper _animationHelper;
     private DefenderState _state = DefenderState.Idle;
 
-    public abstract void Attack();
 
-    public virtual void Start()
+    public abstract void Attack(Transform target);
+
+    public virtual void Awake()
     {
         _movementController = GetComponent<MovementController>();
         _chaser = GetComponent<DefenderChaser>();
@@ -128,9 +134,12 @@ public abstract class Defender : MonoBehaviour, IChaser<Zombie>
         }
         _movementController.Stop();
         SetState(DefenderState.Attacking);
-        Attack();
+        Attack(_chaser.Target.transform);
         AudioSource.PlayClipAtPoint(AttackSound, transform.position);
-        _chaser.Target.TakeDamage(Data.Damage);
+        if (Type == DefenderType.Melee)
+        {
+            _chaser.Target.TakeDamage(Data.Damage);
+        }
         yield return new WaitForSeconds(Data.AttackSpeed);
         SetState(DefenderState.Chasing);
     }
@@ -144,15 +153,6 @@ public abstract class Defender : MonoBehaviour, IChaser<Zombie>
     private bool IsSelfZombified()
     {
         return _zombifiable.IsZombified();
-    }
-
-    public void TakeDamage(int damage)
-    {
-        Data.Health = Mathf.Max(Data.Health - damage, 0);
-        if (Data.Health <= 0 && _state != DefenderState.AboutToDie)
-        {
-            SetState(DefenderState.AboutToDie);
-        }
     }
 
     public void Die()

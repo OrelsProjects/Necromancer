@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class ZombieChaser : MonoBehaviour
 {
-
     [SerializeField]
     private float distanceFromTarget = 0.5f;
 
