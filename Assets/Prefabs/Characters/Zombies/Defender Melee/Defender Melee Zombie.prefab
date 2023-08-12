@@ -19,7 +19,8 @@ GameObject:
   - component: {fileID: 564843450319843610}
   - component: {fileID: 8290909719328425396}
   - component: {fileID: 8276059832657951724}
-  m_Layer: 9
+  - component: {fileID: -1427439736386986702}
+  m_Layer: 10
   m_Name: Defender Melee Zombie
   m_TagString: Zombifiable
   m_Icon: {fileID: 0}
@@ -210,7 +211,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 1000000
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -280,8 +281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddf2ece95b5b0f64bb956167c52db66c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentLevel: 1
-  _data: {fileID: 11400000, guid: 039a34adfdf9b1e4b8c08834ad5370e4, type: 2}
+  _type: 0
   _spawnSound: {fileID: 8300000, guid: da34b283cf7f0d64bb59a8e36a08937f, type: 3}
   _attackSounds:
   - {fileID: 8300000, guid: 592ab58b002a7284f9835145a50eff72, type: 3}
@@ -290,6 +290,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4527bd88b3841cf47bd0aaee15d582dd, type: 3}
   _hitSound: {fileID: 8300000, guid: 30c0080e49df1944b92bf602eccb1253, type: 3}
   _deathSound: {fileID: 8300000, guid: 56180fb3aec2748489aeae5d2833a4cb, type: 3}
+  _playground: 0
 --- !u!70 &8276059832657951724
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -325,3 +326,16 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.12999998, y: 0.17999999}
   m_Direction: 0
+--- !u!114 &-1427439736386986702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6028943000780815030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42a4aa5d03fe26c4bb3209dbf505eeb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distanceFromTarget: 0.5

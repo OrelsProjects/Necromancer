@@ -19,8 +19,8 @@ TagManager:
   - Colliders
   - Draggable Map
   - Character
-  - 
-  - 
+  - Zombie
+  - Projectile
   - 
   - 
   - 
@@ -53,6 +53,9 @@ TagManager:
     locked: 0
   - name: People
     uniqueID: 2197561621
+    locked: 0
+  - name: Projectile
+    uniqueID: 3030257777
     locked: 0
   - name: Bomb
     uniqueID: 2692766613

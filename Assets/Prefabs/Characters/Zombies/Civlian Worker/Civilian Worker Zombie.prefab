@@ -19,7 +19,8 @@ GameObject:
   - component: {fileID: 6941997120890172219}
   - component: {fileID: 1124095128629001006}
   - component: {fileID: 8177406279206980724}
-  m_Layer: 9
+  - component: {fileID: -4847911001172064701}
+  m_Layer: 10
   m_Name: Civilian Worker Zombie
   m_TagString: Zombie
   m_Icon: {fileID: 0}
@@ -207,7 +208,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 1000000
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -312,8 +313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddf2ece95b5b0f64bb956167c52db66c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentLevel: 1
-  _data: {fileID: 11400000, guid: 039a34adfdf9b1e4b8c08834ad5370e4, type: 2}
+  _type: 0
   _spawnSound: {fileID: 8300000, guid: da34b283cf7f0d64bb59a8e36a08937f, type: 3}
   _attackSounds:
   - {fileID: 8300000, guid: 592ab58b002a7284f9835145a50eff72, type: 3}
@@ -322,3 +322,17 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4527bd88b3841cf47bd0aaee15d582dd, type: 3}
   _hitSound: {fileID: 8300000, guid: 30c0080e49df1944b92bf602eccb1253, type: 3}
   _deathSound: {fileID: 8300000, guid: 56180fb3aec2748489aeae5d2833a4cb, type: 3}
+  _playground: 0
+--- !u!114 &-4847911001172064701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5369073117181453503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42a4aa5d03fe26c4bb3209dbf505eeb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distanceFromTarget: 0.5

@@ -68,7 +68,7 @@ public class AnimationHelper
                 _animator.SetTrigger("Death");
                 break;
             case AnimationType.AttackArcher:
-                _animator.SetTrigger("Attack Ranged");
+                _animator.SetTrigger("Attack Archer");
                 _animator.SetBool("Action", true);
                 break;
         }

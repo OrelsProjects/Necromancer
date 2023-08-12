@@ -347,6 +347,6 @@ MonoBehaviour:
   Data: {fileID: 11400000, guid: be3a277aa3238264795895908537c95a, type: 2}
   Type: 1
   _projectile: {fileID: 59762328039087663, guid: 67eba1529445ec14490af7c88f24a72c, type: 3}
-  _projectileSpeed: 5
+  _projectileSpeed: 15
   _rangedType: 0
   _attackSound: {fileID: 8300000, guid: 7387b452b87a6b04ab036455a3411170, type: 3}

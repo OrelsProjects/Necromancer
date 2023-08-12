@@ -9,17 +9,32 @@ public class Projectile : MonoBehaviour, IProjectile
 
     private MovementController _movementController;
 
-    private Transform _target;
+    private float _damage;
 
     private void Awake()
     {
         _movementController = GetComponent<MovementController>();
     }
 
-    public void SetTarget(Transform target, float speed)
+    public void SetTarget(Transform target, float speed, float damage, float timeToDestroy = 3f)
     {
-        _target = target;
-        _movementController.Move(speed, _target.gameObject);
-        Destroy(this, 3f);
+        if (target == null)
+        {
+            return; // Target might be dead by the time the projectile hits
+        }
+        _damage = damage;
+        _movementController.Move(speed, target.gameObject);
+        Destroy(this, timeToDestroy);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Zombie"))
+        {
+            Zombie zombie = collision.gameObject.GetComponent<Zombie>();
+            zombie.TakeDamage(_damage);
+            Destroy(gameObject);
+        }
     }
 }

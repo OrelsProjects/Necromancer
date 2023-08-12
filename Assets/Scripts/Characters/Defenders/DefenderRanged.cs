@@ -42,6 +42,6 @@ public class DefenderRanged : Defender
     public void ShootProjectile()
     {
         Projectile projectile = Instantiate(_projectile, transform.position, Quaternion.identity);
-        projectile.SetTarget(_target, _projectileSpeed);
+        projectile.SetTarget(_target, _projectileSpeed, Data.Damage);
     }
 }

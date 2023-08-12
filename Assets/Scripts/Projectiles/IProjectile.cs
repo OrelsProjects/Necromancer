@@ -2,5 +2,5 @@
 
 public interface IProjectile
 {
-    public void SetTarget(Transform target, float speed);
+    public void SetTarget(Transform target, float speed, float damage, float timeToDestroy = 3f);
 }

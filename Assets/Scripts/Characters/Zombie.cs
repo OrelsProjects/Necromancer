@@ -58,6 +58,10 @@ public class Zombie : MonoBehaviour, IChaseable
         _chaser = GetComponent<ZombieChaser>();
         _wanderController = GetComponent<WanderController>();
         _animationHelper = new AnimationHelper(_animator);
+
+        // Relying on the fact that the zombie will be spawned on command and not instantly.
+        _data = CharactersManager.Instance.GetZombieData(_type);
+        _currentHealth = _data.Health;
     }
 
     private void Start()
@@ -68,9 +72,6 @@ public class Zombie : MonoBehaviour, IChaseable
         {
             return;
         }
-        _data = CharactersManager.Instance.GetZombieData(_type);
-        _currentHealth = _data.Health;
-
     }
 
     private void OnDestroy()
@@ -206,6 +207,10 @@ public class Zombie : MonoBehaviour, IChaseable
 
     public void TakeDamage(float damage)
     {
+        if (_currentHealth <= 0)
+        {
+            return;
+        }
         _animationHelper.PlayAnimation(AnimationType.Hit);
         _currentHealth -= damage;
         if (_currentHealth <= 0 && _state != ZombieState.AboutToDie)

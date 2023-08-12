@@ -127,7 +127,7 @@ public abstract class Defender : MonoBehaviour, IChaser<Zombie>
 
     public IEnumerator HandleAboutToAttackState()
     {
-        if (_chaser.Target != null && (!_chaser.IsTargetReached() || !_chaser.Target.IsAvailable()))
+        if (_chaser.Target == null || _chaser.Target != null && (!_chaser.IsTargetReached() || !_chaser.Target.IsAvailable()))
         {
             SetState(DefenderState.Idle);
             yield break;
