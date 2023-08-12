@@ -57,6 +57,7 @@ public class InventoryManager : MonoBehaviour, ISaveable
         if (CanAfford(amount))
         {
             Currency -= amount;
+            SoundsManager.Instance.PlayPurchaseSound();
             return true;
         }
         return false;

@@ -11,12 +11,6 @@ public class Map : MonoBehaviour
     [SerializeField]
     private List<AreaData> _areas = new();
 
-
-    [SerializeField]
-    private GameObject _area1;
-    [SerializeField]
-    private GameObject _area1Zombified;
-
     public AreaData SelectedArea;
 
     private void Awake()
@@ -40,6 +34,11 @@ public class Map : MonoBehaviour
     public void LoadArea1()
     {
         LoadArea(Areas.Area1);
+    }
+
+    public void LoadArea2()
+    {
+        LoadArea(Areas.Area2);
     }
 
     public void LoadArea(Areas area)

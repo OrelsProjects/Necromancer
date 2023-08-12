@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 029542849b0e1074494f012916f7b4a1, type: 3}
+  m_Name: Basic Zombie Holder
+  m_EditorClassIdentifier: 
+  _amount: 37
+  _zombiePrefab: {fileID: 5369073117181453503, guid: 12ae6c95c19438f4eb0b4365abf8b61a, type: 3}
+  _zombieSprite: {fileID: -1576511827, guid: d1f60a48cb4c4a441837fcd0f40ae4b6, type: 3}

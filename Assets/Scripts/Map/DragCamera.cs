@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class DragCamera : MonoBehaviour
 {
-    public float dragSpeed = 20;
+    public float dragSpeed = 25;
     public float zoomSpeed = 10.0f;
     public float zoomMin = 6f;
-    public float zoomMax = 20f;
+    public float zoomMax = 10f;
 
-    public Vector2 minPos = new Vector2(22, 12);
-    public Vector2 maxPos = new Vector2(112, 64);
+    public Vector2 minPos = new(0, 0);
+    public Vector2 maxPos = new(134, 76);
 
     private Vector3 lastMousePosition;
 
-    private bool _canMove;
+    private bool _canMove = true;
     void Update()
     {
         Navigate();

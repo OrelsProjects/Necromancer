@@ -50,6 +50,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sprite: {fileID: 14143620820491717, guid: 9e66da47d53fc794ba038472c1270501, type: 3}
+  _hitSound: {fileID: 8300000, guid: dd17f6509ca060d4fb29138d977b2bfc, type: 3}
 --- !u!50 &-5224931486535609717
 Rigidbody2D:
   serializedVersion: 4

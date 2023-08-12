@@ -6,6 +6,8 @@ public class Projectile : MonoBehaviour, IProjectile
 {
     [SerializeField]
     private Sprite _sprite;
+    [SerializeField]
+    private AudioClip _hitSound;
 
     private MovementController _movementController;
 
@@ -29,11 +31,12 @@ public class Projectile : MonoBehaviour, IProjectile
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        
+
         if (collision.gameObject.layer == LayerMask.NameToLayer("Zombie"))
         {
             Zombie zombie = collision.gameObject.GetComponent<Zombie>();
             zombie.TakeDamage(_damage);
+            AudioSource.PlayClipAtPoint(_hitSound, transform.position);
             Destroy(gameObject);
         }
     }

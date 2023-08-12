@@ -3,7 +3,8 @@ using UnityEngine;
 public enum SoundTypes
 {
     BackgroundMusic,
-    ButtonClick
+    ButtonClick,
+    Purchase,
 }
 
 public class SoundsManager : MonoBehaviour
@@ -16,6 +17,8 @@ public class SoundsManager : MonoBehaviour
     private AudioClip _backgroundMusic;
     [SerializeField]
     private AudioClip _buttonClickSound;
+    [SerializeField]
+    private AudioClip _purchaseSound;
 
 
     [Header("Audio Listeners")]
@@ -86,6 +89,11 @@ public class SoundsManager : MonoBehaviour
         PlaySound(SoundTypes.ButtonClick);
     }
 
+    public void PlayPurchaseSound()
+    {
+        PlaySound(SoundTypes.Purchase);
+    }
+
     public void PlaySound(SoundTypes sounds)
     {
         switch (sounds)
@@ -94,7 +102,10 @@ public class SoundsManager : MonoBehaviour
                 _backgroundAudioSource.Play();
                 break;
             case SoundTypes.ButtonClick:
-                _backgroundAudioSource.PlayOneShot(_buttonClickSound);
+                AudioSource.PlayClipAtPoint(_buttonClickSound, Camera.main.transform.position);
+                break;
+            case SoundTypes.Purchase:
+                AudioSource.PlayClipAtPoint(_purchaseSound, Camera.main.transform.position);
                 break;
         }
     }

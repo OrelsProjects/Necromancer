@@ -1,6 +1,5 @@
 ﻿using Sirenix.OdinInspector;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -15,13 +14,9 @@ public class AreaController : MonoBehaviour
     [SerializeField]
     private AreaData _data;
 
-    void Awake()
-    {
-        AreasManager.Instance.OnAreaStateChanged += UpdateUI;
-    }
-
     private void Start()
     {
+        AreasManager.Instance.OnAreaStateChanged += UpdateUI;
         UpdateUI(AreasManager.Instance.AreasState);
     }
 

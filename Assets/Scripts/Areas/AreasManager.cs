@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+// To add another area, add another enum and go to MapController to add another Map Loader function.
+// Then in your area object set the raid function to call the new Map Loader function.
 public enum Areas
 {
     Area1,
+    Area2,
 }
 
 public enum AreaState
