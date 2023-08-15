@@ -142,14 +142,11 @@ public class RoundManager : MonoBehaviour {
         _data = Map.Instance.SelectedArea;
         _defendersParent = new GameObject("Defenders");
         PlayBackgroundMusic();
-        for (int i = 0; i < _data.RoundData.CiviliansCount; i++) {
-            int randomCivilianIndex = Random.Range(0, _data.RoundData.CiviliansPrefabs.Count);
+        _data.RoundData.CiviliansPrefabs.Value.ForEach(civ => {
             Vector3 randomPosition = new(Random.Range(-5, 5), Random.Range(-5, 5));
-            Zombifiable civilianPrefab = _data.RoundData.CiviliansPrefabs[randomCivilianIndex];
-            Zombifiable zombifiableInstance = Instantiate(civilianPrefab, randomPosition, Quaternion.identity);
+            Zombifiable zombifiableInstance = Instantiate(civ, randomPosition, Quaternion.identity);
             AddZombifiable(zombifiableInstance);
-        }
-
+        });
         _data.RoundData.Defenders.Value.ForEach(defender => {
             Defender defenderInstance = Instantiate(defender, Vector3.zero, Quaternion.identity);
             AddDefender(defenderInstance);
