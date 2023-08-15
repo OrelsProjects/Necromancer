@@ -6,6 +6,7 @@ public enum AnimationType {
     Running,
     AttackMelee,
     AttackArcher,
+    AttackZombie,
     Hit,
     Heal,
     Death
@@ -57,6 +58,9 @@ public class AnimationHelper {
                 break;
             case AnimationType.AttackArcher:
                 _animator.SetTrigger("Attack Archer");
+                break;
+            case AnimationType.AttackZombie:
+                _animator.SetTrigger("Attack Zombie");
                 break;
         }
     }

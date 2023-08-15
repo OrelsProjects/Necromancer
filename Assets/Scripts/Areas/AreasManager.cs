@@ -31,23 +31,48 @@ public class AreasManager : MonoBehaviour, ISaveable {
     [SerializeField]
     private List<AreaData> _areasData = new();
 
+    public delegate void AreasLevelChangeDelegate();
+    private event AreasLevelChangeDelegate OnAreaLevelChanged;
     private Dictionary<Areas, int> _areasLevels = new();
+    public Dictionary<Areas, int> AreasLevels {
+        get { return _areasLevels; }
+    }
 
     public delegate void AreasStateChangeDelegate(Dictionary<Areas, AreaState> _areasState);
-    public event AreasStateChangeDelegate OnAreaStateChanged;
+    private event AreasStateChangeDelegate OnAreaStateChanged;
     private Dictionary<Areas, AreaState> _areasState = new();
     public Dictionary<Areas, AreaState> AreasState {
         get { return _areasState; }
-        set {
-            _areasState = value;
-            OnAreaStateChanged?.Invoke(_areasState);
-        }
     }
 
     private void Awake() {
         if (Instance == null) {
             Instance = this;
         }
+    }
+
+    private void NotifyChangesAreaState() {
+        OnAreaStateChanged?.Invoke(_areasState);
+    }
+
+    private void NotifyChangesAreaLevel() {
+        OnAreaLevelChanged?.Invoke();
+    }
+
+    public void SubscribeToAreasStateChange(AreasStateChangeDelegate delegateSubscribe) {
+        OnAreaStateChanged += delegateSubscribe;
+    }
+
+    public void SubscribeToAreasLevelChange(AreasLevelChangeDelegate delegateSubscribe) {
+        OnAreaLevelChanged += delegateSubscribe;
+    }
+
+    public void UnsubscribeFromAreasStateChange(AreasStateChangeDelegate delegateUnsubscribe) {
+        OnAreaStateChanged -= delegateUnsubscribe;
+    }
+
+    public void UnsubscribeFromAreasLevelChange(AreasLevelChangeDelegate delegateUnsubscribe) {
+        OnAreaLevelChanged -= delegateUnsubscribe;
     }
 
     public void SelectAreaForUpgrade(Areas area) {
@@ -60,6 +85,7 @@ public class AreasManager : MonoBehaviour, ISaveable {
 
     public void UpgradeArea(Areas area) {
         _areasLevels[area]++;
+        NotifyChangesAreaLevel();
         SaveManager.Instance.SaveItem(GetData());
     }
 
@@ -78,17 +104,20 @@ public class AreasManager : MonoBehaviour, ISaveable {
             _areasState[area] = AreaState.Zombified;
         }
 
-        AreasState = _areasState; // Set the property to trigger the event
+        NotifyChangesAreaState();
         SaveManager.Instance.SaveItem(GetData());
     }
 
     public bool IsAreaMaxLevel(Areas area) {
-        AreaData areaData = GetAreaData(area);
-        int areaLevel = _areasLevels[area];
-        if (areaData == null) {
-            return false;
+        if (_areasLevels.ContainsKey(area)) {
+            AreaData areaData = GetAreaData(area);
+            int areaLevel = _areasLevels[area];
+            if (areaData == null) {
+                return false;
+            }
+            return areaLevel >= GetAreaData(area).MaxLevel;
         }
-        return areaLevel >= GetAreaData(area).MaxLevel;
+        return false;
     }
 
     public ISaveableObject GetData() {
@@ -110,10 +139,11 @@ public class AreasManager : MonoBehaviour, ISaveable {
             if (!_areasLevels.ContainsKey(a.Area)) {
                 _areasLevels.Add(a.Area, 1);
             }
-            if (!AreasState.ContainsKey(a.Area)) {
+            if (!_areasState.ContainsKey(a.Area)) {
                 _areasState.Add(a.Area, AreaState.Default);
             }
         });
-        AreasState = _areasState; // Trigger event update
+        NotifyChangesAreaLevel();
+        NotifyChangesAreaState();
     }
 }

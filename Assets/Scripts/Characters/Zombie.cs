@@ -55,13 +55,14 @@ public class Zombie : MonoBehaviour, IChaseable {
         _chaser = GetComponent<ZombieChaser>();
         _wanderController = GetComponent<WanderController>();
         _animationHelper = new AnimationHelper(_animator);
-
-        // Relying on the fact that the zombie will be spawned on command and not instantly.
-        _data = CharactersManager.Instance.GetZombieData(_type);
-        _currentHealth = _data.Health;
     }
 
     private void Start() {
+        // Relying on the fact that the zombie will be spawned on command and not instantly. (It's in Awake instead of Start)
+        _data = CharactersManager.Instance.GetZombieData(_type);
+        _animationHelper.SetAttackSpeed(_data.AttackSpeed);
+        _currentHealth = _data.Health;
+
         RoundManager.Instance.AddZombie(this);
         AudioSource.PlayClipAtPoint(_spawnSound, transform.position);
         if (_playground) {
@@ -133,13 +134,19 @@ public class Zombie : MonoBehaviour, IChaseable {
         }
 
         SetState(ZombieState.Attacking);
-        _animationHelper.PlayAnimation(AnimationType.AttackMelee);
-        _chaser.Target.Zombify(gameObject, _data.Damage);
+        _animationHelper.PlayAnimation(AnimationType.AttackZombie);
         AudioSource.PlayClipAtPoint(_hitSound, transform.position);
         yield return new WaitForSeconds(1 / _data.AttackSpeed);
 
         if (_state == ZombieState.Attacking) {
             SetState(ZombieState.Chasing);
+        }
+    }
+
+    // For the animator to use
+    public void InitiateAttack() {
+        if (_chaser.Target.IsAvailable()) {
+            _chaser.Target.Zombify(gameObject, _data.Damage);
         }
     }
 

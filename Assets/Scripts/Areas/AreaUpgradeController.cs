@@ -18,10 +18,14 @@ public class AreaUpgradeController : MonoBehaviour {
     private Areas area;
 
     private AreaData _areaData;
-    private int _currentLevel {
+    private int CurrentLevel {
         get {
             return AreasManager.Instance.GetAreaLevel(area);
         }
+    }
+
+    private void Start() {
+        AreasManager.Instance.SubscribeToAreasLevelChange(UpdateUI);
     }
 
     void OnEnable() {
@@ -39,14 +43,14 @@ public class AreaUpgradeController : MonoBehaviour {
     }
 
     public void Upgrade() {
-        AreaLevel level = _areaData.GetAreaLevel(_currentLevel);
+        AreaLevel level = _areaData.GetAreaLevel(CurrentLevel);
         InventoryManager.Instance.UseCurrency(level.PriceToUpgrade);
         AreasManager.Instance.UpgradeArea(area);
         UpdateUI();
     }
 
     private void UpdateUI() {
-        AreaLevel level = _areaData.GetAreaLevel(_currentLevel);
+        AreaLevel level = _areaData.GetAreaLevel(CurrentLevel);
         _currentCurrencyPerMinuteText.text = level.CurrencyPerMinute.ToString();
         if (AreasManager.Instance.IsAreaMaxLevel(area)) {
             _upgradeCost.text = "MAXED";
@@ -59,7 +63,7 @@ public class AreaUpgradeController : MonoBehaviour {
             _upgradeCostIcon.enabled = true;
             _upgradeButton.interactable = true;
         }
-        _nextCurrencyPerMinuteText.text = _areaData.GetAreaLevel(_currentLevel + 1).CurrencyPerMinute.ToString();
+        _nextCurrencyPerMinuteText.text = _areaData.GetAreaLevel(CurrentLevel + 1).CurrencyPerMinute.ToString();
         _upgradeCost.text = level.PriceToUpgrade.ToString();
 
         if (InventoryManager.Instance.CanAfford(level.PriceToUpgrade)) {

@@ -26,10 +26,6 @@ public class ZombiePlaceholder : MonoBehaviour, IEndDragHandler, IDragHandler {
         _initialSpritePosition = _zombieSprite.transform.position;
     }
 
-    public void Init() {
-        _isSpawned = false;
-    }
-
     public void OnDrag(PointerEventData eventData) {
         if (_isSpawned || _isSpawning) {
             return;
@@ -63,11 +59,11 @@ public class ZombiePlaceholder : MonoBehaviour, IEndDragHandler, IDragHandler {
             Destroy(_tempZombieSprite.gameObject);
             _tempZombieSprite = null;
             int amountToSpawn = CharactersManager.Instance.GetZombieData(_type).AmountSpawned;
+            Debug.Log("Spawning " + amountToSpawn + " zombies");
             for (int i = 0; i < amountToSpawn; i++) {
                 Instantiate(CharactersManager.Instance.GetZombiePrefab(_type).gameObject, spawnPosition, Quaternion.identity);
             }
 
-            _amountText.text = "0";
             StartCoroutine(WaitForZombiesSpawn()); // Allow zombies to spawn before checking if there are any zombies left to spawn.
         } else {
             _zombieSprite.color = new Color(1, 1, 1, 1);

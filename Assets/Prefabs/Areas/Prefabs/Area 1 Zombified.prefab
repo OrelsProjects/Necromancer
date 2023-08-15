@@ -710,6 +710,7 @@ MonoBehaviour:
   _area: 0
   _state: 1
   _data: {fileID: 11400000, guid: 1efce0d604a84f84082dbafebe989533, type: 2}
+  _upgradeButton: {fileID: 2043299845960376266}
 --- !u!1001 &1786308767757913951
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -135,6 +135,7 @@ MonoBehaviour:
   _area: 1
   _state: 1
   _data: {fileID: 11400000, guid: 257bc98b972bd7d418f88b22ed120825, type: 2}
+  _upgradeButton: {fileID: 517923594512524313}
 --- !u!1 &517923594512524313
 GameObject:
   m_ObjectHideFlags: 0

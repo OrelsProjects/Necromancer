@@ -12,7 +12,7 @@ public class ZombieLevel : ScriptableObject
     [Tooltip("The movement speed of the zombie")]
     public float Speed; // The movement speed of the zombie
     [Tooltip("The attack speed of the zombie")]
-    public int AttackSpeed; // The attack speed of the zombie
+    public float AttackSpeed; // The attack speed of the zombie
     [Tooltip("How many zombies will be spawned")]
     public int AmountSpawned; // How many zombies will be spawned
     [Tooltip("Price to include in a raid")]

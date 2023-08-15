@@ -13,14 +13,18 @@ public class AreaController : MonoBehaviour {
     [SerializeField]
     private AreaData _data;
 
+    [Header("UI")]
+    [ShowIf("_state", AreaState.Zombified)]
+    [SerializeField]
+    private GameObject _upgradeButton = null;
     private void Start() {
-        AreasManager.Instance.OnAreaStateChanged += UpdateUI;
+        AreasManager.Instance.SubscribeToAreasStateChange(UpdateUI);
         UpdateUI(AreasManager.Instance.AreasState);
     }
 
     private void OnDestroy() {
         if (AreasManager.Instance != null) {
-            AreasManager.Instance.OnAreaStateChanged -= UpdateUI;
+            AreasManager.Instance.UnsubscribeFromAreasStateChange(UpdateUI);
         }
     }
 
@@ -35,6 +39,13 @@ public class AreaController : MonoBehaviour {
     }
 
     void UpdateUI(Dictionary<Areas, AreaState> _areasState) {
+        if (_upgradeButton != null) {
+            if (AreasManager.Instance.IsAreaMaxLevel(_area)) {
+                _upgradeButton.SetActive(false);
+            } else {
+                _upgradeButton.SetActive(true);
+            }
+        }
         if (_areasState.ContainsKey(_area) && _areasState[_area] != _state) {
             gameObject.SetActive(false);
         } else {
