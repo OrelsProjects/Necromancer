@@ -2,8 +2,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 
-public enum ZombieState
-{
+public enum ZombieState {
     Idle,
     Chasing,
     AboutToAttack,
@@ -16,8 +15,7 @@ public enum ZombieState
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(MovementController))]
 [RequireComponent(typeof(Animator))]
-public class Zombie : MonoBehaviour, IChaseable
-{
+public class Zombie : MonoBehaviour, IChaseable {
 
     [SerializeField]
     private ZombieType _type;
@@ -50,8 +48,7 @@ public class Zombie : MonoBehaviour, IChaseable
 
     private float _currentHealth;
 
-    private void Awake()
-    {
+    private void Awake() {
         tag = "Zombie";
         _movementController = GetComponent<MovementController>();
         _animator = GetComponent<Animator>();
@@ -64,35 +61,28 @@ public class Zombie : MonoBehaviour, IChaseable
         _currentHealth = _data.Health;
     }
 
-    private void Start()
-    {
+    private void Start() {
         RoundManager.Instance.AddZombie(this);
         AudioSource.PlayClipAtPoint(_spawnSound, transform.position);
-        if (_playground)
-        {
+        if (_playground) {
             return;
         }
     }
 
-    private void OnDestroy()
-    {
+    private void OnDestroy() {
         RoundManager.Instance.RemoveZombie(this);
     }
 
-    private void Update()
-    {
-        if (_playground)
-        {
+    private void Update() {
+        if (_playground) {
             return;
         }
-        if (_chaser.Target == null && _state != ZombieState.RoundOver)
-        {
+        if (_chaser.Target == null && _state != ZombieState.RoundOver) {
             SetState(ZombieState.Idle);
             _animationHelper.PlayAnimation(AnimationType.Idle);
         }
 
-        switch (_state)
-        {
+        switch (_state) {
             case ZombieState.Idle:
                 HandleIdleState();
                 break;
@@ -108,48 +98,36 @@ public class Zombie : MonoBehaviour, IChaseable
         }
     }
 
-    private void HandleIdleState()
-    {
+    private void HandleIdleState() {
         _movementController.Stop();
         _chaser.SetTarget();
-        if (_chaser.Target != null)
-        {
+        if (_chaser.Target != null) {
             SetState(ZombieState.Chasing);
-        }
-        else
-        {
+        } else {
             FinishRound();
         }
     }
 
-    private void Chase()
-    {
-        if (!_chaser.Target.IsAvailable())
-        {
+    private void Chase() {
+        if (!_chaser.Target.IsAvailable()) {
             SetState(ZombieState.Idle);
         }
-        if (_chaser.IsTargetReached())
-        {
+        if (_chaser.IsTargetReached()) {
             _movementController.Move(0, _chaser.Target.gameObject);
             SetState(ZombieState.AboutToAttack);
-        }
-        else
-        {
+        } else {
             _movementController.Move(_data.Speed, _chaser.Target.gameObject);
             _animationHelper.PlayAnimation(AnimationType.Running);
         }
     }
 
-    private void FinishRound()
-    {
+    private void FinishRound() {
         _wanderController.Enable();
         SetState(ZombieState.RoundOver);
     }
 
-    private IEnumerator ZombifyTarget()
-    {
-        if (!_chaser.Target.IsAvailable() || _chaser.Target.IsZombified())
-        {
+    private IEnumerator ZombifyTarget() {
+        if (!_chaser.Target.IsAvailable() || _chaser.Target.IsZombified()) {
             SetState(ZombieState.Idle);
             yield break;
         }
@@ -160,8 +138,7 @@ public class Zombie : MonoBehaviour, IChaseable
         AudioSource.PlayClipAtPoint(_hitSound, transform.position);
         yield return new WaitForSeconds(1 / _data.AttackSpeed);
 
-        if (_state == ZombieState.Attacking)
-        {
+        if (_state == ZombieState.Attacking) {
             SetState(ZombieState.Chasing);
         }
     }
@@ -169,27 +146,22 @@ public class Zombie : MonoBehaviour, IChaseable
     /// <summary>
     /// Plays a random attack sound with 30% chance if a sound is not already playing.
     /// </summary>
-    private void PlayRandomAttackSound()
-    {
+    private void PlayRandomAttackSound() {
         bool shouldPlaySound = Random.Range(0, 100) < 30;
-        if (!_isAttackSoundPlaying && shouldPlaySound && IsAlive())
-        {
+        if (!_isAttackSoundPlaying && shouldPlaySound && IsAlive()) {
             _isAttackSoundPlaying = true;
             AudioSource.PlayClipAtPoint(_attackSounds[Random.Range(0, _attackSounds.Count)], transform.position);
             StartCoroutine(AttackSoundCooldown());
         }
     }
 
-    private IEnumerator AttackSoundCooldown()
-    {
+    private IEnumerator AttackSoundCooldown() {
         yield return new WaitForSeconds(1 / _data.AttackSpeed);
         _isAttackSoundPlaying = false;
     }
 
-    private void HandleDeath()
-    {
-        if (_state == ZombieState.Dead)
-        {
+    private void HandleDeath() {
+        if (_state == ZombieState.Dead) {
             return;
         }
         SetState(ZombieState.Dead);
@@ -200,29 +172,19 @@ public class Zombie : MonoBehaviour, IChaseable
         Destroy(gameObject, 1f);
     }
 
-    private void SetState(ZombieState state)
-    {
+    private void SetState(ZombieState state) {
         _state = state;
     }
 
-    public void TakeDamage(float damage)
-    {
-        if (_currentHealth <= 0)
-        {
+    public void TakeDamage(float damage) {
+        if (_currentHealth <= 0) {
             return;
         }
         _animationHelper.PlayAnimation(AnimationType.Hit);
         _currentHealth -= damage;
-        if (_currentHealth <= 0 && _state != ZombieState.AboutToDie)
-        {
+        if (_currentHealth <= 0 && _state != ZombieState.AboutToDie) {
             SetState(ZombieState.AboutToDie);
         }
-    }
-
-    public void Heal(float health)
-    {
-        _animationHelper.PlayAnimation(AnimationType.Heal);
-        _currentHealth += health;
     }
 
     public bool IsAlive() => _currentHealth > 0;

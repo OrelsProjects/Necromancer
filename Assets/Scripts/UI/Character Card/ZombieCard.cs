@@ -1,8 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class ZombieCard : MonoBehaviour
-{
+public class ZombieCard : MonoBehaviour {
     //[SerializeField]
     //private ZombieLevel _data;
 

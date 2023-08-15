@@ -17,4 +17,4 @@ MonoBehaviour:
   Health: 2
   Speed: 3
   AttackSpeed: 2
-  AttackRange: 10
+  AttackRange: 7.66

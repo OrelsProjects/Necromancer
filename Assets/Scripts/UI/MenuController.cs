@@ -1,8 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class MenuController : MonoBehaviour
-{
+public class MenuController : MonoBehaviour {
 
     [SerializeField]
     private AudioClip _startClickClip;
@@ -17,15 +16,12 @@ public class MenuController : MonoBehaviour
 
     private bool _isStartClicked = false;
 
-    private void Start()
-    {
+    private void Start() {
         _blackScreen.gameObject.SetActive(false);
     }
 
-    public void OnStartClick()
-    {
-        if (_isStartClicked)
-        {
+    public void OnStartClick() {
+        if (_isStartClicked) {
             return;
         }
 
@@ -34,8 +30,7 @@ public class MenuController : MonoBehaviour
         _isStartClicked = true;
     }
 
-    private IEnumerator PlayStartScene()
-    {
+    private IEnumerator PlayStartScene() {
         _blackScreen.gameObject.SetActive(true);
         yield return new WaitForSeconds(0.5f);
         _audioSource.FadeOut(1f);
@@ -43,21 +38,19 @@ public class MenuController : MonoBehaviour
         UnityEngine.SceneManagement.SceneManager.LoadScene("Round Scene");
     }
 
-    public void OnSettingsClick()
-    {
+    public void OnSettingsClick() {
         _audioSource.PlayOneShot(_settingsClickClip);
         Debug.Log("Settings clicked");
         _isStartClicked = false;
     }
 
-    public void OnExitClick()
-    {
+    public void OnExitClick() {
         _audioSource.PlayOneShot(_exitClickClip);
-         #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-        #else
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
             Application.Quit();
-        #endif
+#endif
         _isStartClicked = false;
     }
 }

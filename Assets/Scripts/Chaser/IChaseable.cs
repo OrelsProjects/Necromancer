@@ -1,7 +1,6 @@
 using UnityEngine;
 
-public interface IChaseable
-{
+public interface IChaseable {
     bool IsAvailable();
     Transform GetTransform();
 }

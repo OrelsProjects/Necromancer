@@ -3,8 +3,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(Collider2D))]
-public class Zombifiable : MonoBehaviour, IChaseable
-{
+public class Zombifiable : MonoBehaviour, IChaseable {
 
     [SerializeField]
     private ZombifiableData _data;
@@ -19,8 +18,7 @@ public class Zombifiable : MonoBehaviour, IChaseable
     AnimationHelper _animationHelper;
 
 
-    private void Awake()
-    {
+    private void Awake() {
         gameObject.tag = "Zombifiable";
         _animator = GetComponent<Animator>();
         _movementController = GetComponent<MovementController>();
@@ -29,31 +27,23 @@ public class Zombifiable : MonoBehaviour, IChaseable
         _movementBlockedTimeAfterAttack = _data.MovementBlockedTimeAfterAttack;
     }
 
-    public void Zombify(GameObject zombiePrefab, int zombifyDamage)
-    {
+    public void Zombify(GameObject zombiePrefab, int zombifyDamage) {
         _hitsToZombify -= zombifyDamage;
         _animationHelper.PlayAnimation(AnimationType.Hit);
-        if (_hitsToZombify > 0)
-        {
+        if (_hitsToZombify > 0) {
             StartCoroutine(BlockMovement());
-        }
-        else
-        {
+        } else {
             StartCoroutine(TurnToZombie(zombiePrefab));
         }
     }
 
-    private IEnumerator TurnToZombie(GameObject zombiePrefab)
-    {
+    private IEnumerator TurnToZombie(GameObject zombiePrefab) {
         GameObject zombie;
-        if (!_isTurning)
-        {
+        if (!_isTurning) {
             zombie = Instantiate(zombiePrefab, transform.position, Quaternion.identity);
             zombie.SetActive(false);
             _isTurning = true;
-        }
-        else
-        {
+        } else {
             yield break;
         }
         _movementController.Disable();
@@ -64,35 +54,29 @@ public class Zombifiable : MonoBehaviour, IChaseable
         Destroy(gameObject);
     }
 
-    private IEnumerator BlockMovement()
-    {
+    private IEnumerator BlockMovement() {
         _lastHitTime = Time.time;
         _animationHelper.PlayAnimation(AnimationType.Idle);
         _movementController.Disable();
         yield return new WaitForSeconds(_movementBlockedTimeAfterAttack);
-        if (Time.time - _lastHitTime >= _movementBlockedTimeAfterAttack && !IsZombified())
-        {
+        if (Time.time - _lastHitTime >= _movementBlockedTimeAfterAttack && !IsZombified()) {
             _movementController.Enable();
         }
     }
 
-    public bool IsZombified()
-    {
+    public bool IsZombified() {
         return _hitsToZombify == 0 || _isTurning;
     }
 
-    public bool IsAvailable()
-    {
+    public bool IsAvailable() {
         return !IsZombified();
     }
 
-    public Transform GetTransform()
-    {
+    public Transform GetTransform() {
         return transform;
     }
 
-    private void OnDestroy()
-    {
+    private void OnDestroy() {
         RoundManager.Instance.RemoveZombifiable(this);
     }
 }

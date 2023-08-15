@@ -1,8 +1,8 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using UnityEngine;
 
-public enum DefenderState
-{
+public enum DefenderState {
     Idle,
     Chasing,
     AboutToAttack,
@@ -12,18 +12,23 @@ public enum DefenderState
     RoundOver,
 }
 
-public enum DefenderType
-{
+public enum DefenderType {
     Melee, Ranged
 }
 
 [RequireComponent(typeof(MovementController))]
 [RequireComponent(typeof(DefenderChaser))]
 [RequireComponent(typeof(Zombifiable))]
-public abstract class Defender : MonoBehaviour, IChaser<Zombie>
-{
+public abstract class Defender : MonoBehaviour, IChaser<Zombie> {
     public DefenderData Data;
     public DefenderType Type;
+
+    public bool IsRanged {
+        get { return Type == DefenderType.Ranged; }
+    }
+    [ShowIf("IsRanged")]
+    [SerializeField]
+    protected Transform ProjectileSpawnPosition;
 
     abstract public AudioClip AttackSound { get; set; }
 
@@ -33,14 +38,13 @@ public abstract class Defender : MonoBehaviour, IChaser<Zombie>
     private Zombifiable _zombifiable;
     private Animator _animator;
 
+    protected DefenderState State = DefenderState.Idle;
     protected AnimationHelper _animationHelper;
-    private DefenderState _state = DefenderState.Idle;
 
 
-    public abstract void Attack(Transform target);
+    public abstract void Attack(Zombie target);
 
-    public virtual void Awake()
-    {
+    public virtual void Awake() {
         _movementController = GetComponent<MovementController>();
         _chaser = GetComponent<DefenderChaser>();
         _wanderController = GetComponent<WanderController>();
@@ -48,18 +52,16 @@ public abstract class Defender : MonoBehaviour, IChaser<Zombie>
         _animator = GetComponent<Animator>();
 
         _animationHelper = new AnimationHelper(_animator);
+        _animationHelper.SetAttackSpeed(Data.AttackSpeed);
 
         SetState(DefenderState.Idle);
     }
 
-    public virtual void Update()
-    {
-        if (IsSelfZombified())
-        {
+    public virtual void Update() {
+        if (IsSelfZombified()) {
             return;
         }
-        switch (_state)
-        {
+        switch (State) {
             case DefenderState.Idle:
                 HandleIdleState();
                 break;
@@ -73,8 +75,7 @@ public abstract class Defender : MonoBehaviour, IChaser<Zombie>
                 HandleDeathState();
                 break;
             case DefenderState.Attacking:
-                if (_chaser.Target == null)
-                {
+                if (_chaser.Target == null) {
                     SetState(DefenderState.Idle);
                 }
                 break;
@@ -83,21 +84,16 @@ public abstract class Defender : MonoBehaviour, IChaser<Zombie>
         }
     }
 
-    public virtual void StartBattle()
-    {
+    public virtual void StartBattle() {
         SetState(DefenderState.Idle);
     }
 
-    private void HandleIdleState()
-    {
+    private void HandleIdleState() {
         _chaser.SetTarget();
-        if (_chaser.Target != null)
-        {
+        if (_chaser.Target != null) {
             SetState(DefenderState.Chasing);
             _wanderController.Disable();
-        }
-        else
-        {
+        } else {
             _animationHelper.PlayAnimation(AnimationType.Idle);
             _movementController.Stop();
             _wanderController.Enable();
@@ -105,85 +101,64 @@ public abstract class Defender : MonoBehaviour, IChaser<Zombie>
         }
     }
 
-    private void HandleChasingState()
-    {
-        if (_chaser.Target == null)
-        {
+    private void HandleChasingState() {
+        if (_chaser.Target == null) {
             SetState(DefenderState.Idle);
-        }
-        else
-        {
-            if (_chaser.IsTargetReached())
-            {
+        } else {
+            if (_chaser.IsTargetReached()) {
+                _movementController.FaceTarget(_chaser.Target.transform);
                 SetState(DefenderState.AboutToAttack);
-            }
-            else
-            {
+            } else {
                 _movementController.Move(Data.Speed, _chaser.Target.gameObject);
                 _animationHelper.PlayAnimation(AnimationType.Running);
             }
         }
     }
 
-    public IEnumerator HandleAboutToAttackState()
-    {
-        if (_chaser.Target == null || _chaser.Target != null && (!_chaser.IsTargetReached() || !_chaser.Target.IsAvailable()))
-        {
+    public IEnumerator HandleAboutToAttackState() {
+        if (_chaser.Target == null || _chaser.Target != null && (!_chaser.IsTargetReached() || !_chaser.Target.IsAvailable())) {
             SetState(DefenderState.Idle);
             yield break;
         }
         _movementController.Stop();
         SetState(DefenderState.Attacking);
-        Attack(_chaser.Target.transform);
-        AudioSource.PlayClipAtPoint(AttackSound, transform.position);
-        if (Type == DefenderType.Melee)
-        {
-            _chaser.Target.TakeDamage(Data.Damage);
-        }
-        yield return new WaitForSeconds(Data.AttackSpeed);
+        Attack(_chaser.Target.GetComponent<Zombie>());
+        yield return new WaitForSeconds(1 / Data.AttackSpeed);
         SetState(DefenderState.Chasing);
     }
 
-    private void HandleDeathState()
-    {
+    private void HandleDeathState() {
         Die();
         SetState(DefenderState.Death);
     }
 
-    private bool IsSelfZombified()
-    {
+    private bool IsSelfZombified() {
         return _zombifiable.IsZombified();
     }
 
-    public void Die()
-    {
+    public void Die() {
         _animationHelper.PlayAnimation(AnimationType.Death);
         _movementController.Disable();
         Destroy(gameObject, 1f);
     }
 
-    public void SetTarget()
-    {
+    public void SetTarget() {
         _chaser.SetTarget();
     }
 
-    public Zombie GetTarget()
-    {
+    public Zombie GetTarget() {
         return _chaser.Target;
     }
 
-    public bool IsTargetReached()
-    {
+    public bool IsTargetReached() {
         return _chaser.IsTargetReached();
     }
 
-    private void SetState(DefenderState state)
-    {
-        _state = state;
+    private void SetState(DefenderState state) {
+        State = state;
     }
 
-    private void OnDestroy()
-    {
+    private void OnDestroy() {
         RoundManager.Instance.RemoveDefender(this);
     }
 }

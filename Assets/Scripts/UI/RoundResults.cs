@@ -3,8 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using AssetKits.ParticleImage;
-public class RoundResults : MonoBehaviour
-{
+public class RoundResults : MonoBehaviour {
 
     private readonly string _winTitle = "Zombies Won";
     private readonly string _loseTitle = "Defenders Won";
@@ -38,23 +37,18 @@ public class RoundResults : MonoBehaviour
 
     private readonly float _timeToShowReward = 3f;
 
-    private void Start()
-    {
+    private void Start() {
         _title.gameObject.SetActive(true);
         _currentGoldText.text = InventoryManager.Instance.Currency.ToString();
         _continueButton.onClick.AddListener(() => FinishRound());
-        if (RoundManager.Instance.State == RoundState.Lost)
-        {
+        if (RoundManager.Instance.State == RoundState.Lost) {
             SetUpLose();
-        }
-        else
-        {
+        } else {
             SetUpWin();
         }
     }
 
-    private void SetUpWin()
-    {
+    private void SetUpWin() {
         _rewardText.gameObject.SetActive(true);
         _rewardText.text = RoundManager.Instance.Reward.ToString();
         _title.text = _winTitle;
@@ -65,8 +59,7 @@ public class RoundResults : MonoBehaviour
         StartCoroutine(ShowRewardCoroutine());
     }
 
-    private void SetUpLose()
-    {
+    private void SetUpLose() {
         _reward.gameObject.SetActive(false);
         _rewardText.gameObject.SetActive(false);
         _title.text = _loseTitle;
@@ -75,35 +68,29 @@ public class RoundResults : MonoBehaviour
         _title.GetComponent<Animator>().SetBool("Lose", true);
     }
 
-    private void FinishRound()
-    {
+    private void FinishRound() {
         UnityEngine.SceneManagement.SceneManager.LoadScene("Map");
         RoundManager.Instance.FinishRound();
     }
 
-    private IEnumerator ShowRewardCoroutine()
-    {
+    private IEnumerator ShowRewardCoroutine() {
         yield return new WaitForSeconds(_timeToShowReward);
         ShowReward(true);
     }
 
-    public void ShowReward(bool show)
-    {
+    public void ShowReward(bool show) {
         _reward.gameObject.SetActive(show);
     }
 
-    public void ShowResults()
-    {
+    public void ShowResults() {
         _results.SetActive(true);
     }
 
-    public void PlayCoinsSound()
-    {
+    public void PlayCoinsSound() {
         StartCoroutine(PlaySoundWithDelay(_coinsSound, _coinsSoundDelay));
     }
 
-    public void UpdateGoldText()
-    {
+    public void UpdateGoldText() {
         float reward = RoundManager.Instance.Reward;
         float currentCurrency = int.Parse(_currentGoldText.text);
         float newCurrency = currentCurrency + reward;
@@ -111,11 +98,9 @@ public class RoundResults : MonoBehaviour
         StartCoroutine(UpdateGoldTextCoroutine(currentCurrency, newCurrency, timeToUpdate));
     }
 
-    private IEnumerator UpdateGoldTextCoroutine(float currentCurrency, float newCurrency, float timeToUpdate)
-    {
+    private IEnumerator UpdateGoldTextCoroutine(float currentCurrency, float newCurrency, float timeToUpdate) {
         float elapsedTime = 0f;
-        while (elapsedTime < timeToUpdate)
-        {
+        while (elapsedTime < timeToUpdate) {
             elapsedTime += Time.deltaTime;
             float currentGold = Mathf.Lerp(currentCurrency, newCurrency, elapsedTime / timeToUpdate);
             _currentGoldText.text = Mathf.RoundToInt(currentGold).ToString();
@@ -124,8 +109,7 @@ public class RoundResults : MonoBehaviour
         _currentGoldText.text = Mathf.RoundToInt(newCurrency).ToString();
     }
 
-    private IEnumerator PlaySoundWithDelay(AudioClip clip, float delay)
-    {
+    private IEnumerator PlaySoundWithDelay(AudioClip clip, float delay) {
         yield return new WaitForSeconds(delay);
         // Set decaying volume
         _audioSource.volume = 1f;

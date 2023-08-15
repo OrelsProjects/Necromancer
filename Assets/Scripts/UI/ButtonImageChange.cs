@@ -4,8 +4,7 @@ using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
 [RequireComponent(typeof(Button))]
-public class ButtonImageChange : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
-{
+public class ButtonImageChange : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler {
 
     [SerializeField]
     private Sprite _hoverSprite;
@@ -18,105 +17,74 @@ public class ButtonImageChange : MonoBehaviour, IPointerEnterHandler, IPointerEx
     private Image _image;
     private Button _button;
 
-    private void Awake()
-    {
+    private void Awake() {
         _image = GetComponent<Image>();
         _button = GetComponent<Button>();
         _defaultSprite = _image.sprite;
     }
 
-    private void OnMouseEnter()
-    {
-        if (_hoverSprite != null)
-        {
+    private void OnMouseEnter() {
+        if (_hoverSprite != null) {
             _image.sprite = _hoverSprite;
         }
     }
 
-    private void OnMouseExit()
-    {
-        if (_defaultSprite != null)
-        {
+    private void OnMouseExit() {
+        if (_defaultSprite != null) {
             _image.sprite = _defaultSprite;
         }
     }
 
-    private void OnMouseDown()
-    {
-        if (_pressedSprite != null)
-        {
+    private void OnMouseDown() {
+        if (_pressedSprite != null) {
             _image.sprite = _pressedSprite;
-        }
-        else
-        {
+        } else {
             _image.sprite = _defaultSprite;
         }
     }
 
-    private void OnMouseUp()
-    {
-        if (_hoverSprite != null)
-        {
+    private void OnMouseUp() {
+        if (_hoverSprite != null) {
             _image.sprite = _hoverSprite;
-        }
-        else
-        {
+        } else {
             _image.sprite = _defaultSprite;
         }
     }
 
-    private void OnDisable()
-    {
-        if (_disabledSprite != null)
-        {
+    private void OnDisable() {
+        if (_disabledSprite != null) {
             _image.sprite = _disabledSprite;
-        }
-        else
-        {
+        } else {
             _image.sprite = _defaultSprite;
         }
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        if (_hoverSprite != null)
-        {
+    public void OnPointerEnter(PointerEventData eventData) {
+        if (_hoverSprite != null) {
             _image.sprite = _hoverSprite;
-        }
-        else
-        {
+        } else {
             _image.sprite = _defaultSprite;
         }
     }
 
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        if (_defaultSprite != null)
-        {
+    public void OnPointerExit(PointerEventData eventData) {
+        if (_defaultSprite != null) {
             _image.sprite = _defaultSprite;
         }
     }
 
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        if (_pressedSprite != null)
-        {
+    public void OnPointerDown(PointerEventData eventData) {
+        if (_pressedSprite != null) {
             _image.sprite = _pressedSprite;
-        }
-        else
-        {
+        } else {
             _image.sprite = _defaultSprite;
         }
     }
 
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        if (_hoverSprite != null)
-        {
+    public void OnPointerUp(PointerEventData eventData) {
+        if (_hoverSprite != null) {
             _image.sprite = _hoverSprite;
-        }
-        else
-        {
+        } else {
             _image.sprite = _defaultSprite;
         }
     }

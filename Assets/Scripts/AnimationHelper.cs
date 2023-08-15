@@ -1,7 +1,6 @@
 using UnityEngine;
 
-public enum AnimationType
-{
+public enum AnimationType {
     Idle,
     Walking,
     Running,
@@ -12,50 +11,39 @@ public enum AnimationType
     Death
 }
 
-public class AnimationHelper
-{
+public class AnimationHelper {
     private readonly Animator _animator;
 
-    public AnimationHelper(Animator animator)
-    {
+    public AnimationHelper(Animator animator) {
         _animator = animator;
     }
 
-    private void Reset()
-    {
-        foreach (var parameter in _animator.parameters)
-        {
-            if (parameter.type == AnimatorControllerParameterType.Bool)
-            {
+    private void Reset() {
+        foreach (var parameter in _animator.parameters) {
+            if (parameter.type == AnimatorControllerParameterType.Bool) {
                 _animator.SetBool(parameter.name, false);
             }
         }
     }
 
-    public void PlayAnimation(AnimationType animationType, bool value = true)
-    {
-        if (_animator == null)
-        {
+    public void PlayAnimation(AnimationType animationType, bool value = true) {
+        if (_animator == null) {
             return;
         }
         Reset();
 
-        switch (animationType)
-        {
+        switch (animationType) {
             case AnimationType.Idle:
                 _animator.SetBool("Idle", true);
                 break;
             case AnimationType.Walking:
                 _animator.SetBool("Walking", value);
-                _animator.SetBool("Action", true);
                 break;
             case AnimationType.Running:
                 _animator.SetBool("Running", value);
-                _animator.SetBool("Action", true);
                 break;
             case AnimationType.AttackMelee:
                 _animator.SetTrigger("Attack Melee");
-                _animator.SetBool("Action", true);
                 break;
             case AnimationType.Hit:
                 _animator.SetTrigger("Hit");
@@ -69,8 +57,11 @@ public class AnimationHelper
                 break;
             case AnimationType.AttackArcher:
                 _animator.SetTrigger("Attack Archer");
-                _animator.SetBool("Action", true);
                 break;
         }
+    }
+
+    public void SetAttackSpeed(float attackSpeed) {
+        _animator.SetFloat("Attack Speed", attackSpeed);
     }
 }

@@ -1,15 +1,13 @@
 using System.Collections;
 using UnityEngine;
 
-public enum WanderState
-{
+public enum WanderState {
     MovingToTarget,
     ReachedTarget,
     Waiting,
 }
 
-public class WanderController : MonoBehaviour
-{
+public class WanderController : MonoBehaviour {
     [SerializeField]
     private float _speed = 0.8f;
     [SerializeField]
@@ -24,26 +22,20 @@ public class WanderController : MonoBehaviour
     private Vector2 _target;
     private WanderState _state;
 
-    void Start()
-    {
-        if (enabled)
-        {
+    void Start() {
+        if (enabled) {
             SetNewDestination();
             _state = WanderState.MovingToTarget;
         }
     }
 
-    void Update()
-    {
-        if (!enabled)
-        {
+    void Update() {
+        if (!enabled) {
             return;
         }
-        switch (_state)
-        {
+        switch (_state) {
             case WanderState.MovingToTarget:
-                if (Vector2.Distance(transform.position, _target) < _range)
-                {
+                if (Vector2.Distance(transform.position, _target) < _range) {
                     _state = WanderState.ReachedTarget;
                 }
                 break;
@@ -56,8 +48,7 @@ public class WanderController : MonoBehaviour
         }
     }
 
-    private IEnumerator WaitRandomTime()
-    {
+    private IEnumerator WaitRandomTime() {
         float randomDelay = Random.Range(1f, 5f);
         _movementController.Stop();
         yield return new WaitForSeconds(randomDelay);
@@ -65,16 +56,13 @@ public class WanderController : MonoBehaviour
         _state = WanderState.MovingToTarget;
     }
 
-    private void SetNewDestination()
-    {
+    private void SetNewDestination() {
         _target = new Vector2(Random.Range(-_maxDistanceX, _maxDistanceX), Random.Range(-_maxDistanceY, _maxDistanceY));
         _movementController.Move(_speed, (_target - (Vector2)transform.position).normalized);
     }
 
-    public void Enable()
-    {
-        if (enabled)
-        {
+    public void Enable() {
+        if (enabled) {
             return;
         }
         enabled = true;
@@ -82,10 +70,8 @@ public class WanderController : MonoBehaviour
         _state = WanderState.MovingToTarget;
     }
 
-    public void Disable()
-    {
-        if (!enabled)
-        {
+    public void Disable() {
+        if (!enabled) {
             return;
         }
         enabled = false;

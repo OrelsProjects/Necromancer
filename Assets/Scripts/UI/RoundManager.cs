@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum RoundState
-{
+public enum RoundState {
     NotStarted,
     Started,
     ZombiesWon,
@@ -12,8 +11,7 @@ public enum RoundState
     Lost,
 }
 
-public class RoundManager : MonoBehaviour
-{
+public class RoundManager : MonoBehaviour {
     public static RoundManager Instance;
 
     [SerializeField]
@@ -49,23 +47,18 @@ public class RoundManager : MonoBehaviour
 
     public RoundState State => _state;
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
+    private void Awake() {
+        if (Instance == null) {
             Instance = this;
         }
     }
 
-    public Vector3? GetClosestZombiePosition(Vector3 position)
-    {
+    public Vector3? GetClosestZombiePosition(Vector3 position) {
         float closestDistance = Mathf.Infinity;
         Vector3? closestPosition = null;
-        foreach (var zombie in _zombies)
-        {
+        foreach (var zombie in _zombies) {
             float distance = Vector3.Distance(position, zombie.transform.position);
-            if (distance < closestDistance)
-            {
+            if (distance < closestDistance) {
                 closestDistance = distance;
                 closestPosition = zombie.transform.position;
             }
@@ -73,10 +66,8 @@ public class RoundManager : MonoBehaviour
         return closestPosition;
     }
 
-    private void Update()
-    {
-        switch (_state)
-        {
+    private void Update() {
+        switch (_state) {
             case RoundState.NotStarted:
                 _state = AreThereZombiesAlive() ? RoundState.Started : RoundState.NotStarted;
                 break;
@@ -91,85 +82,67 @@ public class RoundManager : MonoBehaviour
                 break;
         }
 
-        if (AreThereZombiesAlive() && _areDefendersIdle)
-        {
+        if (AreThereZombiesAlive() && _areDefendersIdle) {
             SendDefenders();
         }
     }
 
-    private void Start()
-    {
+    private void Start() {
         StartRound();
     }
 
-    private void HandleStartedState()
-    {
+    private void HandleStartedState() {
 
-        if (!AreThereZombies())
-        {
+        if (!AreThereZombies()) {
             PlayBackgroundMusic();
             _state = RoundState.DefendersWon;
-        }
-        else if (!AreThereDefenders())
-        {
+        } else if (!AreThereDefenders()) {
             ReduceZombiesSoundVolume();
             _state = RoundState.ZombiesWon;
-        }
-
-        else if (ShouldPlayZombiesSound())
-        {
+        } else if (ShouldPlayZombiesSound()) {
             PlayZombiesSound();
         }
     }
 
-    private void HandleZombiesWonState()
-    {
+    private void HandleZombiesWonState() {
         AudioSource.PlayClipAtPoint(_loseSound, Vector3.zero);
         _roundResultsUI.SetActive(true);
         _state = RoundState.Won;
     }
 
-    private void HandleDefendersWonState()
-    {
+    private void HandleDefendersWonState() {
         AudioSource.PlayClipAtPoint(_winSound, Vector3.zero);
         _roundResultsUI.SetActive(true);
         _state = RoundState.Lost;
     }
 
-    private bool AreThereZombies()
-    {
+    private bool AreThereZombies() {
         bool areThereZombifiedCivilians = _zombifiables.Find(zombifiable => zombifiable.IsZombified()) != null;
         bool areThereZombies = _zombies.Count > 0;
         bool areThereZombiesToSpawn = ZombiesSpawnBar.Instance.AreThereZombiesToSpawn();
         return areThereZombifiedCivilians || areThereZombies || areThereZombiesToSpawn;
     }
 
-    private bool AreThereZombiesAlive()
-    {
+    private bool AreThereZombiesAlive() {
         return _zombies.Count > 0;
     }
 
-    private bool AreThereDefenders()
-    {
+    private bool AreThereDefenders() {
         return _defenders.Count > 0;
     }
 
-    private void SendDefenders()
-    {
-        foreach (var defender in _defenders)
-        {
+    private void SendDefenders() {
+        foreach (var defender in _defenders) {
             defender.StartBattle();
         }
         _areDefendersIdle = false;
     }
 
-    public void StartRound()
-    {
+    public void StartRound() {
         _data = Map.Instance.SelectedArea;
         _defendersParent = new GameObject("Defenders");
         PlayBackgroundMusic();
-        for (int i = 0; i < _data.RoundData.CiviliansCount; i++)
-        {
+        for (int i = 0; i < _data.RoundData.CiviliansCount; i++) {
             int randomCivilianIndex = Random.Range(0, _data.RoundData.CiviliansPrefabs.Count);
             Vector3 randomPosition = new(Random.Range(-5, 5), Random.Range(-5, 5));
             Zombifiable civilianPrefab = _data.RoundData.CiviliansPrefabs[randomCivilianIndex];
@@ -177,18 +150,15 @@ public class RoundManager : MonoBehaviour
             AddZombifiable(zombifiableInstance);
         }
 
-        _data.RoundData.Defenders.ForEach(defender =>
-        {
+        _data.RoundData.Defenders.Value.ForEach(defender => {
             Defender defenderInstance = Instantiate(defender, Vector3.zero, Quaternion.identity);
             AddDefender(defenderInstance);
         });
         _state = RoundState.NotStarted;
     }
 
-    public void AddZombie(Zombie zombie)
-    {
-        if (_zombies.Count == 0)
-        {
+    public void AddZombie(Zombie zombie) {
+        if (_zombies.Count == 0) {
             _zombiesParent = new GameObject("Zombies");
         }
         zombie.gameObject.transform.SetParent(_zombiesParent.transform);
@@ -196,64 +166,52 @@ public class RoundManager : MonoBehaviour
         _areDefendersIdle = true;
     }
 
-    public void AddZombifiable(Zombifiable zombifiable)
-    {
-        if (_zombifiables.Count == 0)
-        {
+    public void AddZombifiable(Zombifiable zombifiable) {
+        if (_zombifiables.Count == 0) {
             _zombifiablesParent = new GameObject("Zombifiables");
         }
         zombifiable.gameObject.transform.SetParent(_zombifiablesParent.transform);
         _zombifiables.Add(zombifiable);
     }
 
-    public void AddDefender(Defender defender)
-    {
-        if (_defenders.Count == 0)
-        {
+    public void AddDefender(Defender defender) {
+        if (_defenders.Count == 0) {
             _defendersParent = new GameObject("Defenders");
         }
         defender.gameObject.transform.SetParent(_defendersParent.transform);
         _defenders.Add(defender);
     }
 
-    public void RemoveZombie(Zombie zombie)
-    {
+    public void RemoveZombie(Zombie zombie) {
         _zombies.Remove(zombie);
     }
 
-    public void RemoveZombifiable(Zombifiable zombifiable)
-    {
+    public void RemoveZombifiable(Zombifiable zombifiable) {
         _zombifiables.Remove(zombifiable);
     }
 
-    public void RemoveDefender(Defender defender)
-    {
+    public void RemoveDefender(Defender defender) {
         _defenders.Remove(defender);
     }
 
-    public void FinishRound()
-    {
-        if (_state == RoundState.Won)
-        {
+    public void FinishRound() {
+        if (_state == RoundState.Won) {
             AreasManager.Instance.AreaZombified(_data.Area);
         }
         Destroy(gameObject);
     }
 
-    private bool ShouldPlayZombiesSound()
-    {
+    private bool ShouldPlayZombiesSound() {
         return AreThereZombiesAlive() && !_isZombiesSoundPlaying;
     }
 
-    private void PlayBackgroundMusic(float fadeInDuration = 2.5f)
-    {
+    private void PlayBackgroundMusic(float fadeInDuration = 2.5f) {
         _audioSource.FadeOut(1f);
         //SoundsManager.Instance.PlayBackgroundMusicFadeIn(_roundData.BackgroundMusic, fadeInDuration, 70);
         _isZombiesSoundPlaying = false;
     }
 
-    private void PlayZombiesSound()
-    {
+    private void PlayZombiesSound() {
         //SoundsManager.Instance.StopBackgroundMusicFadeOut(1f);
         _audioSource.loop = true;
         _audioSource.clip = _zombiesSpawnedSound;
@@ -261,15 +219,13 @@ public class RoundManager : MonoBehaviour
         _isZombiesSoundPlaying = true;
     }
 
-    private void ReduceZombiesSoundVolume()
-    {
+    private void ReduceZombiesSoundVolume() {
         _audioSource.ChangeSoundOverTime(0.1f, 0.35f);
         _isZombiesSoundPlaying = false;
         StartCoroutine(SetZombiesVolumeBackUp());
     }
 
-    private IEnumerator SetZombiesVolumeBackUp()
-    {
+    private IEnumerator SetZombiesVolumeBackUp() {
         yield return new WaitForSeconds(2.5f);
         _audioSource.ChangeSoundOverTime(0.8f, 1f);
     }

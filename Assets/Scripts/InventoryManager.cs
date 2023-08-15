@@ -1,17 +1,14 @@
 using UnityEngine;
 
-public struct InventoryData : ISaveableObject
-{
+public struct InventoryData : ISaveableObject {
     public int Currency;
 
-    public string GetObjectType()
-    {
+    public string GetObjectType() {
         return GetType().FullName;
     }
 }
 
-public class InventoryManager : MonoBehaviour, ISaveable
-{
+public class InventoryManager : MonoBehaviour, ISaveable {
     public static InventoryManager Instance { get; private set; }
 
     public delegate void CurrencyChangedDelegate(int newCurrency);
@@ -20,13 +17,10 @@ public class InventoryManager : MonoBehaviour, ISaveable
 
     private int _currency;
 
-    public int Currency
-    {
+    public int Currency {
         get { return _currency; }
-        private set
-        {
-            if (_currency != value)
-            {
+        private set {
+            if (_currency != value) {
                 _currency = value;
                 OnCurrencyChanged?.Invoke(value);
                 SaveManager.Instance.InitiateSave();
@@ -34,28 +28,22 @@ public class InventoryManager : MonoBehaviour, ISaveable
         }
     }
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
+    private void Awake() {
+        if (Instance == null) {
             Instance = this;
         }
     }
 
-    public bool CanAfford(int cost)
-    {
+    public bool CanAfford(int cost) {
         return Currency >= cost;
     }
 
-    public void AddCurrency(int amount)
-    {
+    public void AddCurrency(int amount) {
         Currency += amount;
     }
 
-    public bool UseCurrency(int amount)
-    {
-        if (CanAfford(amount))
-        {
+    public bool UseCurrency(int amount) {
+        if (CanAfford(amount)) {
             Currency -= amount;
             SoundsManager.Instance.PlayPurchaseSound();
             return true;
@@ -63,19 +51,15 @@ public class InventoryManager : MonoBehaviour, ISaveable
         return false;
     }
 
-    public ISaveableObject GetData()
-    {
+    public ISaveableObject GetData() {
         Debug.Log("Getting inventory data, currency: " + _currency.ToString());
-        return new InventoryData
-        {
+        return new InventoryData {
             Currency = _currency
         };
     }
 
-    public void LoadData(ISaveableObject item)
-    {
-        if (item is InventoryData data)
-        {
+    public void LoadData(ISaveableObject item) {
+        if (item is InventoryData data) {
             Currency = data.Currency;
         }
     }

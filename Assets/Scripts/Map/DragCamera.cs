@@ -1,7 +1,6 @@
 using UnityEngine;
 
-public class DragCamera : MonoBehaviour
-{
+public class DragCamera : MonoBehaviour {
     public float dragSpeed = 25;
     public float zoomSpeed = 10.0f;
     public float zoomMin = 6f;
@@ -13,41 +12,33 @@ public class DragCamera : MonoBehaviour
     private Vector3 lastMousePosition;
 
     private bool _canMove = true;
-    void Update()
-    {
+    void Update() {
         Navigate();
     }
 
-    private void Navigate()
-    {
-        if (!_canMove)
-        {
+    private void Navigate() {
+        if (!_canMove) {
             return;
         }
-        if (Input.GetMouseButtonDown(0))
-        {
+        if (Input.GetMouseButtonDown(0)) {
             lastMousePosition = Input.mousePosition;
         }
 
-        if (Input.GetMouseButton(0))
-        {
-            if (IsMapClicked())
-            {
+        if (Input.GetMouseButton(0)) {
+            if (IsMapClicked()) {
                 SetNewPosition();
             }
         }
 
         float scroll = Input.GetAxis("Mouse ScrollWheel");
-        if (scroll != 0)
-        {
+        if (scroll != 0) {
             Camera.main.orthographicSize -= scroll * zoomSpeed;
             Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, zoomMin, zoomMax);
             ClampPosition();
         }
     }
 
-    private void SetNewPosition()
-    {
+    private void SetNewPosition() {
         Vector3 position = Camera.main.ScreenToViewportPoint(lastMousePosition - Input.mousePosition);
         Vector3 move = new Vector3(position.x * dragSpeed, position.y * dragSpeed, 0);
         transform.Translate(move, Space.World);
@@ -55,8 +46,7 @@ public class DragCamera : MonoBehaviour
         lastMousePosition = Input.mousePosition;
     }
 
-    private void ClampPosition()
-    {
+    private void ClampPosition() {
         // Calculate current camera bounds
         float vertExtent = Camera.main.orthographicSize;
         float horzExtent = vertExtent * Screen.width / Screen.height;
@@ -73,26 +63,22 @@ public class DragCamera : MonoBehaviour
         transform.position = clampedPosition;
     }
 
-    private bool IsMapClicked()
-    {
+    private bool IsMapClicked() {
         int layerMask = 1 << 8;
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
 
-        if (Physics2D.Raycast(mousePosition, Vector2.zero, Mathf.Infinity, layerMask))
-        {
+        if (Physics2D.Raycast(mousePosition, Vector2.zero, Mathf.Infinity, layerMask)) {
             return true;
         }
         return false;
     }
 
-    public void DisableMovement()
-    {
+    public void DisableMovement() {
         _canMove = false;
     }
 
-    public void EnableMovement()
-    {
+    public void EnableMovement() {
         _canMove = true;
     }
 

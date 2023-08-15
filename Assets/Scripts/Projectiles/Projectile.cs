@@ -1,43 +1,47 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 [RequireComponent(typeof(MovementController))]
 [RequireComponent(typeof(Collider2D))]
-public class Projectile : MonoBehaviour, IProjectile
-{
+public class Projectile : MonoBehaviour, IProjectile {
     [SerializeField]
     private Sprite _sprite;
     [SerializeField]
     private AudioClip _hitSound;
 
     private MovementController _movementController;
+    private const float ProjectileLifetime = 3f;
 
     private float _damage;
 
-    private void Awake()
-    {
+    private void Awake() {
         _movementController = GetComponent<MovementController>();
+        Destroy(this, ProjectileLifetime);
     }
 
-    public void SetTarget(Transform target, float speed, float damage, float timeToDestroy = 3f)
-    {
-        if (target == null)
-        {
-            return; // Target might be dead by the time the projectile hits
+    public void SetTarget(Transform target, float speed, float damage) {
+        if (target == null) {
+            Debug.LogWarning("Projectile target is null.");
+            Destroy(gameObject);
+            return;
         }
         _damage = damage;
         _movementController.Move(speed, target.gameObject);
-        Destroy(this, timeToDestroy);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
+    public void AddAttackCallback(Action onAttack) {
+        onAttack();
+    }
 
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Zombie"))
-        {
+    private void OnCollisionEnter2D(Collision2D collision) {
+
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Zombie")) {
             Zombie zombie = collision.gameObject.GetComponent<Zombie>();
-            zombie.TakeDamage(_damage);
-            AudioSource.PlayClipAtPoint(_hitSound, transform.position);
-            Destroy(gameObject);
+            if (zombie != null) {
+                zombie.TakeDamage(_damage);
+                AudioSource.PlayClipAtPoint(_hitSound, transform.position);
+                Destroy(gameObject);
+            }
         }
     }
 }

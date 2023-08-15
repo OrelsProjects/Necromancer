@@ -28,6 +28,12 @@ public class MovementController : MonoBehaviour
         _animationHelper = new AnimationHelper(_animator);
     }
 
+    public void FaceTarget(Transform target)
+    {
+        _direction = target.position;
+        FlipCharacter(force: true);
+    }
+
     public bool Move(float speed, Vector2 direction)
     {
         try
@@ -37,16 +43,21 @@ public class MovementController : MonoBehaviour
             _rigidbody.velocity = _direction * _speed;
             _animationHelper.PlayAnimation(AnimationType.Running, _speed > 1);
             _animationHelper.PlayAnimation(AnimationType.Walking, _speed > 0 && _speed <= 1);
-            if (_speed > 0)
-            {
-                _spriteSheet.flipX = _direction.x < 0;
-            }
+            FlipCharacter();
             return true;
         }
         catch (System.Exception ex)
         {
             Debug.LogError("Game object with name: " + gameObject.name + " has thrown an exception: " + ex.Message);
             return false;
+        }
+    }
+
+    private void FlipCharacter(bool force = false)
+    {
+        if (_speed > 0 || force)
+        {
+            _spriteSheet.flipX = _direction.x < 0;
         }
     }
 

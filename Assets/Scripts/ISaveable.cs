@@ -1,5 +1,4 @@
-﻿public interface ISaveable
-{
+﻿public interface ISaveable {
     public ISaveableObject GetData();
     /// <summary>
     /// Called to let the component know it should get the relevant data.
@@ -9,7 +8,6 @@
     // Get object type function
 }
 
-public interface ISaveableObject
-{
+public interface ISaveableObject {
     public string GetObjectType();
 }

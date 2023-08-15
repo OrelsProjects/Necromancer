@@ -10,12 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ef9ec0b77613ec544b44cc1943b71307, type: 3}
-  m_Name: Playground
+  m_Name: PlaygroundRound
   m_EditorClassIdentifier: 
-  CiviliansCount: 0
+  Melee: 1
+  Melees: 3
+  _meleePrefab: {fileID: 1036798099327359381, guid: b7d9b46f89195e34a9046014811d135b, type: 3}
+  Ranged: 0
+  Archers: 3
+  CiviliansCount: 5
   CiviliansPrefabs:
   - {fileID: 8509284048829225676, guid: eb3e9be8383c3dc4098e68e9581a304a, type: 3}
-  Defenders:
-  - {fileID: 4090938225344827335, guid: f752511317fbbdd47b9a2913ba486896, type: 3}
-  Reward: 200
+  Reward: 0
   BackgroundMusic: {fileID: 8300000, guid: 71006b454f6a70c46ba9b40a6deefc15, type: 3}

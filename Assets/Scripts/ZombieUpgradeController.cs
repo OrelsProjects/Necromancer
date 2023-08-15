@@ -2,8 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UpgradeController : MonoBehaviour
-{
+public class UpgradeController : MonoBehaviour {
     [Header("UI")]
     [SerializeField]
     private TextMeshProUGUI _currentAttackSpeed;
@@ -30,13 +29,11 @@ public class UpgradeController : MonoBehaviour
 
     private ZombieType _selectedZombieType = ZombieType.ZombieLab;
 
-    void OnEnable()
-    {
+    void OnEnable() {
         UpdateUI();
     }
 
-    public void Upgrade()
-    {
+    public void Upgrade() {
         int upgradeCost = CharactersManager.Instance.GetZombieData(_selectedZombieType)?.PriceToUpgrade ?? 99999999;
         // TODO: Log if upgradeCost is bad.
         InventoryManager.Instance.UseCurrency(upgradeCost);
@@ -44,23 +41,19 @@ public class UpgradeController : MonoBehaviour
         UpdateUI();
     }
 
-    private void UpdateUI()
-    {
+    private void UpdateUI() {
         ZombieLevel selectedZombieCurrentLevel = CharactersManager.Instance.GetZombieData(_selectedZombieType);
         _currentAttackSpeed.text = selectedZombieCurrentLevel.AttackSpeed.ToString();
         _currentDamage.text = selectedZombieCurrentLevel.Damage.ToString();
         _currentHealth.text = selectedZombieCurrentLevel.Health.ToString();
         _currentSpeed.text = selectedZombieCurrentLevel.Speed.ToString();
-        if (CharactersManager.Instance.IsZombieMaxLevel(_selectedZombieType))
-        {
+        if (CharactersManager.Instance.IsZombieMaxLevel(_selectedZombieType)) {
             _upgradeCost.text = "MAXED";
             _upgradeButton.interactable = false;
             _upgradeButton.GetComponent<Image>().enabled = false;
             _upgradeCostIcon.enabled = false;
             return;
-        }
-        else
-        {
+        } else {
             _upgradeButton.GetComponent<Image>().enabled = true;
             _upgradeCostIcon.enabled = true;
             _upgradeButton.interactable = true;
@@ -73,12 +66,9 @@ public class UpgradeController : MonoBehaviour
         _nextSpeed.text = selectedZombieNextLevel.Speed.ToString();
         _upgradeCost.text = selectedZombieCurrentLevel.PriceToUpgrade.ToString();
 
-        if (InventoryManager.Instance.CanAfford(selectedZombieCurrentLevel.PriceToUpgrade))
-        {
+        if (InventoryManager.Instance.CanAfford(selectedZombieCurrentLevel.PriceToUpgrade)) {
             _upgradeButton.interactable = true;
-        }
-        else
-        {
+        } else {
             _upgradeButton.interactable = false;
         }
     }

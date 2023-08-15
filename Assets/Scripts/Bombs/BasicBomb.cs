@@ -2,8 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(CircleCollider2D))]
-public class ZombieBomb : MonoBehaviour
-{
+public class ZombieBomb : MonoBehaviour {
     [SerializeField]
     [Range(0, 10)]
     private float _range = 0.4f;
@@ -14,8 +13,7 @@ public class ZombieBomb : MonoBehaviour
 
     private CircleCollider2D _circleCollider;
 
-    void Awake()
-    {
+    void Awake() {
         transform.localScale = Vector3.zero;
         _circleCollider = GetComponent<CircleCollider2D>();
         _circleCollider.radius = 1;
@@ -23,26 +21,20 @@ public class ZombieBomb : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         StartCoroutine(Explode());
     }
 
-    public void ReleaseBomb()
-    {
+    public void ReleaseBomb() {
         enabled = true;
         _circleCollider.radius = 1;
         gameObject.SetActive(true);
     }
 
-    private IEnumerator Explode()
-    {
-        if (_circleCollider.radius >= _range)
-        {
+    private IEnumerator Explode() {
+        if (_circleCollider.radius >= _range) {
             Destroy(gameObject);
-        }
-        else
-        {
+        } else {
             Vector3 currentScale = transform.localScale;
             transform.localScale = new(currentScale.x + _explodeSpeed, currentScale.y + _explodeSpeed, currentScale.z);
             _circleCollider.radius += (1 / 2 * Mathf.PI) + _explodeSpeed;
@@ -51,10 +43,8 @@ public class ZombieBomb : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Zombifiable"))
-        {
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.gameObject.CompareTag("Zombifiable")) {
             Zombifiable zombifiable = collision.gameObject.GetComponent<Zombifiable>();
             //zombifiable.Zombify(3); TODO: Fix if needed
         }
