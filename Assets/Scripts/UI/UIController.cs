@@ -1,5 +1,4 @@
 using TMPro;
-using TreeEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -62,7 +61,6 @@ public class UIController : MonoBehaviour {
         SoundsManager.Instance.PlaySound(SoundTypes.ButtonClick);
     }
 
-    // TODO: Remove
     public void LoadPlayground() {
         SceneManager.LoadScene("Playground");
     }

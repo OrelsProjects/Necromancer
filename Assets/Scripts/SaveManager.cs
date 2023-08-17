@@ -2,7 +2,6 @@
 using System.IO;
 using UnityEngine;
 using Newtonsoft.Json;
-using static UnityEditor.Progress;
 using System;
 using System.Collections;
 
@@ -57,7 +56,6 @@ public class SaveManager : MonoBehaviour {
         }
     };
         string stringSaveData = JsonConvert.SerializeObject(saveData);
-        Debug.Log("Saving " + stringSaveData + " to " + BuildSaveFileName(item));
         File.WriteAllText(BuildSaveFileName(item), stringSaveData);
     }
 
@@ -89,7 +87,6 @@ public class SaveManager : MonoBehaviour {
                         TypeNameHandling = TypeNameHandling.Auto
                     });
                 }
-                Debug.Log("Loading " + stringData + " from " + saveFileLocation);
             }
             s.LoadData(data);
         });

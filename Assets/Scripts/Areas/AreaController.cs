@@ -1,10 +1,16 @@
 ﻿using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 public class AreaController : MonoBehaviour {
 
+    [ShowIf("_state", AreaState.Zombified)]
+    [Header("Spawn Point")]
+    [SerializeField]
+    private Transform _spawnPoint;
+
+    [Header("Area Data")]
     [SerializeField]
     private Areas _area;
     [SerializeField]
@@ -17,14 +23,20 @@ public class AreaController : MonoBehaviour {
     [ShowIf("_state", AreaState.Zombified)]
     [SerializeField]
     private GameObject _upgradeButton = null;
+
+
+    private GameObject _currentLab;
+
     private void Start() {
         AreasManager.Instance.SubscribeToAreasStateChange(UpdateUI);
-        UpdateUI(AreasManager.Instance.AreasState);
+        AreasManager.Instance.SubscribeToAreasLevelChange(UpdateUI);
+        UpdateUI();
     }
 
     private void OnDestroy() {
         if (AreasManager.Instance != null) {
             AreasManager.Instance.UnsubscribeFromAreasStateChange(UpdateUI);
+            AreasManager.Instance.UnsubscribeFromAreasLevelChange(UpdateUI);
         }
     }
 
@@ -38,7 +50,8 @@ public class AreaController : MonoBehaviour {
         AreasManager.Instance.CloseAreaUpgrade();
     }
 
-    void UpdateUI(Dictionary<Areas, AreaState> _areasState) {
+    void UpdateUI() {
+        Dictionary<Areas, AreaState> areasState = AreasManager.Instance.AreasState;
         if (_upgradeButton != null) {
             if (AreasManager.Instance.IsAreaMaxLevel(_area)) {
                 _upgradeButton.SetActive(false);
@@ -46,10 +59,25 @@ public class AreaController : MonoBehaviour {
                 _upgradeButton.SetActive(true);
             }
         }
-        if (_areasState.ContainsKey(_area) && _areasState[_area] != _state) {
+        if (areasState.ContainsKey(_area) && areasState[_area] != _state) {
             gameObject.SetActive(false);
         } else {
             gameObject.SetActive(true);
+        }
+
+        if (_state == AreaState.Zombified) {
+            GameObject newLab = AreasManager.Instance.GetLab(_area);
+            if (newLab != null) {
+                if (_currentLab != null) {
+                    Destroy(_currentLab);
+                }
+
+                _currentLab = Instantiate(AreasManager.Instance.GetLab(_area), transform);
+                _currentLab.transform.position = _spawnPoint.position;
+                if (_currentLab.TryGetComponent<ClickableObject>(out var clickable)) {
+                    clickable.onClick.AddListener(ShowUpgrade);
+                }
+            }
         }
     }
 }

@@ -40,7 +40,6 @@ public class MenuController : MonoBehaviour {
 
     public void OnSettingsClick() {
         _audioSource.PlayOneShot(_settingsClickClip);
-        Debug.Log("Settings clicked");
         _isStartClicked = false;
     }
 

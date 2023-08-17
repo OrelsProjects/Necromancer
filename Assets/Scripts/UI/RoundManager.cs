@@ -106,6 +106,8 @@ public class RoundManager : MonoBehaviour {
 
     private void HandleZombiesWonState() {
         AudioSource.PlayClipAtPoint(_loseSound, Vector3.zero);
+        AreasManager.Instance.AreaZombified(_data.Area);
+        AreasManager.Instance.SaveData();
         _roundResultsUI.SetActive(true);
         _state = RoundState.Won;
     }
@@ -139,9 +141,8 @@ public class RoundManager : MonoBehaviour {
     }
 
     public void StartRound() {
-        _data = Map.Instance.SelectedArea;
-        _defendersParent = new GameObject("Defenders");
         PlayBackgroundMusic();
+        _data = Map.Instance.SelectedArea;
         _data.RoundData.CiviliansPrefabs.Value.ForEach(civ => {
             Vector3 randomPosition = new(Random.Range(-5, 5), Random.Range(-5, 5));
             Zombifiable zombifiableInstance = Instantiate(civ, randomPosition, Quaternion.identity);
@@ -155,7 +156,7 @@ public class RoundManager : MonoBehaviour {
     }
 
     public void AddZombie(Zombie zombie) {
-        if (_zombies.Count == 0) {
+        if (_zombiesParent == null) {
             _zombiesParent = new GameObject("Zombies");
         }
         zombie.gameObject.transform.SetParent(_zombiesParent.transform);
@@ -164,7 +165,7 @@ public class RoundManager : MonoBehaviour {
     }
 
     public void AddZombifiable(Zombifiable zombifiable) {
-        if (_zombifiables.Count == 0) {
+        if (_zombifiablesParent == null) {
             _zombifiablesParent = new GameObject("Zombifiables");
         }
         zombifiable.gameObject.transform.SetParent(_zombifiablesParent.transform);
@@ -172,29 +173,18 @@ public class RoundManager : MonoBehaviour {
     }
 
     public void AddDefender(Defender defender) {
-        if (_defenders.Count == 0) {
+        if (_defendersParent == null) {
             _defendersParent = new GameObject("Defenders");
         }
         defender.gameObject.transform.SetParent(_defendersParent.transform);
         _defenders.Add(defender);
     }
 
-    public void RemoveZombie(Zombie zombie) {
-        _zombies.Remove(zombie);
-    }
-
-    public void RemoveZombifiable(Zombifiable zombifiable) {
-        _zombifiables.Remove(zombifiable);
-    }
-
-    public void RemoveDefender(Defender defender) {
-        _defenders.Remove(defender);
-    }
+    public void RemoveZombie(Zombie zombie) => _zombies.Remove(zombie);
+    public void RemoveZombifiable(Zombifiable zombifiable) => _zombifiables.Remove(zombifiable);
+    public void RemoveDefender(Defender defender) => _defenders.Remove(defender);
 
     public void FinishRound() {
-        if (_state == RoundState.Won) {
-            AreasManager.Instance.AreaZombified(_data.Area);
-        }
         Destroy(gameObject);
     }
 

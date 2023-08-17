@@ -9,13 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ffc529897a22134e83b8ceb66c5915f, type: 3}
-  m_Name: PlaygroundArea
+  m_Script: {fileID: 11500000, guid: afb148f80bfbd1645ad2e62297c29cb7, type: 3}
+  m_Name: Area Playground
   m_EditorClassIdentifier: 
   _areaLevels:
-  - {fileID: 11400000, guid: 5d757aa707fa333479025b77bd41ac7d, type: 2}
-  - {fileID: 11400000, guid: 11fc74b373d7ebd4d946e06092851efd, type: 2}
-  - {fileID: 11400000, guid: cf1e74b54f1e7654da626269296fb820, type: 2}
-  AreaNumber: 1
-  Area: 0
+  - {fileID: 11400000, guid: 88411415a539cc04db84693fe0f17c51, type: 2}
+  - {fileID: 11400000, guid: c97c42296ce15b14694b2f76bcd8f6b1, type: 2}
+  - {fileID: 11400000, guid: 51670ac6c93f5d94d8b728514ba48b89, type: 2}
+  Area: 2
   RoundData: {fileID: 11400000, guid: df9fccbdde97dde4faa3fb003d7c0ec8, type: 2}

@@ -323,9 +323,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7483850a598aee7468612583a1959869, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _spawnPoint: {fileID: 0}
   _area: 1
   _state: 0
   _data: {fileID: 0}
+  _upgradeButton: {fileID: 0}
 --- !u!1001 &2542307006449952259
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -34,13 +34,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1036798099327359381}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.1561996, y: -0.76696897, z: 0.015904132}
-  m_LocalScale: {x: 4.8, y: 4.8, z: 4.8}
+  m_LocalScale: {x: 7, y: 7, z: 7}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2845085499663975967
 Animator:
@@ -267,6 +267,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Data: {fileID: 11400000, guid: a6dace0a60998e4468cd9462d51b1c6e, type: 2}
+  Type: 0
+  ProjectileSpawnPosition: {fileID: 0}
   _attackSound: {fileID: 8300000, guid: 541d0be8fda7de14c95c0de081d10354, type: 3}
 --- !u!114 &3690822906193468867
 MonoBehaviour:

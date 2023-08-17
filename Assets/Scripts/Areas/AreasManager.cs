@@ -8,6 +8,7 @@ using UnityEngine;
 public enum Areas {
     Area1,
     Area2,
+    Playground,
 }
 
 public enum AreaState {
@@ -29,6 +30,13 @@ public class AreasManager : MonoBehaviour, ISaveable {
     public static AreasManager Instance;
 
     [SerializeField]
+    private GameObject Lab1;
+    [SerializeField]
+    private GameObject Lab2;
+    [SerializeField]
+    private GameObject Lab3;
+
+    [SerializeField]
     private List<AreaData> _areasData = new();
 
     public delegate void AreasLevelChangeDelegate();
@@ -38,7 +46,7 @@ public class AreasManager : MonoBehaviour, ISaveable {
         get { return _areasLevels; }
     }
 
-    public delegate void AreasStateChangeDelegate(Dictionary<Areas, AreaState> _areasState);
+    public delegate void AreasStateChangeDelegate();
     private event AreasStateChangeDelegate OnAreaStateChanged;
     private Dictionary<Areas, AreaState> _areasState = new();
     public Dictionary<Areas, AreaState> AreasState {
@@ -52,7 +60,7 @@ public class AreasManager : MonoBehaviour, ISaveable {
     }
 
     private void NotifyChangesAreaState() {
-        OnAreaStateChanged?.Invoke(_areasState);
+        OnAreaStateChanged?.Invoke();
     }
 
     private void NotifyChangesAreaLevel() {
@@ -86,15 +94,34 @@ public class AreasManager : MonoBehaviour, ISaveable {
     public void UpgradeArea(Areas area) {
         _areasLevels[area]++;
         NotifyChangesAreaLevel();
-        SaveManager.Instance.SaveItem(GetData());
+        SaveData();
     }
+
+    public GameObject GetLab(Areas area) =>
+        GetAreaLevel(area) switch {
+            1 => Lab1,
+            2 => Lab2,
+            3 => Lab3,
+            _ => null,
+        };
+
+    public GameObject GetNextLab(Areas area) =>
+        GetAreaLevel(area) switch {
+            1 => Lab2,
+            2 or 3 => Lab3,
+            _ => null,
+        };
+
 
     public AreaData GetAreaData(Areas area) {
         return _areasData.FirstOrDefault(a => a.Area == area);
     }
 
     public int GetAreaLevel(Areas area) {
-        return _areasLevels[area];
+        if (_areasLevels.ContainsKey(area)) {
+            return _areasLevels[area];
+        }
+        return 0;
     }
 
     public void AreaZombified(Areas area) {
@@ -105,7 +132,7 @@ public class AreasManager : MonoBehaviour, ISaveable {
         }
 
         NotifyChangesAreaState();
-        SaveManager.Instance.SaveItem(GetData());
+        SaveData();
     }
 
     public bool IsAreaMaxLevel(Areas area) {
@@ -118,6 +145,10 @@ public class AreasManager : MonoBehaviour, ISaveable {
             return areaLevel >= GetAreaData(area).MaxLevel;
         }
         return false;
+    }
+
+    public void SaveData() {
+        SaveManager.Instance.SaveItem(GetData());
     }
 
     public ISaveableObject GetData() {

@@ -7,13 +7,12 @@ public class AreaData : ScriptableObject {
     [SerializeField]
     private List<AreaLevel> _areaLevels;
 
-    public int AreaNumber;
     public Areas Area;
     public RoundData RoundData;
 
     public Dictionary<int, AreaLevel> Levels {
         get {
-            Dictionary<int, AreaLevel> levels = new Dictionary<int, AreaLevel>();
+            Dictionary<int, AreaLevel> levels = new();
             _areaLevels.ForEach(areaLevel => levels.Add(areaLevel.Level, areaLevel));
             return levels;
         }

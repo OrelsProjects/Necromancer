@@ -30,12 +30,13 @@ public class ZombiePlaceholder : MonoBehaviour, IEndDragHandler, IDragHandler {
         if (_isSpawned || _isSpawning) {
             return;
         }
+
         if (_tempZombieSprite == null) {
             _tempZombieSprite = Instantiate(_zombieSprite, _initialSpritePosition, Quaternion.identity);
             _zombieSprite.color = new Color(1, 1, 1, 0.3f);
             _tempZombieSprite.sortingLayerName = "UI";
             _tempZombieSprite.sortingOrder = 2;
-            _tempZombieSprite.transform.localScale = new Vector3(5, 5, 5);
+            _tempZombieSprite.transform.localScale = new Vector3(8, 8, 8);
         }
 
         _currentTempSpritePosition = GetMousePosition();
@@ -54,20 +55,31 @@ public class ZombiePlaceholder : MonoBehaviour, IEndDragHandler, IDragHandler {
         }
 
         if (IsGround()) {
-            _isSpawning = true;
-            Vector2 spawnPosition = _tempZombieSprite.transform.position;
-            Destroy(_tempZombieSprite.gameObject);
-            _tempZombieSprite = null;
-            int amountToSpawn = CharactersManager.Instance.GetZombieData(_type).AmountSpawned;
-            Debug.Log("Spawning " + amountToSpawn + " zombies");
-            for (int i = 0; i < amountToSpawn; i++) {
-                Instantiate(CharactersManager.Instance.GetZombiePrefab(_type).gameObject, spawnPosition, Quaternion.identity);
-            }
-
-            StartCoroutine(WaitForZombiesSpawn()); // Allow zombies to spawn before checking if there are any zombies left to spawn.
+            SpawnZombies();
         } else {
             _zombieSprite.color = new Color(1, 1, 1, 1);
         }
+    }
+
+    private void SpawnZombies() {
+        _isSpawning = true;
+        Vector3 circleCenter = _tempZombieSprite.transform.position;
+
+        Destroy(_tempZombieSprite.gameObject);
+
+        int amountToSpawn = CharactersManager.Instance.GetZombieData(_type).AmountSpawned;
+        float angleIncrement = 360.0f / amountToSpawn;
+        float radius = 0.5f;
+
+        for (int i = 0; i < amountToSpawn; i++) {
+            float angle = i * angleIncrement;
+
+            Vector3 spawnPosition = circleCenter + new Vector3(radius * Mathf.Cos(angle * Mathf.Deg2Rad), radius * Mathf.Sin(angle * Mathf.Deg2Rad), 0);
+
+            Instantiate(CharactersManager.Instance.GetZombiePrefab(_type).gameObject, spawnPosition, Quaternion.identity);
+        }
+
+        StartCoroutine(WaitForZombiesSpawn()); // Allow zombies to spawn before checking if there are any zombies left to spawn.
     }
 
     private IEnumerator WaitForZombiesSpawn() {

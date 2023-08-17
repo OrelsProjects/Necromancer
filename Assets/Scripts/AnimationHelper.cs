@@ -24,6 +24,9 @@ public class AnimationHelper {
             if (parameter.type == AnimatorControllerParameterType.Bool) {
                 _animator.SetBool(parameter.name, false);
             }
+            if (parameter.type == AnimatorControllerParameterType.Trigger) {
+                _animator.ResetTrigger(parameter.name);
+            }
         }
     }
 

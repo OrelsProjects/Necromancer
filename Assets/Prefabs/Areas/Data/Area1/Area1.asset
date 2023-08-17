@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ffc529897a22134e83b8ceb66c5915f, type: 3}
+  m_Script: {fileID: 11500000, guid: afb148f80bfbd1645ad2e62297c29cb7, type: 3}
   m_Name: Area1
   m_EditorClassIdentifier: 
   _areaLevels:
-  - {fileID: 11400000, guid: 5d757aa707fa333479025b77bd41ac7d, type: 2}
-  - {fileID: 11400000, guid: 11fc74b373d7ebd4d946e06092851efd, type: 2}
-  - {fileID: 11400000, guid: cf1e74b54f1e7654da626269296fb820, type: 2}
+  - {fileID: 11400000, guid: 85f9b72fddc54ac4facb91b4dfdeedb5, type: 2}
+  - {fileID: 11400000, guid: ec3444b5b944ed94fb4e5024b48e0b52, type: 2}
+  - {fileID: 11400000, guid: f097280f82f5d634c88ec6106355ff85, type: 2}
   AreaNumber: 1
   Area: 0
   RoundData: {fileID: 11400000, guid: 3273523fa465aab48ab23fe28d2173ac, type: 2}

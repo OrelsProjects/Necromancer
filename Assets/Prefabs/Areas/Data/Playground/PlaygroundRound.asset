@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: PlaygroundRound
   m_EditorClassIdentifier: 
   Melee: 1
-  _meleesCount: 2
+  _meleesCount: 1
   Ranged: 1
-  _archersCount: 2
+  _archersCount: 0
   Civilians: 1
   _civiliansCount: 1
   Reward: 0

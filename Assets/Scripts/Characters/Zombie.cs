@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using System.Runtime.CompilerServices;
+using static UnityEngine.GraphicsBuffer;
 
 public enum ZombieState {
     Idle,
@@ -45,7 +47,11 @@ public class Zombie : MonoBehaviour, IChaseable {
     private WanderController _wanderController;
     private AnimationHelper _animationHelper;
     private ZombieState _state = ZombieState.Idle;
+    private Zombifiable _target;
 
+    // Used to check if the target is dead after the attack animaion is played
+    // So that the defender won't attack a target that is not reached
+    private bool _isTargetAttackedDead;
     private float _currentHealth;
 
     private void Awake() {
@@ -78,7 +84,7 @@ public class Zombie : MonoBehaviour, IChaseable {
         if (_playground) {
             return;
         }
-        if (_chaser.Target == null && _state != ZombieState.RoundOver) {
+        if (_target == null && _state != ZombieState.RoundOver) {
             SetState(ZombieState.Idle);
             _animationHelper.PlayAnimation(AnimationType.Idle);
         }
@@ -96,6 +102,12 @@ public class Zombie : MonoBehaviour, IChaseable {
             case ZombieState.AboutToDie:
                 HandleDeath();
                 break;
+            case ZombieState.Attacking:
+                if (_target == null) {
+                    _isTargetAttackedDead = true;
+                    SetState(ZombieState.Idle);
+                }
+                break;
         }
     }
 
@@ -103,6 +115,7 @@ public class Zombie : MonoBehaviour, IChaseable {
         _movementController.Stop();
         _chaser.SetTarget();
         if (_chaser.Target != null) {
+            _target = _chaser.Target;
             SetState(ZombieState.Chasing);
         } else {
             FinishRound();
@@ -110,14 +123,14 @@ public class Zombie : MonoBehaviour, IChaseable {
     }
 
     private void Chase() {
-        if (!_chaser.Target.IsAvailable()) {
+        if (!_target.IsAvailable()) {
             SetState(ZombieState.Idle);
         }
         if (_chaser.IsTargetReached()) {
-            _movementController.Move(0, _chaser.Target.gameObject);
+            _movementController.Move(0, _target.gameObject);
             SetState(ZombieState.AboutToAttack);
         } else {
-            _movementController.Move(_data.Speed, _chaser.Target.gameObject);
+            _movementController.Move(_data.Speed, _target.gameObject);
             _animationHelper.PlayAnimation(AnimationType.Running);
         }
     }
@@ -128,7 +141,7 @@ public class Zombie : MonoBehaviour, IChaseable {
     }
 
     private IEnumerator ZombifyTarget() {
-        if (!_chaser.Target.IsAvailable() || _chaser.Target.IsZombified()) {
+        if (!_target.IsAvailable() || _target.IsZombified()) {
             SetState(ZombieState.Idle);
             yield break;
         }
@@ -145,8 +158,19 @@ public class Zombie : MonoBehaviour, IChaseable {
 
     // For the animator to use
     public void InitiateAttack() {
-        if (_chaser.Target.IsAvailable()) {
-            _chaser.Target.Zombify(gameObject, _data.Damage);
+        if (_target) {
+            Vector2 targetPosition = _target.transform.position;
+            // If the distance between the target and the zombie is too big, debuglog it
+            if (Vector2.Distance(transform.position, targetPosition) > 1.5f) {
+                Debug.LogWarning("Zombie is too far from the target");
+            }
+        }
+        if (_state != ZombieState.Attacking) {
+            _isTargetAttackedDead = false;
+            return;
+        }
+        if (_target.IsAvailable()) {
+            _target.Zombify(gameObject, _data.Damage);
         }
     }
 
@@ -173,7 +197,7 @@ public class Zombie : MonoBehaviour, IChaseable {
         }
         SetState(ZombieState.Dead);
         AudioSource.PlayClipAtPoint(_deathSound, transform.position);
-        _movementController.Stop();
+        _movementController.Disable();
         _wanderController.Disable();
         _animationHelper.PlayAnimation(AnimationType.Death);
         Destroy(gameObject, 1f);

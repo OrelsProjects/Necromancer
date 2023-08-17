@@ -9,32 +9,32 @@ public class AreaUpgradeController : MonoBehaviour {
     [SerializeField]
     private TextMeshProUGUI _nextCurrencyPerMinuteText;
     [SerializeField]
+    private Image _currentLab;
+    [SerializeField]
+    private Image _nextLab;
+    [SerializeField]
     private TextMeshProUGUI _upgradeCost;
     [SerializeField]
     private Image _upgradeCostIcon;
     [SerializeField]
     private Button _upgradeButton;
 
-    private Areas area;
+    private Areas _area;
 
     private AreaData _areaData;
     private int CurrentLevel {
         get {
-            return AreasManager.Instance.GetAreaLevel(area);
+            return AreasManager.Instance.GetAreaLevel(_area);
         }
     }
 
-    private void Start() {
-        AreasManager.Instance.SubscribeToAreasLevelChange(UpdateUI);
-    }
-
     void OnEnable() {
-        _areaData = AreasManager.Instance.GetAreaData(area);
+        _areaData = AreasManager.Instance.GetAreaData(_area);
         UpdateUI();
     }
 
     public void Enable(Areas area) {
-        this.area = area;
+        _area = area;
         gameObject.SetActive(true);
     }
 
@@ -44,25 +44,33 @@ public class AreaUpgradeController : MonoBehaviour {
 
     public void Upgrade() {
         AreaLevel level = _areaData.GetAreaLevel(CurrentLevel);
-        InventoryManager.Instance.UseCurrency(level.PriceToUpgrade);
-        AreasManager.Instance.UpgradeArea(area);
-        UpdateUI();
+        if (InventoryManager.Instance.CanAfford(level.PriceToUpgrade)) {
+            InventoryManager.Instance.UseCurrency(level.PriceToUpgrade);
+            AreasManager.Instance.UpgradeArea(_area);
+            UpdateUI();
+        }
     }
 
     private void UpdateUI() {
+        UpdateStats();
+        UpdateLabsImages();
+    }
+
+    private void UpdateStats() {
         AreaLevel level = _areaData.GetAreaLevel(CurrentLevel);
         _currentCurrencyPerMinuteText.text = level.CurrencyPerMinute.ToString();
-        if (AreasManager.Instance.IsAreaMaxLevel(area)) {
+        if (AreasManager.Instance.IsAreaMaxLevel(_area)) {
             _upgradeCost.text = "MAXED";
             _upgradeButton.interactable = false;
-            _upgradeButton.GetComponent<Image>().enabled = false;
+
+            Image upgradeButtonImage = _upgradeButton.GetComponent<Image>();
+            upgradeButtonImage.enabled = false;
             _upgradeCostIcon.enabled = false;
             return;
-        } else {
-            _upgradeButton.GetComponent<Image>().enabled = true;
-            _upgradeCostIcon.enabled = true;
-            _upgradeButton.interactable = true;
         }
+        _upgradeButton.GetComponent<Image>().enabled = true;
+        _upgradeCostIcon.enabled = true;
+        _upgradeButton.interactable = true;
         _nextCurrencyPerMinuteText.text = _areaData.GetAreaLevel(CurrentLevel + 1).CurrencyPerMinute.ToString();
         _upgradeCost.text = level.PriceToUpgrade.ToString();
 
@@ -71,5 +79,12 @@ public class AreaUpgradeController : MonoBehaviour {
         } else {
             _upgradeButton.interactable = false;
         }
+    }
+
+    private void UpdateLabsImages() {
+        GameObject currentLab = AreasManager.Instance.GetLab(_area);
+        GameObject nextLab = AreasManager.Instance.GetNextLab(_area);
+        _currentLab.sprite = currentLab.GetComponent<SpriteRenderer>()?.sprite;
+        _nextLab.sprite = nextLab.GetComponent<SpriteRenderer>()?.sprite;
     }
 }

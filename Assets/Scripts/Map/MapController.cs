@@ -10,6 +10,7 @@ public class Map : MonoBehaviour {
     [SerializeField]
     private List<AreaData> _areas = new();
 
+    [HideInInspector]
     public AreaData SelectedArea;
 
     private void Awake() {

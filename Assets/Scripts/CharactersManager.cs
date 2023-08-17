@@ -21,7 +21,7 @@ public class CharactersManager : MonoBehaviour, ISaveable {
     [SerializeField]
     private Sprite _basicZombieSprite;
     [SerializeField]
-    private ZombieData _basicZombieData; // TODO: Change it and make the data inside immutable (The _currentLevel)
+    private ZombieData _basicZombieData;
     [Header("Prefabs")]
     [SerializeField]
     private Zombie _basicZombiePrefab;

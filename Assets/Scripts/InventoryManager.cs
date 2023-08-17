@@ -52,7 +52,6 @@ public class InventoryManager : MonoBehaviour, ISaveable {
     }
 
     public ISaveableObject GetData() {
-        Debug.Log("Getting inventory data, currency: " + _currency.ToString());
         return new InventoryData {
             Currency = _currency
         };

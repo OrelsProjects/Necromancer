@@ -46,7 +46,7 @@ public class Zombifiable : MonoBehaviour, IChaseable {
         } else {
             yield break;
         }
-        _movementController.Disable();
+        _movementController.Disable(forced: true);
         _animationHelper.PlayAnimation(AnimationType.Death);
         AudioSource.PlayClipAtPoint(_data.DeathSound, transform.position);
         yield return new WaitForSeconds(1f);
