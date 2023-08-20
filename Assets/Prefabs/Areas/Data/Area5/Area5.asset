@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb148f80bfbd1645ad2e62297c29cb7, type: 3}
+  m_Name: Area5
+  m_EditorClassIdentifier: 
+  _areaLevels:
+  - {fileID: 11400000, guid: d6564a4691f23c84d88ff2ff53f221cd, type: 2}
+  - {fileID: 11400000, guid: 845319a790fd23a409e904f654033e34, type: 2}
+  - {fileID: 11400000, guid: b4a57d7de0a7adc4fb3910b706f70895, type: 2}
+  Area: 4
+  RoundData: {fileID: 11400000, guid: d60b06c045c95c543aa79d25e74b7b9f, type: 2}

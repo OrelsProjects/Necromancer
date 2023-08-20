@@ -8,6 +8,9 @@ using UnityEngine;
 public enum Areas {
     Area1,
     Area2,
+    Area3,
+    Area4,
+    Area5,
     Playground,
 }
 

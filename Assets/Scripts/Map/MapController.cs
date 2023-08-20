@@ -35,6 +35,18 @@ public class Map : MonoBehaviour {
         LoadArea(Areas.Area2);
     }
 
+    public void LoadArea3() {
+        LoadArea(Areas.Area3);
+    }
+
+    public void LoadArea4() {
+        LoadArea(Areas.Area4);
+    }
+
+    public void LoadArea5() {
+        LoadArea(Areas.Area5);
+    }
+
     public void LoadArea(Areas area) {
         AreaData areaData = _areas.Find(a => a.Area == area);
         if (areaData != null) {
