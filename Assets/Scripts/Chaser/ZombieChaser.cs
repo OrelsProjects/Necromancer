@@ -19,7 +19,7 @@ public class ZombieChaser : MonoBehaviour {
         _chaser.SetTarget();
     }
 
-    public bool IsTargetReached() {
-        return _chaser.IsTargetReached();
+    public TargetDistanceState GetTargetDistanceState() {
+        return _chaser.GetTargetDistanceState();
     }
 }

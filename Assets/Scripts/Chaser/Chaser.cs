@@ -33,7 +33,7 @@ public class Chaser<T> : IChaser<T> where T : MonoBehaviour, IChaseable {
         foreach (var target in targets) {
             var chaseable = target.GetComponent<T>();
             if (chaseable != null && chaseable.IsAvailable()) {
-                float distance = Vector3.Distance(_gameObject.transform.position, chaseable.GetTransform().position);
+                float distance = Vector3.Distance(_gameObject.transform.position, chaseable.transform.position);
                 if (distance < closestDistance) {
                     closestDistance = distance;
                     _target = chaseable;
@@ -46,8 +46,16 @@ public class Chaser<T> : IChaser<T> where T : MonoBehaviour, IChaseable {
         return _target;
     }
 
-    public bool IsTargetReached() {
-        return Vector2.Distance(_gameObject.transform.position, _target.GetTransform().position) < _distanceFromTarget;
+    public TargetDistanceState GetTargetDistanceState() {
+        if (_target.IsAvailable()) {
+            if (Vector2.Distance(_gameObject.transform.position, _target.transform.position) < _distanceFromTarget) {
+                return TargetDistanceState.Reached;
+            } else {
+                return TargetDistanceState.NotReached;
+            }
+        } else {
+            return TargetDistanceState.NotAvailable;
+        }
     }
 
     public void SetAttackRange(float distance) {

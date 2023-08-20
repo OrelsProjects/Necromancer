@@ -11,6 +11,7 @@ public class Zombifiable : MonoBehaviour, IChaseable {
     private int _hitsToZombify;
     private float _movementBlockedTimeAfterAttack;
     private float _lastHitTime = 0f;
+    private float _timeToZombify = 1f;
     private bool _isTurning = false;
 
     MovementController _movementController;
@@ -49,7 +50,7 @@ public class Zombifiable : MonoBehaviour, IChaseable {
         _movementController.Disable(forced: true);
         _animationHelper.PlayAnimation(AnimationType.Death);
         AudioSource.PlayClipAtPoint(_data.DeathSound, transform.position);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(_timeToZombify);
         zombie.SetActive(true);
         Destroy(gameObject);
     }
@@ -70,10 +71,6 @@ public class Zombifiable : MonoBehaviour, IChaseable {
 
     public bool IsAvailable() {
         return !IsZombified();
-    }
-
-    public Transform GetTransform() {
-        return transform;
     }
 
     private void OnDestroy() {

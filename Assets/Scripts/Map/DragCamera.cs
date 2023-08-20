@@ -51,7 +51,7 @@ public class DragCamera : MonoBehaviour {
         float vertExtent = Camera.main.orthographicSize;
         float horzExtent = vertExtent * Screen.width / Screen.height;
 
-        // Calculate minX and maxX based on current zoom level
+     
         float minX = minPos.x + horzExtent;
         float maxX = maxPos.x - horzExtent;
         float minY = minPos.y + vertExtent;
@@ -66,7 +66,6 @@ public class DragCamera : MonoBehaviour {
     private bool IsMapClicked() {
         int layerMask = 1 << 8;
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
 
         if (Physics2D.Raycast(mousePosition, Vector2.zero, Mathf.Infinity, layerMask)) {
             return true;

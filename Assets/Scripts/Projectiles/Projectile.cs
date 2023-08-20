@@ -13,6 +13,7 @@ public class Projectile : MonoBehaviour, IProjectile {
     private const float ProjectileLifetime = 3f;
 
     private float _damage;
+    private bool _isUsed;
 
     private void Awake() {
         _movementController = GetComponent<MovementController>();
@@ -34,10 +35,12 @@ public class Projectile : MonoBehaviour, IProjectile {
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
-
+        if (_isUsed) {
+            return;
+        }
         if (collision.gameObject.layer == LayerMask.NameToLayer("Zombie")) {
-            Zombie zombie = collision.gameObject.GetComponent<Zombie>();
-            if (zombie != null) {
+            if (collision.gameObject.TryGetComponent<Zombie>(out var zombie)) {
+                _isUsed = true;
                 zombie.TakeDamage(_damage);
                 AudioSource.PlayClipAtPoint(_hitSound, transform.position);
                 Destroy(gameObject);

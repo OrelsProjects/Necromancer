@@ -63,9 +63,6 @@ public class MovementController : MonoBehaviour {
     }
 
     public void Stop() {
-        if (_forcedDisabled) {
-            return;
-        }
         Move(0, Vector2.zero);
         _animationHelper.PlayAnimation(AnimationType.Idle);
     }
@@ -86,7 +83,11 @@ public class MovementController : MonoBehaviour {
         if (!enabled) {
             return;
         }
-        Stop();
+        if (_forcedDisabled) {
+            _rigidbody.velocity = Vector2.one;
+        } else {
+            Stop();
+        }
         enabled = false;
     }
 
@@ -101,6 +102,9 @@ public class MovementController : MonoBehaviour {
     }
 
     private void OnEnable() {
+        if (_forcedDisabled) {
+            return;
+        }
         Move(_previousSpeed, _previousDirection);
     }
 

@@ -9,6 +9,10 @@ public class AreaUpgradeController : MonoBehaviour {
     [SerializeField]
     private TextMeshProUGUI _nextCurrencyPerMinuteText;
     [SerializeField]
+    private GameObject _nextStatsContainer;
+    [SerializeField]
+    private GameObject _nextStatsContainerMax;
+    [SerializeField]
     private Image _currentLab;
     [SerializeField]
     private Image _nextLab;
@@ -66,11 +70,20 @@ public class AreaUpgradeController : MonoBehaviour {
             Image upgradeButtonImage = _upgradeButton.GetComponent<Image>();
             upgradeButtonImage.enabled = false;
             _upgradeCostIcon.enabled = false;
+
+            _nextStatsContainer.SetActive(false);
+            _nextStatsContainerMax.SetActive(true);
+
             return;
         }
+
+        _nextStatsContainer.SetActive(true);
+        _nextStatsContainerMax.SetActive(false);
+
         _upgradeButton.GetComponent<Image>().enabled = true;
         _upgradeCostIcon.enabled = true;
         _upgradeButton.interactable = true;
+
         _nextCurrencyPerMinuteText.text = _areaData.GetAreaLevel(CurrentLevel + 1).CurrencyPerMinute.ToString();
         _upgradeCost.text = level.PriceToUpgrade.ToString();
 

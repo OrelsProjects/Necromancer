@@ -12,7 +12,7 @@ public class ZombieData : ScriptableObject
     {
         get
         {
-            Dictionary<int, ZombieLevel> levels = new Dictionary<int, ZombieLevel>();
+            Dictionary<int, ZombieLevel> levels = new();
             _zombieLevels.ForEach(zombieLevel => levels.Add(zombieLevel.Level, zombieLevel));
             return levels;
         }

@@ -84,9 +84,11 @@ public class Zombie : MonoBehaviour, IChaseable {
         if (_playground) {
             return;
         }
-        if (_target == null && _state != ZombieState.RoundOver) {
-            SetState(ZombieState.Idle);
-            _animationHelper.PlayAnimation(AnimationType.Idle);
+        if (_target != null && !_target.IsAvailable()) {
+            if (_state != ZombieState.RoundOver) {
+                SetState(ZombieState.Idle);
+                _animationHelper.PlayAnimation(AnimationType.Idle);
+            }
         }
 
         switch (_state) {
@@ -126,7 +128,7 @@ public class Zombie : MonoBehaviour, IChaseable {
         if (!_target.IsAvailable()) {
             SetState(ZombieState.Idle);
         }
-        if (_chaser.IsTargetReached()) {
+        if (_chaser.GetTargetDistanceState() == TargetDistanceState.Reached) {
             _movementController.Move(0, _target.gameObject);
             SetState(ZombieState.AboutToAttack);
         } else {
@@ -221,6 +223,4 @@ public class Zombie : MonoBehaviour, IChaseable {
     public bool IsAlive() => _currentHealth > 0;
 
     public bool IsAvailable() => _currentHealth > 0;
-
-    public Transform GetTransform() => transform;
 }
