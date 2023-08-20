@@ -9,4 +9,6 @@ public interface IChaseable {
     /// </returns>
     /// <exception cref="TragetNotAvailableException">Thrown when the target is not available.</exception>
     bool IsAvailable();
+
+    
 }

@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum ChasingType {
@@ -15,7 +13,10 @@ public class Chaser<T> : IChaser<T> where T : MonoBehaviour, IChaseable {
     private readonly GameObject _gameObject;
 
     private float _distanceFromTarget;
-    private T _target;
+
+    private T Target;
+
+    public event IChaser<T>.TragetChangeDelegate OnTargetChange;
 
     public Chaser(GameObject gameObject, float distanceFromTarget) {
         _gameObject = gameObject;
@@ -27,7 +28,7 @@ public class Chaser<T> : IChaser<T> where T : MonoBehaviour, IChaseable {
         };
     }
 
-    public void FindNewTarget() {
+    public T FindNewTarget() {
         float closestDistance = Mathf.Infinity;
         var targets = GameObject.FindGameObjectsWithTag(_tag);
         foreach (var target in targets) {
@@ -36,23 +37,20 @@ public class Chaser<T> : IChaser<T> where T : MonoBehaviour, IChaseable {
                 float distance = Vector3.Distance(_gameObject.transform.position, chaseable.transform.position);
                 if (distance < closestDistance) {
                     closestDistance = distance;
-                    _target = chaseable;
+                    SetTarget(chaseable);
                 }
             }
         }
-    }
-
-    public void SetNewTarget(T target) {
-        _target = target;
+        return Target;
     }
 
     public T GetTarget() {
-        return _target;
+        return Target;
     }
 
     public TargetDistanceState GetTargetDistanceState() {
-        if (_target.IsAvailable()) {
-            if (Vector2.Distance(_gameObject.transform.position, _target.transform.position) < _distanceFromTarget) {
+        if (Target.IsAvailable()) {
+            if (Vector2.Distance(_gameObject.transform.position, Target.transform.position) < _distanceFromTarget) {
                 return TargetDistanceState.Reached;
             } else {
                 return TargetDistanceState.NotReached;
@@ -67,6 +65,17 @@ public class Chaser<T> : IChaser<T> where T : MonoBehaviour, IChaseable {
     }
 
     public void SetTarget(T target) {
-        _target = target;
+        Target = target;
+        NotifyTargetChange();
     }
+
+    public void SubscribeToTargetChanges(IChaser<T>.TragetChangeDelegate action) {
+        OnTargetChange += action;
+    }
+
+    public void UnsubscribeFromTargetChanges(IChaser<T>.TragetChangeDelegate action) {
+        OnTargetChange -= action;
+    }
+
+    private void NotifyTargetChange() => OnTargetChange?.Invoke(Target);
 }

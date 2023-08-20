@@ -73,6 +73,7 @@ public class Zombie : MonoBehaviour, IChaseable {
         _animationHelper.SetAttackSpeed(_data.AttackSpeed);
         _currentHealth = _data.Health;
 
+        _chaser.SubscribeToTargetChanges(OnTargetChange);
         RoundManager.Instance.AddZombie(this);
         AudioSource.PlayClipAtPoint(_spawnSound, transform.position);
         if (_playground) {
@@ -81,6 +82,7 @@ public class Zombie : MonoBehaviour, IChaseable {
     }
 
     private void OnDestroy() {
+        _chaser.UnsubscribeFromTargetChanges(OnTargetChange);
         RoundManager.Instance.RemoveZombie(this);
     }
 
@@ -119,11 +121,11 @@ public class Zombie : MonoBehaviour, IChaseable {
 
     private void HandleIdleState() {
         _movementController.Stop();
-        _chaser.FindNewTarget();
-        if (_chaser.Target != null) {
+
+        if (_chaser.Target != null && _chaser.Target.IsAvailable()) {
             _target = _chaser.Target;
             SetState(ZombieState.Chasing);
-        } else {
+        } else if (_chaser.FindNewTarget() == null) {
             FinishRound();
         }
     }
@@ -145,6 +147,11 @@ public class Zombie : MonoBehaviour, IChaseable {
     private void FinishRound() {
         _wanderController.Enable();
         SetState(ZombieState.RoundOver);
+    }
+
+    private void OnTargetChange(Zombifiable target) {
+        _target = target;
+        SetState(ZombieState.Idle);
     }
 
     private IEnumerator ZombifyTarget() {
