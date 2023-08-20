@@ -106,7 +106,7 @@ public class RoundManager : MonoBehaviour {
 
     private void HandleZombiesWonState() {
         AudioSource.PlayClipAtPoint(_loseSound, Vector3.zero);
-        AreasManager.Instance.AreaZombified(_data.Area);
+        AreasManager.Instance.ZombifyArea(_data.Area);
         AreasManager.Instance.SaveData();
         _roundResultsUI.SetActive(true);
         _state = RoundState.Won;

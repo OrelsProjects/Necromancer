@@ -40,6 +40,7 @@ public class InventoryManager : MonoBehaviour, ISaveable {
 
     public void AddCurrency(int amount) {
         Currency += amount;
+        Debug.Log("Currency added!: " + amount);
     }
 
     public bool UseCurrency(int amount) {

@@ -23,6 +23,7 @@ public struct AreasData : ISaveableObject {
 
     public Dictionary<Areas, AreaState> AreasState;
     public Dictionary<Areas, int> AreasLevels;
+    public Dictionary<Areas, DateTime> AreasProductionTime;
 
     public string GetObjectType() {
         return GetType().FullName;
@@ -40,6 +41,9 @@ public class AreasManager : MonoBehaviour, ISaveable {
     private GameObject Lab3;
 
     [SerializeField]
+    private int _maxMinutesToCollectProduction = 60;
+
+    [SerializeField]
     private List<AreaData> _areasData = new();
 
     public delegate void AreasLevelChangeDelegate();
@@ -55,6 +59,11 @@ public class AreasManager : MonoBehaviour, ISaveable {
     public Dictionary<Areas, AreaState> AreasState {
         get { return _areasState; }
     }
+
+    /// <summary>
+    /// When did the area's last production start time was.
+    /// </summary>
+    private Dictionary<Areas, DateTime> _areaLastProductionCollectionTime;
 
     private void Awake() {
         if (Instance == null) {
@@ -84,6 +93,26 @@ public class AreasManager : MonoBehaviour, ISaveable {
 
     public void UnsubscribeFromAreasLevelChange(AreasLevelChangeDelegate delegateUnsubscribe) {
         OnAreaLevelChanged -= delegateUnsubscribe;
+    }
+
+    public void CollectProduction() {
+        int production = CalculateProduction();
+        if (production == 0) { // Don't reset timer if nothing was produced yet.
+            return;
+        }
+        InventoryManager.Instance.AddCurrency(production);
+
+        Dictionary<Areas, DateTime> newAreaLastProductionConsumeTime
+        = _areaLastProductionCollectionTime.ToDictionary(entry => entry.Key, entry => entry.Value);
+
+        foreach (var area in _areaLastProductionCollectionTime) {
+            if (IsAreaZombified(area.Key)) {
+                newAreaLastProductionConsumeTime[area.Key] = DateTime.Now;
+            }
+        }
+
+        _areaLastProductionCollectionTime = newAreaLastProductionConsumeTime;
+        SaveData();
     }
 
     public void SelectAreaForUpgrade(Areas area) {
@@ -127,12 +156,20 @@ public class AreasManager : MonoBehaviour, ISaveable {
         return 0;
     }
 
-    public void AreaZombified(Areas area) {
+    public bool IsAreaZombified(Areas area) {
+        if (_areasState.ContainsKey(area)) {
+            return _areasState[area] == AreaState.Zombified;
+        }
+        return false;
+    }
+
+    public void ZombifyArea(Areas area) {
         if (!_areasState.ContainsKey(area)) {
             _areasState.Add(area, AreaState.Zombified);
         } else {
             _areasState[area] = AreaState.Zombified;
         }
+        _areaLastProductionCollectionTime[area] = DateTime.Now;
 
         NotifyChangesAreaState();
         SaveData();
@@ -158,6 +195,7 @@ public class AreasManager : MonoBehaviour, ISaveable {
         return new AreasData {
             AreasState = _areasState,
             AreasLevels = _areasLevels,
+            AreasProductionTime = _areaLastProductionCollectionTime,
         };
     }
 
@@ -165,10 +203,13 @@ public class AreasManager : MonoBehaviour, ISaveable {
         if (item is AreasData data) {
             _areasState = data.AreasState; // Trigger event after loading data   
             _areasLevels = data.AreasLevels;
+            _areaLastProductionCollectionTime = data.AreasProductionTime;
         }
         _areasLevels ??= new();
         _areasState ??= new();
+        _areaLastProductionCollectionTime ??= new();
 
+        // If some areas were not added, we set their default values
         _areasData.ForEach(a => {
             if (!_areasLevels.ContainsKey(a.Area)) {
                 _areasLevels.Add(a.Area, 1);
@@ -176,8 +217,26 @@ public class AreasManager : MonoBehaviour, ISaveable {
             if (!_areasState.ContainsKey(a.Area)) {
                 _areasState.Add(a.Area, AreaState.Default);
             }
+            if (!_areaLastProductionCollectionTime.ContainsKey(a.Area)) {
+                _areaLastProductionCollectionTime.Add(a.Area, DateTime.Now);
+            }
         });
         NotifyChangesAreaLevel();
         NotifyChangesAreaState();
+    }
+
+    private int CalculateProduction() {
+        int totalProduction = 0;
+        foreach (var area in _areaLastProductionCollectionTime) {
+            if (IsAreaZombified(area.Key)) {
+                TimeSpan timeSpan = DateTime.Now - area.Value;
+                int minutes = Mathf.Clamp((int)timeSpan.TotalMinutes, 0, _maxMinutesToCollectProduction);
+                int areaLevel = GetAreaLevel(area.Key);
+                int currencyPerMinute = GetAreaData(area.Key).GetAreaLevel(areaLevel).CurrencyPerMinute;
+                int production = minutes * currencyPerMinute;
+                totalProduction += production;
+            }
+        }
+        return totalProduction;
     }
 }
