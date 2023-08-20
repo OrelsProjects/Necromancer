@@ -15,8 +15,10 @@ public class ZombieChaser : MonoBehaviour {
         _chaser = new Chaser<Zombifiable>(gameObject, distanceFromTarget);
     }
 
-    public void SetTarget() {
-        _chaser.SetTarget();
+    public void FindNewTarget() => _chaser.FindNewTarget();
+
+    public void SetTarget(Zombifiable target) {
+        _chaser.SetTarget(target);
     }
 
     public TargetDistanceState GetTargetDistanceState() {

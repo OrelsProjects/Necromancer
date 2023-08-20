@@ -20,3 +20,4 @@ MonoBehaviour:
   AmountSpawned: 5
   PriceToUse: 5
   PriceToUpgrade: 5
+  DetectionRange: 3

@@ -19,13 +19,12 @@ public class DefenderChaser : MonoBehaviour {
         _chaser = new Chaser<Zombie>(gameObject, defender.Data.AttackRange);
     }
 
-    public void SetTarget() {
-        _chaser.SetTarget();
-    }
+    public void FindNewTarget() => _chaser.FindNewTarget();
 
-    public TargetDistanceState GetTargetDistanceState() {
-        return _chaser.GetTargetDistanceState();
-    }
+    public void SetTarget(Zombie zombie) => _chaser.SetTarget(zombie);
+
+    public TargetDistanceState GetTargetDistanceState() => _chaser.GetTargetDistanceState();
+
 }
 
 

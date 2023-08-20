@@ -7,7 +7,8 @@ public enum TargetDistanceState {
 }
 
 public interface IChaser<T> where T : MonoBehaviour, IChaseable {
-    void SetTarget();
+    void FindNewTarget();
+    void SetTarget(T target);
     T GetTarget();
     TargetDistanceState GetTargetDistanceState();
 }

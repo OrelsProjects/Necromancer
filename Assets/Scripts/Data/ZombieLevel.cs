@@ -1,8 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "LevelData", menuName = "Necromancer/Zombie/Level", order = 1)]
-public class ZombieLevel : ScriptableObject
-{
+public class ZombieLevel : ScriptableObject {
     [Tooltip("The level of the zombie")]
     public int Level; // The level of the zombie
     [Tooltip("The damage inflicted by the zombie")]
@@ -19,9 +18,10 @@ public class ZombieLevel : ScriptableObject
     public int PriceToUse; // Price to include in a raid
     [Tooltip("Price to upgrade to this level")]
     public int PriceToUpgrade; // Price to upgrade to this level
+    [Tooltip("The range of the zombie defenders detection")]
+    public float DetectionRange;
 
-    public ZombieLevel()
-    {
+    public ZombieLevel() {
         Level = 1;
         Damage = 1;
         Health = 1;

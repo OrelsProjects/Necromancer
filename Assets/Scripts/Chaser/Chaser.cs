@@ -27,7 +27,7 @@ public class Chaser<T> : IChaser<T> where T : MonoBehaviour, IChaseable {
         };
     }
 
-    public void SetTarget() {
+    public void FindNewTarget() {
         float closestDistance = Mathf.Infinity;
         var targets = GameObject.FindGameObjectsWithTag(_tag);
         foreach (var target in targets) {
@@ -40,6 +40,10 @@ public class Chaser<T> : IChaser<T> where T : MonoBehaviour, IChaseable {
                 }
             }
         }
+    }
+
+    public void SetNewTarget(T target) {
+        _target = target;
     }
 
     public T GetTarget() {
@@ -60,5 +64,9 @@ public class Chaser<T> : IChaser<T> where T : MonoBehaviour, IChaseable {
 
     public void SetAttackRange(float distance) {
         _distanceFromTarget = distance;
+    }
+
+    public void SetTarget(T target) {
+        _target = target;
     }
 }

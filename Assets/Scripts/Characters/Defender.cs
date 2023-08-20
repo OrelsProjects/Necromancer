@@ -91,7 +91,7 @@ public abstract class Defender : MonoBehaviour, IChaser<Zombie> {
     }
 
     private void HandleIdleState() {
-        _chaser.SetTarget();
+        _chaser.FindNewTarget();
         if (_chaser.Target != null) {
             _currentTarget = _chaser.Target;
             SetState(DefenderState.Chasing);
@@ -147,8 +147,8 @@ public abstract class Defender : MonoBehaviour, IChaser<Zombie> {
         Destroy(gameObject, 1f);
     }
 
-    public void SetTarget() {
-        _chaser.SetTarget();
+    public void FindNewTarget() {
+        _chaser.FindNewTarget();
     }
 
     public Zombie GetTarget() {
@@ -165,5 +165,9 @@ public abstract class Defender : MonoBehaviour, IChaser<Zombie> {
 
     private void OnDestroy() {
         RoundManager.Instance.RemoveDefender(this);
+    }
+
+    public void SetTarget(Zombie target) {
+        _chaser.SetTarget(target);
     }
 }
