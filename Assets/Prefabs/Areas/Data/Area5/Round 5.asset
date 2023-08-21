@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Round 5
   m_EditorClassIdentifier: 
   Melee: 1
-  _meleesCount: 1
+  _meleesCount: 4
   Ranged: 1
-  _archersCount: 1
+  _archersCount: 7
   Civilians: 1
-  _civiliansCount: 10
+  _civiliansCount: 40
   _raidCost: 400
   Reward: 200
   BackgroundMusic: {fileID: 8300000, guid: 71006b454f6a70c46ba9b40a6deefc15, type: 3}

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class ZombiePriorityBehaviour : MonoBehaviour {
 
@@ -10,16 +11,17 @@ public class ZombiePriorityBehaviour : MonoBehaviour {
 
     private CircleCollider2D _collider;
     private Rigidbody2D _rigidBody;
+    private List<GameObject> _defendersInSight = new();
 
-    private ZombieLevel data {
+    private ZombieLevel Data {
         get {
             return _zombie.Data;
         }
     }
 
-    private float _detectionRange {
+    private float DetectionRange {
         get {
-            return data.DetectionRange;
+            return Data.DetectionRange;
         }
     }
 
@@ -43,6 +45,43 @@ public class ZombiePriorityBehaviour : MonoBehaviour {
 
     private void Update() {
         transform.position = _zombie.transform.position;
+        if (_defendersInSight.Count == 0) {
+            return;
+        }
+        if (_zombieChaser.Target == null || !IsDefender(_zombieChaser.Target.gameObject)) {
+            UpdateTarget();
+        }
+    }
+
+    private void UpdateTarget() {
+        GameObject closestDefender = FindClosestDefender();
+        if (closestDefender == null) {
+            return;
+        }
+        if (ShouldChangeTargets(closestDefender)) {
+            _zombieChaser.SetTarget(closestDefender.GetComponent<Zombifiable>());
+        }
+    }
+
+    private GameObject FindClosestDefender() {
+        GameObject closestDefender = null;
+        List<GameObject> defendersToRemove = new();
+        float closestDistance = Mathf.Infinity;
+        foreach (GameObject defender in _defendersInSight) {
+            if (defender == null) {
+                defendersToRemove.Add(defender);
+                continue;
+            }
+            float distance = Vector2.Distance(transform.position, defender.transform.position);
+            if (distance < closestDistance) {
+                closestDefender = defender;
+                closestDistance = distance;
+            }
+        }
+        foreach (GameObject defender in defendersToRemove) {
+            _defendersInSight.Remove(defender);
+        }
+        return closestDefender;
     }
 
     private void InitRigidbody() {
@@ -52,7 +91,7 @@ public class ZombiePriorityBehaviour : MonoBehaviour {
 
     private void InitCollider() {
         _collider.isTrigger = true;
-        _collider.radius = Mathf.Sqrt(_detectionRange / Mathf.PI) / 2;
+        _collider.radius = Mathf.Sqrt(DetectionRange / Mathf.PI) / 2;
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
@@ -77,8 +116,16 @@ public class ZombiePriorityBehaviour : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.CompareTag("Zombifiable")) {
-            if (ShouldChangeTargets(collision.gameObject)) {
-                _zombieChaser.SetTarget(collision.gameObject.GetComponent<Zombifiable>());
+            if (IsDefender(collision.gameObject)) {
+                _defendersInSight.Add(collision.gameObject);
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision) {
+        if (collision.gameObject.CompareTag("Zombifiable")) {
+            if (IsDefender(collision.gameObject)) {
+                _defendersInSight.Remove(collision.gameObject);
             }
         }
     }
