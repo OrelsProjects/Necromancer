@@ -1,10 +1,11 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class ZombiePlaceholder : MonoBehaviour, IEndDragHandler, IDragHandler {
-    
+
     [SerializeField]
     private SpriteRenderer _zombieSprite;
     [SerializeField]
@@ -95,8 +96,9 @@ public class ZombiePlaceholder : MonoBehaviour, IEndDragHandler, IDragHandler {
         Vector2 mousePosition = GetMousePosition();
         RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero, Mathf.Infinity);
 
-        if (hit.collider != null && hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground")) {
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground")) {
+        if (hit.collider != null) {
+            int layer = hit.collider.gameObject.layer;
+            if (layer == LayerMask.NameToLayer("Ground") || layer == LayerMask.NameToLayer("Zombie")) {
                 return true;
             }
         }
