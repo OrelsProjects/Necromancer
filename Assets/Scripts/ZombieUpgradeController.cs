@@ -1,9 +1,21 @@
+using Sirenix.Utilities;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UpgradeController : MonoBehaviour {
+
+    [Header("Zombies Placeholders")]
+    [SerializeField]
+    private List<ZombieSelectPlaceholder> _zombiePlaceholders;
+    [Header("Zombie Types")]
+    [SerializeField]
+    private List<ZombieType> _zombieTypes;
+
     [Header("UI")]
+    [SerializeField]
+    private Image _currentZombieImage;
     [SerializeField]
     private TextMeshProUGUI _currentAttackSpeed;
     [SerializeField]
@@ -28,17 +40,46 @@ public class UpgradeController : MonoBehaviour {
     private Button _upgradeButton;
 
     private ZombieType _selectedZombieType = ZombieType.ZombieLab;
+    private int _selectedIndex = 0;
+
+    private void Start() {
+        int index = 0;
+        _zombieTypes.ForEach(zombieType => {
+            ZombieSelectPlaceholder zombiePlaceholder = _zombiePlaceholders[index++];
+            if (zombiePlaceholder == null) {
+                Debug.LogError("Zombie placeholder is null");
+                return;
+            }
+            Sprite zombieSprite = CharactersManager.Instance.GetZombieSprite(zombieType);
+            if (zombieSprite == null) {
+                Debug.LogError("Zombie sprite is null");
+                return;
+            }
+            zombiePlaceholder.Container.SetActive(true);
+            zombiePlaceholder.ZombieImage.sprite = zombieSprite;
+        });
+        SelectZombieForUpgrade(0);
+    }
 
     void OnEnable() {
+        UpdateUI();
+    }
+
+    public void SelectZombieForUpgrade(int index) {
+        _selectedZombieType = _zombieTypes[index];
+        Debug.Log("Selected zombie type: " + _selectedZombieType);
+        _selectedIndex = index;
+        UpdatePlaceholders();
         UpdateUI();
     }
 
     public void Upgrade() {
         int upgradeCost = CharactersManager.Instance.GetZombieData(_selectedZombieType)?.PriceToUpgrade ?? 99999999;
         // TODO: Log if upgradeCost is bad.
-        InventoryManager.Instance.UseCurrency(upgradeCost);
-        CharactersManager.Instance.UpgradeZombie(_selectedZombieType);
-        UpdateUI();
+        if (InventoryManager.Instance.UseCurrency(upgradeCost)) {
+            CharactersManager.Instance.UpgradeZombie(_selectedZombieType);
+            UpdateUI();
+        }
     }
 
     private void UpdateUI() {
@@ -76,6 +117,21 @@ public class UpgradeController : MonoBehaviour {
                 _upgradeButton.interactable = true;
             } else {
                 _upgradeButton.interactable = false;
+            }
+        }
+    }
+
+    private void UpdatePlaceholders() {
+        Sprite zombieSprite = CharactersManager.Instance.GetZombieSprite(_selectedZombieType);
+        _currentZombieImage.sprite = zombieSprite;
+        for (int i = 0; i < _zombiePlaceholders.Count; i += 1) {
+            ZombieSelectPlaceholder placeholder = _zombiePlaceholders[i];
+            if (i == _selectedIndex) {
+                placeholder.Button.interactable = false;
+                placeholder.ZombieImage.color = new Color(1, 1, 1, 0.5f);
+            } else {
+                placeholder.Button.interactable = true;
+                placeholder.ZombieImage.color = new Color(1, 1, 1, 1);
             }
         }
     }

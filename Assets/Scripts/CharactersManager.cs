@@ -3,11 +3,13 @@ using UnityEngine;
 
 public enum ZombieType {
     ZombieLab,
+    ZombieLab1,
     Playground
 }
 
 public struct CharacterData : ISaveableObject {
     public int BasicZombieLevel;
+    public int BasicZombieLevel1;
 
     public string GetObjectType() {
         return GetType().FullName;
@@ -22,9 +24,15 @@ public class CharactersManager : MonoBehaviour, ISaveable {
     private Sprite _basicZombieSprite;
     [SerializeField]
     private ZombieData _basicZombieData;
+    [SerializeField]
+    private Sprite _basicZombieSprite1;
+    [SerializeField]
+    private ZombieData _basicZombieData1;
     [Header("Prefabs")]
     [SerializeField]
     private Zombie _basicZombiePrefab;
+    [SerializeField]
+    private Zombie _basicZombiePrefab1;
     [SerializeField]
     private Zombie _playgroundZombiePrefab;
     [SerializeField]
@@ -35,6 +43,7 @@ public class CharactersManager : MonoBehaviour, ISaveable {
     private List<Civilian> _civilianPrefabs = new();
 
     private int _basicZombieLevel = 1;
+    private int _basicZombieLevel1 = 1;
 
     public int BasicZombieLevel {
         get { return _basicZombieLevel; }
@@ -44,6 +53,20 @@ public class CharactersManager : MonoBehaviour, ISaveable {
                     _basicZombieLevel = 1;
                 } else {
                     _basicZombieLevel = value;
+                }
+                SaveManager.Instance.InitiateSave();
+            }
+        }
+    }
+
+    public int BasicZombieLevel1 {
+        get { return _basicZombieLevel1; }
+        private set {
+            if (_basicZombieLevel1 != value) {
+                if (value <= 0) {
+                    _basicZombieLevel1 = 1;
+                } else {
+                    _basicZombieLevel1 = value;
                 }
                 SaveManager.Instance.InitiateSave();
             }
@@ -60,6 +83,7 @@ public class CharactersManager : MonoBehaviour, ISaveable {
     public ZombieLevel GetZombieData(ZombieType type) {
         return type switch {
             ZombieType.ZombieLab => _basicZombieData.GetLevel(BasicZombieLevel),
+            ZombieType.ZombieLab1 => _basicZombieData1.GetLevel(BasicZombieLevel1),
             ZombieType.Playground => _basicZombieData.GetLevel(BasicZombieLevel),
             _ => new(),
         };
@@ -68,6 +92,7 @@ public class CharactersManager : MonoBehaviour, ISaveable {
     public bool IsZombieMaxLevel(ZombieType type) {
         return type switch {
             ZombieType.ZombieLab => BasicZombieLevel >= _basicZombieData.MaxLevel,
+            ZombieType.ZombieLab1 => BasicZombieLevel >= _basicZombieData.MaxLevel,
             ZombieType.Playground => BasicZombieLevel >= _basicZombieData.MaxLevel,
             _ => false,
         };
@@ -76,6 +101,7 @@ public class CharactersManager : MonoBehaviour, ISaveable {
     public ZombieLevel GetZombieDataNextLevel(ZombieType type) {
         return type switch {
             ZombieType.ZombieLab => _basicZombieData.GetLevel(BasicZombieLevel + 1),
+            ZombieType.ZombieLab1 => _basicZombieData1.GetLevel(BasicZombieLevel + 1),
             ZombieType.Playground => _basicZombieData.GetLevel(BasicZombieLevel + 1),
             _ => new(),
         };
@@ -84,6 +110,7 @@ public class CharactersManager : MonoBehaviour, ISaveable {
     public Zombie GetZombiePrefab(ZombieType type) {
         return type switch {
             ZombieType.ZombieLab => _basicZombiePrefab,
+            ZombieType.ZombieLab1 => _basicZombiePrefab1,
             ZombieType.Playground => _playgroundZombiePrefab,
             _ => null,
         };
@@ -104,6 +131,7 @@ public class CharactersManager : MonoBehaviour, ISaveable {
 
     public Sprite GetZombieSprite(ZombieType type) => type switch {
         ZombieType.ZombieLab => _basicZombieSprite,
+        ZombieType.ZombieLab1 => _basicZombieSprite1,
         ZombieType.Playground => _basicZombieSprite,
         _ => null,
     };
@@ -119,6 +147,7 @@ public class CharactersManager : MonoBehaviour, ISaveable {
     public ISaveableObject GetData() =>
         new CharacterData {
             BasicZombieLevel = BasicZombieLevel,
+            BasicZombieLevel1 = BasicZombieLevel1
         };
 
 
@@ -126,6 +155,9 @@ public class CharactersManager : MonoBehaviour, ISaveable {
         switch (type) {
             case ZombieType.ZombieLab:
                 BasicZombieLevel++;
+                break;
+            case ZombieType.ZombieLab1:
+                BasicZombieLevel1++;
                 break;
         }
     }
