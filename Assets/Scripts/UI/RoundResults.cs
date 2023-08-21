@@ -48,6 +48,14 @@ public class RoundResults : MonoBehaviour {
         }
     }
 
+    private void OnEnable() {
+        StartCoroutine(ShowRewardCoroutine());
+    }
+
+    private void OnDisable() {
+        StopCoroutine(ShowRewardCoroutine());
+    }
+
     private void SetUpWin() {
         _rewardText.gameObject.SetActive(true);
         _rewardText.text = RoundManager.Instance.Reward.ToString();
@@ -55,8 +63,6 @@ public class RoundResults : MonoBehaviour {
 
         _title.GetComponent<Animator>().SetBool("Win", true);
         InventoryManager.Instance.AddCurrency(RoundManager.Instance.Reward);
-
-        StartCoroutine(ShowRewardCoroutine());
     }
 
     private void SetUpLose() {
@@ -79,7 +85,7 @@ public class RoundResults : MonoBehaviour {
     }
 
     public void ShowReward(bool show) {
-        _reward.gameObject.SetActive(show);
+        _reward.SetActive(show);
     }
 
     public void ShowResults() {

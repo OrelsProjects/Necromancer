@@ -162,6 +162,7 @@ public class RoundManager : MonoBehaviour {
     public void StartRound() {
         PlayBackgroundMusic();
         InitSpawnBar();
+        _roundResultsUI.SetActive(false);
         _data = Map.Instance.SelectedArea;
         _data.RoundData.CiviliansPrefabs.Value.ForEach(civ => {
             Vector3 randomPosition = new(Random.Range(-5, 5), Random.Range(-5, 5));
@@ -214,12 +215,12 @@ public class RoundManager : MonoBehaviour {
 
     private void PlayBackgroundMusic(float fadeInDuration = 2.5f) {
         _audioSource.FadeOut(1f);
-        //SoundsManager.Instance.PlayBackgroundMusicFadeIn(_roundData.BackgroundMusic, fadeInDuration, 70);
+        //SoundsManager.Instance.PlayBackgroundMusicFadeIn(_data.BackgroundMusic, fadeInDuration, 70);
         _isZombiesSoundPlaying = false;
     }
 
     private void PlayZombiesSound() {
-        //SoundsManager.Instance.StopBackgroundMusicFadeOut(1f);
+        SoundsManager.Instance.StopBackgroundMusicFadeOut(1f);
         _audioSource.loop = true;
         _audioSource.clip = _zombiesSpawnedSound;
         _audioSource.FadeIn(0.7f);
