@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum RoundState {
     NotStarted,
@@ -19,6 +20,8 @@ public class RoundManager : MonoBehaviour {
     [Header("UI")]
     [SerializeField]
     private GameObject _roundResultsUI;
+    [SerializeField]
+    private List<ZombiePlaceholder> _zombiePlacholders;
 
     [Header("Sound")]
     [SerializeField]
@@ -140,8 +143,25 @@ public class RoundManager : MonoBehaviour {
         _areDefendersIdle = false;
     }
 
+    private void InitSpawnBar() {
+        _zombiePlacholders.ForEach(placeholder => {
+            placeholder.gameObject.SetActive(false);
+        });
+        Debug.Log(RaidManager.Instance.RaidZombies.Count);
+        RaidManager.Instance.RaidZombies.ForEach(zombie => {
+            foreach (var placeholder in _zombiePlacholders) {
+                if (!placeholder.gameObject.activeSelf) {
+                    placeholder.gameObject.SetActive(true);
+                    placeholder.SetZombie(zombie);
+                    break;
+                }
+            }
+        });
+    }
+
     public void StartRound() {
         PlayBackgroundMusic();
+        InitSpawnBar();
         _data = Map.Instance.SelectedArea;
         _data.RoundData.CiviliansPrefabs.Value.ForEach(civ => {
             Vector3 randomPosition = new(Random.Range(-5, 5), Random.Range(-5, 5));

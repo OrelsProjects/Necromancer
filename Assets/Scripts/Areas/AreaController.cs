@@ -50,6 +50,8 @@ public class AreaController : MonoBehaviour {
         AreasManager.Instance.CloseAreaUpgrade();
     }
 
+    public void Raid() => RaidAssembleController.Instance.ShowRaidPanel(_area);
+
     void UpdateUI() {
         Dictionary<Areas, AreaState> areasState = AreasManager.Instance.AreasState;
         if (_upgradeButton != null) {

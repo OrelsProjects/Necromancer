@@ -4,6 +4,8 @@ using UnityEngine.Events;
 public class ClickableObject : MonoBehaviour {
     public UnityEvent onClick;
 
+    public bool interactable = true;
+
     private void Awake() {
         InitCollider();
     }
@@ -13,6 +15,16 @@ public class ClickableObject : MonoBehaviour {
         collider.size = new(0.6f, 0.6f);
     }
 
-    private void OnMouseDown() => onClick?.Invoke();
+    private void OnMouseDown() {
+        if (interactable) {
+            onClick.Invoke();
+        }
+    }
+
+    // function that allows any type of action to be added to the event
+    public void AddClickEvent(UnityAction action) {
+        onClick ??= new();
+        onClick.AddListener(action);
+    }
 
 }

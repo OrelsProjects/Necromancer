@@ -24,11 +24,13 @@ public class RoundData : ScriptableObject {
     [SerializeField]
     private int _civiliansCount;
 
+    [SerializeField]
+    private int _raidCost;
+
     public int CiviliansCount => _civiliansCount;
     public int ArchersCount => _archersCount;
     public int MeleesCount => _meleesCount;
-
-    public Guid UUID { get; private set; }
+    public int RaidCost => _raidCost;
 
     public Lazy<List<Zombifiable>> CiviliansPrefabs {
         get {
@@ -36,9 +38,8 @@ public class RoundData : ScriptableObject {
             if (Civilians) {
                 for (int i = 0; i < _civiliansCount; i++) {
                     Civilian civilian = CharactersManager.Instance.GetRandomCivlian();
-                    Zombifiable zombifiable = civilian.GetComponent<Zombifiable>();
 
-                    if (zombifiable != null) {
+                    if (civilian.TryGetComponent<Zombifiable>(out var zombifiable)) {
                         civilians.Value.Add(zombifiable);
                     }
                 }
@@ -70,6 +71,4 @@ public class RoundData : ScriptableObject {
 
     [Header("Sound")]
     public AudioClip BackgroundMusic;
-
-    public RoundData() => UUID = Guid.NewGuid();
 }

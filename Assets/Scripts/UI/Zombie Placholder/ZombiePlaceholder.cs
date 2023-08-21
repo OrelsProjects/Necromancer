@@ -4,23 +4,26 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class ZombiePlaceholder : MonoBehaviour, IEndDragHandler, IDragHandler {
-    [SerializeField]
-    private ZombieType _type;
+    
     [SerializeField]
     private SpriteRenderer _zombieSprite;
-
     [SerializeField]
     private TextMeshProUGUI _amountText;
 
     private bool _isSpawned = false;
     private bool _isSpawning = false;
+
+    private ZombieType _type;
+    private SpriteRenderer _tempZombieSprite;
+
     private Vector2 _initialSpritePosition;
     private Vector2 _currentTempSpritePosition;
-    private SpriteRenderer _tempZombieSprite;
 
     public bool IsAvailable => !_isSpawned;
 
-    void Start() {
+
+    public void SetZombie(ZombieType type) {
+        _type = type;
         _amountText.text = CharactersManager.Instance.GetZombieData(_type).AmountSpawned.ToString();
         _zombieSprite.sprite = CharactersManager.Instance.GetZombieSprite(_type);
         _initialSpritePosition = _zombieSprite.transform.position;

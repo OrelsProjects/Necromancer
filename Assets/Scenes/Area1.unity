@@ -5233,6 +5233,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: 8b471ebf7a133314cad9bafa2411d326, type: 2}
   _roundResultsUI: {fileID: 1338345466}
+  _zombiePlacholders:
+  - {fileID: 7831617184258096320}
+  - {fileID: 7831617184258096319}
+  - {fileID: 7831617184258096318}
   _winSound: {fileID: 8300000, guid: 057d2349cce26574d8712609719640fc, type: 3}
   _loseSound: {fileID: 8300000, guid: 9a92c2c2e02cd0046bec2e77a3b0a5b9, type: 3}
   _zombiesSpawnedSound: {fileID: 8300000, guid: 7657068c3a276a842876649c45470c9e, type: 3}
@@ -6618,9 +6622,41 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 342149252}
     m_Modifications:
+    - target: {fileID: 2338093320682572251, guid: 7572aa69252109d4fa6d4801097e91dc, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2338093320682572251, guid: 7572aa69252109d4fa6d4801097e91dc, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2969704275708024536, guid: 7572aa69252109d4fa6d4801097e91dc, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2969704275708024536, guid: 7572aa69252109d4fa6d4801097e91dc, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3620223415723596210, guid: 7572aa69252109d4fa6d4801097e91dc, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3620223415723596210, guid: 7572aa69252109d4fa6d4801097e91dc, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4894977539745156769, guid: 7572aa69252109d4fa6d4801097e91dc, type: 3}
       propertyPath: m_Name
       value: Zombies Spawn Bar
+      objectReference: {fileID: 0}
+    - target: {fileID: 5876203931029423920, guid: 7572aa69252109d4fa6d4801097e91dc, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 162
+      objectReference: {fileID: 0}
+    - target: {fileID: 7126042705346089910, guid: 7572aa69252109d4fa6d4801097e91dc, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 273
       objectReference: {fileID: 0}
     - target: {fileID: 8306706461335864857, guid: 7572aa69252109d4fa6d4801097e91dc, type: 3}
       propertyPath: m_Pivot.x
@@ -6707,6 +6743,39 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7572aa69252109d4fa6d4801097e91dc, type: 3}
+--- !u!114 &7831617184258096318 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1233752632054683864, guid: 7572aa69252109d4fa6d4801097e91dc, type: 3}
+  m_PrefabInstance: {fileID: 7831617184258096317}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7b5fa7ad500eff46a95b0270f793b02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7831617184258096319 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8011046139492970036, guid: 7572aa69252109d4fa6d4801097e91dc, type: 3}
+  m_PrefabInstance: {fileID: 7831617184258096317}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7b5fa7ad500eff46a95b0270f793b02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7831617184258096320 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1552063427244852505, guid: 7572aa69252109d4fa6d4801097e91dc, type: 3}
+  m_PrefabInstance: {fileID: 7831617184258096317}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7b5fa7ad500eff46a95b0270f793b02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

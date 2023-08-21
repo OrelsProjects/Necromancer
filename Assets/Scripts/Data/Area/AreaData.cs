@@ -10,6 +10,8 @@ public class AreaData : ScriptableObject {
     public Areas Area;
     public RoundData RoundData;
 
+    public int RaidCost => RoundData.RaidCost;
+
     public Dictionary<int, AreaLevel> Levels {
         get {
             Dictionary<int, AreaLevel> levels = new();

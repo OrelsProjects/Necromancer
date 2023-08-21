@@ -31,17 +31,15 @@ public class InventoryManager : MonoBehaviour, ISaveable {
     private void Awake() {
         if (Instance == null) {
             Instance = this;
+        } else {
+            Destroy(this);
         }
     }
 
-    public bool CanAfford(int cost) {
-        return Currency >= cost;
-    }
+    public bool CanAfford(int cost) => Currency >= cost;
 
-    public void AddCurrency(int amount) {
-        Currency += amount;
-        Debug.Log("Currency added!: " + amount);
-    }
+
+    public void AddCurrency(int amount) => Currency += amount;
 
     public bool UseCurrency(int amount) {
         if (CanAfford(amount)) {
