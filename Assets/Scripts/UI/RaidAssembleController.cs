@@ -3,18 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-[System.Serializable]
-public class ZombieSelectPlaceholder {
-    public GameObject Container;
-    public Image ZombieImage;
-    public TMPro.TextMeshProUGUI ZombieCost;
 
-    [HideInInspector]
-    public ZombieType SelectedZombie { get; private set; }
-
-    public void SetSelectedZombie(ZombieType type) => SelectedZombie = type;
-
-}
 
 [System.Serializable]
 public class ZombieOption {
