@@ -2,7 +2,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AreaUpgradeController : MonoBehaviour {
+public class AreaUpgradeController : MonoBehaviour
+{
     [Header("UI")]
     [SerializeField]
     private TextMeshProUGUI _currentCurrencyPerMinuteText;
@@ -26,44 +27,56 @@ public class AreaUpgradeController : MonoBehaviour {
     private Areas _area;
 
     private AreaData _areaData;
-    private int CurrentLevel {
-        get {
+    private int CurrentLevel
+    {
+        get
+        {
             return AreasManager.Instance.GetAreaLevel(_area);
         }
     }
 
-    void OnEnable() {
+    void OnEnable()
+    {
         _areaData = AreasManager.Instance.GetAreaData(_area);
         UpdateUI();
     }
 
-    public void Enable(Areas area) {
+    public void Enable(Areas area)
+    {
         _area = area;
         gameObject.SetActive(true);
     }
 
-    public void Disable() {
+    public void Disable()
+    {
         gameObject.SetActive(false);
     }
 
-    public void Upgrade() {
+    public void Upgrade()
+    {
         AreaLevel level = _areaData.GetAreaLevel(CurrentLevel);
-        if (InventoryManager.Instance.CanAfford(level.PriceToUpgrade)) {
+        if (InventoryManager.Instance.CanAfford(level.PriceToUpgrade))
+        {
             InventoryManager.Instance.UseCurrency(level.PriceToUpgrade);
             AreasManager.Instance.UpgradeArea(_area);
             UpdateUI();
         }
     }
 
-    private void UpdateUI() {
+    public void HideAreaUpgradeUI() => UIController.Instance.HideAreaUpgrade();
+
+    private void UpdateUI()
+    {
         UpdateStats();
         UpdateLabsImages();
     }
 
-    private void UpdateStats() {
+    private void UpdateStats()
+    {
         AreaLevel level = _areaData.GetAreaLevel(CurrentLevel);
         _currentCurrencyPerMinuteText.text = level.CurrencyPerMinute.ToString();
-        if (AreasManager.Instance.IsAreaMaxLevel(_area)) {
+        if (AreasManager.Instance.IsAreaMaxLevel(_area))
+        {
             _upgradeCost.text = "MAXED";
             _upgradeButton.interactable = false;
 
@@ -87,14 +100,18 @@ public class AreaUpgradeController : MonoBehaviour {
         _nextCurrencyPerMinuteText.text = _areaData.GetAreaLevel(CurrentLevel + 1).CurrencyPerMinute.ToString();
         _upgradeCost.text = level.PriceToUpgrade.ToString();
 
-        if (InventoryManager.Instance.CanAfford(level.PriceToUpgrade)) {
+        if (InventoryManager.Instance.CanAfford(level.PriceToUpgrade))
+        {
             _upgradeButton.interactable = true;
-        } else {
+        }
+        else
+        {
             _upgradeButton.interactable = false;
         }
     }
 
-    private void UpdateLabsImages() {
+    private void UpdateLabsImages()
+    {
         GameObject currentLab = AreasManager.Instance.GetLab(_area);
         GameObject nextLab = AreasManager.Instance.GetNextLab(_area);
         _currentLab.sprite = currentLab.GetComponent<SpriteRenderer>()?.sprite;

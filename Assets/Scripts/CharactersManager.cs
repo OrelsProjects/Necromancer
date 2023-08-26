@@ -127,7 +127,7 @@ public class CharactersManager : MonoBehaviour, ISaveable {
         };
     }
 
-    public Civilian GetRandomCivlian() => _civilianPrefabs[Random.Range(0, _civilianPrefabs.Count - 1)];
+    public Civilian GetRandomCivlian() => _civilianPrefabs[Random.Range(0, _civilianPrefabs.Count)];
 
     public Sprite GetZombieSprite(ZombieType type) => type switch {
         ZombieType.ZombieLab => _basicZombieSprite,

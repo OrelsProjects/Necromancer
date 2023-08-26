@@ -283,6 +283,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: feedc147edd7d014ba06de7146acfceb, type: 2}
+  _hitScreamSound: {fileID: 8300000, guid: 4f4a7b185b7a9404eb185c1a7b5f472f, type: 3}
+  _deathSound: {fileID: 8300000, guid: a6c96b765543a694a803e5c7e8a6f715, type: 3}
 --- !u!70 &6605930328438912686
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

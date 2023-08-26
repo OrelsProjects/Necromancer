@@ -1,10 +1,12 @@
 using UnityEngine;
 
-public enum DefenderRangedType {
+public enum DefenderRangedType
+{
     Archer,
 }
 
-public class DefenderRanged : Defender {
+public class DefenderRanged : Defender
+{
     [Header("Ranged Defender Stats")]
     [SerializeField]
     private Projectile _projectile;
@@ -19,25 +21,32 @@ public class DefenderRanged : Defender {
 
     private Transform _target;
 
-    public override AudioClip AttackSound {
+    public override AudioClip AttackSound
+    {
         get { return _attackSound; }
         set { _attackSound = value; }
     }
 
-    public override void Attack(Zombie target) {
-        if (target == null || !target.IsAvailable()) {
+    public override void Attack(Zombie target)
+    {
+        if (target == null || !target.IsAvailable())
+        {
             return;
         }
 
-        switch (_rangedType) {
+
+        switch (_rangedType)
+        {
             case DefenderRangedType.Archer:
                 _animationHelper.PlayAnimation(AnimationType.AttackArcher);
                 break;
         }
+        AudioSource.PlayClipAtPoint(_attackSound, transform.position);
         _target = target.transform;
     }
 
-    public void ShootProjectile() {
+    public void ShootProjectile()
+    {
         Projectile projectile = Instantiate(_projectile, ProjectileSpawnPosition.position, Quaternion.identity);
         projectile.SetTarget(_target, _projectileSpeed, Data.Damage);
         AudioSource.PlayClipAtPoint(AttackSound, transform.position);

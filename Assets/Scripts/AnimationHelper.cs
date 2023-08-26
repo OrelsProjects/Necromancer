@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public enum AnimationType {
+public enum AnimationType
+{
     Idle,
     Walking,
     Running,
@@ -12,31 +13,44 @@ public enum AnimationType {
     Death
 }
 
-public class AnimationHelper {
+public class AnimationHelper
+{
     private readonly Animator _animator;
 
-    public AnimationHelper(Animator animator) {
+    public AnimationHelper(Animator animator, bool resetAnimations = false)
+    {
         _animator = animator;
+        if (resetAnimations)
+        {
+            Reset();
+        }
     }
 
-    private void Reset() {
-        foreach (var parameter in _animator.parameters) {
-            if (parameter.type == AnimatorControllerParameterType.Bool) {
+    private void Reset()
+    {
+        foreach (var parameter in _animator.parameters)
+        {
+            if (parameter.type == AnimatorControllerParameterType.Bool)
+            {
                 _animator.SetBool(parameter.name, false);
             }
-            if (parameter.type == AnimatorControllerParameterType.Trigger) {
+            if (parameter.type == AnimatorControllerParameterType.Trigger)
+            {
                 _animator.ResetTrigger(parameter.name);
             }
         }
     }
 
-    public void PlayAnimation(AnimationType animationType, bool value = true) {
-        if (_animator == null) {
+    public void PlayAnimation(AnimationType animationType, bool value = true)
+    {
+        if (_animator == null)
+        {
             return;
         }
         Reset();
 
-        switch (animationType) {
+        switch (animationType)
+        {
             case AnimationType.Idle:
                 _animator.SetBool("Idle", true);
                 break;
@@ -68,7 +82,8 @@ public class AnimationHelper {
         }
     }
 
-    public void SetAttackSpeed(float attackSpeed) {
+    public void SetAttackSpeed(float attackSpeed)
+    {
         _animator.SetFloat("Attack Speed", attackSpeed);
     }
 }

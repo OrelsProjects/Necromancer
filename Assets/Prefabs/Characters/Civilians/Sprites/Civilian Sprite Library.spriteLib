@@ -60,68 +60,6 @@ MonoBehaviour:
       m_SpriteOverride: {fileID: -439316361, guid: b4787020b73fe5e428493a88d7080c72, type: 3}
     m_FromMain: 0
     m_EntryOverrideCount: 4
-  - m_Name: Attack Melee
-    m_Hash: 841987405
-    m_CategoryList: []
-    m_OverrideEntries:
-    - m_Name: SpriteSheet_24
-      m_Hash: 536466219
-      m_Sprite: {fileID: -1222174378, guid: b4787020b73fe5e428493a88d7080c72, type: 3}
-      m_FromMain: 0
-      m_SpriteOverride: {fileID: -1222174378, guid: b4787020b73fe5e428493a88d7080c72, type: 3}
-    - m_Name: SpriteSheet_25
-      m_Hash: 687793085
-      m_Sprite: {fileID: -1961930913, guid: b4787020b73fe5e428493a88d7080c72, type: 3}
-      m_FromMain: 0
-      m_SpriteOverride: {fileID: -1961930913, guid: b4787020b73fe5e428493a88d7080c72, type: 3}
-    - m_Name: SpriteSheet_26
-      m_Hash: 838316551
-      m_Sprite: {fileID: -934279394, guid: b4787020b73fe5e428493a88d7080c72, type: 3}
-      m_FromMain: 0
-      m_SpriteOverride: {fileID: -934279394, guid: b4787020b73fe5e428493a88d7080c72, type: 3}
-    - m_Name: SpriteSheet_27
-      m_Hash: 116425361
-      m_Sprite: {fileID: -872050322, guid: b4787020b73fe5e428493a88d7080c72, type: 3}
-      m_FromMain: 0
-      m_SpriteOverride: {fileID: -872050322, guid: b4787020b73fe5e428493a88d7080c72, type: 3}
-    - m_Name: New Label
-      m_Hash: 259326342
-      m_Sprite: {fileID: -1222174378, guid: b4787020b73fe5e428493a88d7080c72, type: 3}
-      m_FromMain: 0
-      m_SpriteOverride: {fileID: -1222174378, guid: b4787020b73fe5e428493a88d7080c72, type: 3}
-    m_FromMain: 0
-    m_EntryOverrideCount: 5
-  - m_Name: Attack Archer
-    m_Hash: 300934633
-    m_CategoryList: []
-    m_OverrideEntries:
-    - m_Name: SpriteSheet_28
-      m_Hash: 374316800
-      m_Sprite: {fileID: 355047407, guid: b4787020b73fe5e428493a88d7080c72, type: 3}
-      m_FromMain: 0
-      m_SpriteOverride: {fileID: 355047407, guid: b4787020b73fe5e428493a88d7080c72, type: 3}
-    - m_Name: SpriteSheet_29
-      m_Hash: 558411670
-      m_Sprite: {fileID: 1514512812, guid: b4787020b73fe5e428493a88d7080c72, type: 3}
-      m_FromMain: 0
-      m_SpriteOverride: {fileID: 1514512812, guid: b4787020b73fe5e428493a88d7080c72, type: 3}
-    - m_Name: SpriteSheet_30
-      m_Hash: 26158707
-      m_Sprite: {fileID: 1541170296, guid: b4787020b73fe5e428493a88d7080c72, type: 3}
-      m_FromMain: 0
-      m_SpriteOverride: {fileID: 1541170296, guid: b4787020b73fe5e428493a88d7080c72, type: 3}
-    - m_Name: SpriteSheet_31
-      m_Hash: 914888421
-      m_Sprite: {fileID: -1441810456, guid: b4787020b73fe5e428493a88d7080c72, type: 3}
-      m_FromMain: 0
-      m_SpriteOverride: {fileID: -1441810456, guid: b4787020b73fe5e428493a88d7080c72, type: 3}
-    - m_Name: New Label
-      m_Hash: 259326342
-      m_Sprite: {fileID: 355047407, guid: b4787020b73fe5e428493a88d7080c72, type: 3}
-      m_FromMain: 0
-      m_SpriteOverride: {fileID: 355047407, guid: b4787020b73fe5e428493a88d7080c72, type: 3}
-    m_FromMain: 0
-    m_EntryOverrideCount: 5
   - m_Name: Death
     m_Hash: 646380074
     m_CategoryList: []
@@ -144,5 +82,5 @@ MonoBehaviour:
     m_FromMain: 0
     m_EntryOverrideCount: 3
   m_PrimaryLibraryGUID: 
-  m_ModificationHash: 638253940367734746
+  m_ModificationHash: 638286589974209720
   m_Version: 1

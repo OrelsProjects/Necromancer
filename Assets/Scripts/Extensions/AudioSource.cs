@@ -1,15 +1,24 @@
 using System.Collections;
 
-namespace UnityEngine {
-    public static class AudioSourceExtensions {
-        public static void FadeOut(this AudioSource a, float duration) {
-            a.GetComponent<MonoBehaviour>().StartCoroutine(FadeOutCore(a, duration));
+namespace UnityEngine
+{
+    public static class AudioSourceExtensions
+    {
+        public static void FadeOut(this AudioSource a, float duration)
+        {
+            if (!a.TryGetComponent<MonoBehaviour>(out var monoBehaviour))
+            {
+                return;
+            }
+            monoBehaviour.StartCoroutine(FadeOutCore(a, duration));
         }
 
-        private static IEnumerator FadeOutCore(AudioSource a, float duration) {
+        private static IEnumerator FadeOutCore(AudioSource a, float duration)
+        {
             float startVolume = a.volume;
 
-            while (a.volume > 0) {
+            while (a.volume > 0)
+            {
                 a.volume -= startVolume * Time.deltaTime / duration;
                 yield return new WaitForEndOfFrame();
             }
@@ -18,16 +27,19 @@ namespace UnityEngine {
             a.volume = startVolume;
         }
 
-        public static void FadeIn(this AudioSource a, float duration) {
+        public static void FadeIn(this AudioSource a, float duration)
+        {
             a.GetComponent<MonoBehaviour>().StartCoroutine(FadeInCore(a, duration));
         }
 
-        private static IEnumerator FadeInCore(AudioSource a, float duration) {
+        private static IEnumerator FadeInCore(AudioSource a, float duration)
+        {
             float startVolume = a.volume;
             a.volume = 0;
             a.Play();
 
-            while (a.volume < startVolume) {
+            while (a.volume < startVolume)
+            {
                 a.volume += startVolume * Time.deltaTime / duration;
                 yield return new WaitForEndOfFrame();
             }
@@ -35,18 +47,24 @@ namespace UnityEngine {
             a.volume = startVolume;
         }
 
-        public static void ChangeSoundOverTime(this AudioSource a, float duration, float targeVolume) {
-            if (a.volume > targeVolume) {
+        public static void ChangeSoundOverTime(this AudioSource a, float duration, float targeVolume)
+        {
+            if (a.volume > targeVolume)
+            {
                 a.GetComponent<MonoBehaviour>().StartCoroutine(ReduceSoundOverTimeCore(a, duration, targeVolume));
-            } else {
+            }
+            else
+            {
                 a.GetComponent<MonoBehaviour>().StartCoroutine(IncreaseSoundOverTimeCore(a, duration, targeVolume));
             }
         }
 
-        private static IEnumerator ReduceSoundOverTimeCore(AudioSource a, float duration, float targeVolume) {
+        private static IEnumerator ReduceSoundOverTimeCore(AudioSource a, float duration, float targeVolume)
+        {
             float startVolume = a.volume;
 
-            while (a.volume > targeVolume) {
+            while (a.volume > targeVolume)
+            {
                 a.volume -= startVolume * Time.deltaTime / duration;
                 yield return new WaitForEndOfFrame();
             }
@@ -54,10 +72,12 @@ namespace UnityEngine {
             a.volume = targeVolume;
         }
 
-        private static IEnumerator IncreaseSoundOverTimeCore(AudioSource a, float duration, float targeVolume) {
+        private static IEnumerator IncreaseSoundOverTimeCore(AudioSource a, float duration, float targeVolume)
+        {
             float startVolume = a.volume;
 
-            while (a.volume < targeVolume) {
+            while (a.volume < targeVolume)
+            {
                 a.volume += startVolume * Time.deltaTime / duration;
                 yield return new WaitForEndOfFrame();
             }

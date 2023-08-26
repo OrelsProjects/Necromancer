@@ -2,7 +2,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class UIController : MonoBehaviour {
+public class UIController : MonoBehaviour
+{
 
     public static UIController Instance;
 
@@ -13,55 +14,68 @@ public class UIController : MonoBehaviour {
     [SerializeField]
     private TextMeshProUGUI _currencyText;
 
-    private void Awake() {
-        if (Instance == null) {
+    private void Awake()
+    {
+        if (Instance == null)
+        {
             Instance = this;
         }
     }
-    private void OnEnable() {
+    private void OnEnable()
+    {
         InventoryManager.Instance.OnCurrencyChanged += OnCurrencyChanged;
 
         OnCurrencyChanged(InventoryManager.Instance.Currency);
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         InventoryManager.Instance.OnCurrencyChanged -= OnCurrencyChanged;
     }
-    private void OnCurrencyChanged(int newCurrency) {
+    private void OnCurrencyChanged(int newCurrency)
+    {
         _currencyText.text = newCurrency.ToString();
     }
 
-    private void Start() {
+    private void Start()
+    {
         UpdateUI();
     }
 
-    public void UpdateUI() {
+    public void UpdateUI()
+    {
         _currencyText.text = InventoryManager.Instance.Currency.ToString();
     }
 
-    public void ShowZombiesUpgrade() {
+    public void ShowZombiesUpgrade()
+    {
         _zombiesUpgradeUI.SetActive(!_zombiesUpgradeUI.activeSelf);
-        if (_zombiesUpgradeUI.activeSelf) {
+        if (_zombiesUpgradeUI.activeSelf)
+        {
             Map.Instance.DisableMovement();
-        } else {
+        }
+        else
+        {
             Map.Instance.EnableMovement();
         }
     }
 
-    public void ShowAreaUpgrade(Areas area) {
+    public bool IsUpgradeAreaOpen() => _areaUpgradeUI.GetComponent<AreaUpgradeController>() != null && _areaUpgradeUI.GetComponent<AreaUpgradeController>().enabled;
+
+    public void ShowAreaUpgrade(Areas area)
+    {
         _areaUpgradeUI.GetComponent<AreaUpgradeController>().Enable(area);
         Map.Instance.DisableMovement();
     }
-    public void HideAreaUpgrade() {
+
+    public void HideAreaUpgrade()
+    {
         _areaUpgradeUI.GetComponent<AreaUpgradeController>().Disable();
         Map.Instance.EnableMovement();
     }
 
-    public void PlayButtonClickSound() {
-        SoundsManager.Instance.PlaySound(SoundTypes.ButtonClick);
-    }
-
-    public void LoadPlayground() {
+    public void LoadPlayground()
+    {
         SceneManager.LoadScene("Playground");
     }
 }

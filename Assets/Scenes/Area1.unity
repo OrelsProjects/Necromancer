@@ -5239,9 +5239,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 342149252}
     m_Modifications:
+    - target: {fileID: 750353788841888818, guid: f9da014cb7501bb4cbc45c6986cd4296, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6092126843286999220, guid: f9da014cb7501bb4cbc45c6986cd4296, type: 3}
       propertyPath: m_Name
       value: Round Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 6376861517634215554, guid: f9da014cb7501bb4cbc45c6986cd4296, type: 3}
+      propertyPath: m_Name
+      value: Coins Attractor
+      objectReference: {fileID: 0}
+    - target: {fileID: 6542759896445371158, guid: f9da014cb7501bb4cbc45c6986cd4296, type: 3}
+      propertyPath: m_Name
+      value: Coins Source
       objectReference: {fileID: 0}
     - target: {fileID: 7286466445331181393, guid: f9da014cb7501bb4cbc45c6986cd4296, type: 3}
       propertyPath: m_Pivot.x

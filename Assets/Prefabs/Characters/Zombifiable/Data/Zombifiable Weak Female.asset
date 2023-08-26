@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb48a892ae0dce14783cad32d04f50a1, type: 3}
+  m_Name: Zombifiable Weak Female
+  m_EditorClassIdentifier: 
+  HitsToZombify: 3
+  MovementBlockedTimeAfterAttack: 1.2
+  TurnChance: 0.1
+  DeathSound: {fileID: 8300000, guid: ce13718de83789f4cbcb4301c7311efd, type: 3}
+  ScreamSound: {fileID: 8300000, guid: 49dacbc85e17746b1973302bf0381272, type: 3}

@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: 12
   m_EditorClassIdentifier: 
   Level: 12
-  Damage: 12
-  Health: 12
-  Speed: 12
-  AttackSpeed: 6
-  AmountSpawned: 12
+  Damage: 50
+  Health: 250
+  Speed: 4
+  AttackSpeed: 3
+  AmountSpawned: 2
   PriceToUse: 12
   PriceToUpgrade: 12
   DetectionRange: 3

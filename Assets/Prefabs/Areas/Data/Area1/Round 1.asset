@@ -17,7 +17,7 @@ MonoBehaviour:
   Ranged: 1
   _archersCount: 1
   Civilians: 1
-  _civiliansCount: 35
+  _civiliansCount: 5
   _raidCost: 10
   Reward: 200
   BackgroundMusic: {fileID: 8300000, guid: 71006b454f6a70c46ba9b40a6deefc15, type: 3}

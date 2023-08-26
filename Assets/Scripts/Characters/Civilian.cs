@@ -17,6 +17,12 @@ public class Civilian : MonoBehaviour {
     [SerializeField]
     private float _delayBetweenChangingTargets = 2f;
 
+    [Header("Sound")]
+    [SerializeField]
+    private AudioClip _screamSound;
+
+    private float _chanceToScream = 0.3f;
+
     private MovementController _movementController;
     private WanderController _wanderController;
     private Zombifiable _zombifiable;
@@ -57,8 +63,17 @@ public class Civilian : MonoBehaviour {
             RunAwayFromZombie();
             SetState(CivilianState.Running);
             StartCoroutine(DelayChangingTargets());
+            Scream();
         } else {
             SetState(CivilianState.Idle);
+        }
+    }
+
+    private void Scream()
+    {
+        if (Random.Range(0f, 1f) < _chanceToScream)
+        {
+            SoundsManager.Instance.PlaySFX(_screamSound);
         }
     }
 

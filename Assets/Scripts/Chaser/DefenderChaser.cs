@@ -4,7 +4,7 @@ using UnityEngine;
 public class DefenderChaser : MonoBehaviour, IChaser<Zombie> {
 
     [SerializeField]
-    private float distanceFromTarget = 0.5f;
+    private float distanceFromTarget = 2f;
 
     private IChaser<Zombie> _chaser;
 

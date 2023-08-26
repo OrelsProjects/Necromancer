@@ -4,6 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(MovementController))]
 [RequireComponent(typeof(Collider2D))]
 public class Projectile : MonoBehaviour, IProjectile {
+
     [SerializeField]
     private Sprite _sprite;
     [SerializeField]

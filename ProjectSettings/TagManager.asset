@@ -18,7 +18,7 @@ TagManager:
   - Ground
   - Colliders
   - Draggable Map
-  - Character
+  - Zombifiable
   - Zombie
   - Projectile
   - 
