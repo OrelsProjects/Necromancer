@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
-using System.Runtime.CompilerServices;
-using static UnityEngine.GraphicsBuffer;
 
 public enum ZombieState
 {
@@ -100,14 +98,6 @@ public class Zombie : MonoBehaviour, IChaseable
         {
             return;
         }
-        if (_target != null && !_target.IsAvailable())
-        {
-            if (_state != ZombieState.RoundOver)
-            {
-                SetState(ZombieState.Idle);
-                _animationHelper.PlayAnimation(AnimationType.Idle);
-            }
-        }
 
         switch (_state)
         {
@@ -159,16 +149,10 @@ public class Zombie : MonoBehaviour, IChaseable
 
     private void HandleIdleState()
     {
-        _movementController.Stop();
-
-        if (_chaser.Target != null && _chaser.Target.IsAvailable())
+        if (_target == null || !_target.IsAvailable())
         {
-            _target = _chaser.Target;
-            SetState(ZombieState.Chasing);
-        }
-        else if (_chaser.FindNewTarget() == null)
-        {
-            FinishRound();
+            _movementController.Stop();
+            _chaser.FindNewTarget();
         }
     }
 
@@ -200,7 +184,14 @@ public class Zombie : MonoBehaviour, IChaseable
     private void OnTargetChange(Zombifiable target)
     {
         _target = target;
-        SetState(ZombieState.Idle);
+        if (_target == null)
+        {
+            FinishRound();
+        }
+        else
+        {
+            SetState(ZombieState.Chasing);
+        }
     }
 
     private IEnumerator ZombifyTarget()
@@ -241,7 +232,7 @@ public class Zombie : MonoBehaviour, IChaseable
         }
         if (_target.IsAvailable())
         {
-            _target.Zombify(gameObject, _data.Damage);
+            _target.Zombify(_type, _data.Damage);
         }
     }
 
@@ -301,4 +292,6 @@ public class Zombie : MonoBehaviour, IChaseable
     public bool IsAlive() => _currentHealth > 0;
 
     public bool IsAvailable() => _currentHealth > 0;
+
+    public bool IsPriority() => true;
 }

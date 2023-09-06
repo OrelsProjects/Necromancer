@@ -1,11 +1,29 @@
 ﻿using System.Collections;
 using AssetKits.ParticleImage;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
+
+enum ProductionState
+{
+    NoProduction,
+    Production,
+    ProductionCollecting,
+    Waiting, // Waiting for external click/internal countdown
+}
+
+struct MinMax
+{
+    public float min;
+    public float max;
+}
 
 public class ProductionController : MonoBehaviour
 {
+
+    [SerializeField]
+    [Range(1, 60)]
+    private int _timeBetweenChecks = 1;
+
     [Header("UI")]
     [SerializeField]
     private ParticleImage _productionParticles;
@@ -16,39 +34,80 @@ public class ProductionController : MonoBehaviour
     [SerializeField]
     private Button _productionButton;
 
+    private ProductionState _state = ProductionState.NoProduction;
     private int _productionToCollect = 0;
+
+    #region Animations
+    private MinMax _spawnRate = new() { min = 2f, max = 33f };
+    #endregion
 
     private void Update()
     {
-        if (AreasManager.Instance.CalculateProduction() > 0)
+        switch (_state)
         {
-            if (!_productionButton.interactable)
-            {
-                _productionImage.color = new Color(1f, 1f, 1f, 1f);
-                _productionButton.interactable = true;
-            }
+            case ProductionState.NoProduction:
+                HandleNoProductionState();
+                break;
+            case ProductionState.Production:
+                HandleProductionState();
+                break;
+            case ProductionState.ProductionCollecting | ProductionState.Waiting:
+                break;
         }
-        else if (_productionButton.interactable)
+    }
+
+    private void HandleNoProductionState()
+    {
+        _productionToCollect = AreasManager.Instance.CalculateProduction();
+        if (_productionToCollect > 0)
         {
-            _productionImage.color = new Color(1f, 1f, 1f, 0f);
-            _productionButton.interactable = false;
+            SetState(ProductionState.Production);
+            return;
         }
+
+        _productionImage.gameObject.SetActive(false);
+        _productionImage.color = new Color(1f, 1f, 1f, 0f);
+        SetState(ProductionState.Waiting);
+        StartCoroutine(WaitForProduction());
+    }
+
+    private void HandleProductionState()
+    {
+        _productionImage.gameObject.SetActive(true);
+        _productionImage.color = new Color(1f, 1f, 1f, 1f);
+        _state = ProductionState.Waiting;
+    }
+
+    private IEnumerator WaitForProduction()
+    {
+        yield return new WaitForSeconds(_timeBetweenChecks);
+        SetState(ProductionState.NoProduction);
+    }
+
+    private void SetState(ProductionState state)
+    {
+        _state = state;
     }
 
     public void CollectProduction()
     {
-        _productionToCollect = AreasManager.Instance.CalculateProduction();
-        if (_productionToCollect <= 0)
+        if (_productionToCollect <= 0 || _state == ProductionState.ProductionCollecting)
         {
             return;
         }
+        SetState(ProductionState.ProductionCollecting);
+        int maxProduction = AreasManager.Instance.CalculateMaxProduction();
+        float currentToMaxProduction = (float)_productionToCollect / maxProduction;
+        float newSpawnRate = _spawnRate.min + (_spawnRate.max - _spawnRate.min) * currentToMaxProduction;
+        _productionParticles.rateOverTime = newSpawnRate;
         _productionParticles.gameObject.SetActive(true);
+        AddProductionToInventory();
     }
 
     public void AddProductionToInventory()
     {
         StartCoroutine(AddProductionToInventoryCore());
-        SoundsManager.Instance.PlayUISound(UISoundTypes.CoinsCollect);
+        AudioSourceHelper.PlayClipAtPoint(UISoundTypes.CoinsCollect);
     }
 
     public IEnumerator AddProductionToInventoryCore()
@@ -70,7 +129,8 @@ public class ProductionController : MonoBehaviour
             InventoryManager.Instance.AddCurrency(_productionToCollect);
         }
         _productionToCollect = 0;
+        SetState(ProductionState.NoProduction);
         _productionParticles.gameObject.SetActive(false);
-        SoundsManager.Instance.StopUISound();
+        AreasManager.Instance.CollectProduction();
     }
 }

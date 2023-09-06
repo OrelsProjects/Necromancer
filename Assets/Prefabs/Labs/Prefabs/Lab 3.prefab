@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 2859682169815749186}
   - component: {fileID: 7348835711517348172}
   - component: {fileID: 5416242771531631109}
-  - component: {fileID: -5360362281771255033}
   m_Layer: 0
   m_Name: Lab 3
   m_TagString: Untagged
@@ -28,13 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5155007589475733278}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2.18875, y: 2.18875, z: 2.18875}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4431135614843054666
 SpriteRenderer:
@@ -154,18 +153,3 @@ MonoBehaviour:
       m_Hash: 0
       m_Sprite: {fileID: -5387642526501431761, guid: c51338aa5d13c40438b768ec742bb00b, type: 3}
   m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 7606682216e457341b19573f23e77af8, type: 3}
---- !u!114 &-5360362281771255033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5155007589475733278}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe55e3ba7db94b14796670b173840836, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onClick:
-    m_PersistentCalls:
-      m_Calls: []

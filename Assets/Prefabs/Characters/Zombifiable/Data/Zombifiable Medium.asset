@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb48a892ae0dce14783cad32d04f50a1, type: 3}
   m_Name: Zombifiable Medium
   m_EditorClassIdentifier: 
-  HitsToZombify: 3
+  Health: 150
   MovementBlockedTimeAfterAttack: 1.2
-  TurnChance: 0.1
-  DeathSound: {fileID: 8300000, guid: b38c6f19ee8f64f499bbdda0bf035451, type: 3}
-  ScreamSound: {fileID: 8300000, guid: a6c96b765543a694a803e5c7e8a6f715, type: 3}
+  ChanceToBecomeZombie: 0.804

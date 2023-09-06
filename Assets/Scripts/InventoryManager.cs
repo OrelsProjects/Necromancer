@@ -56,7 +56,7 @@ public class InventoryManager : MonoBehaviour, ISaveable
         if (CanAfford(amount))
         {
             Currency -= amount;
-            SoundsManager.Instance.PlayUISound(UISoundTypes.Purchase);
+            AudioSourceHelper.PlayClipAtPoint(UISoundTypes.Purchase);
             return true;
         }
         return false;
@@ -74,7 +74,14 @@ public class InventoryManager : MonoBehaviour, ISaveable
     {
         if (item is InventoryData data)
         {
-            Currency = data.Currency;
+            if (data.Currency == 0)
+            {
+                Currency = 50;
+            }
+            else
+            {
+                Currency = data.Currency;
+            }
         }
     }
 }

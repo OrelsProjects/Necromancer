@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 3
   m_EditorClassIdentifier: 
   Level: 3
-  Damage: 3
+  Damage: 30
   Health: 3
   Speed: 3
   AttackSpeed: 2

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 8
   m_EditorClassIdentifier: 
   Level: 8
-  Damage: 8
+  Damage: 3
   Health: 8
   Speed: 8
   AttackSpeed: 4

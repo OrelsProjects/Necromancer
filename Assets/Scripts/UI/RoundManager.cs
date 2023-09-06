@@ -142,7 +142,7 @@ public class RoundManager : MonoBehaviour
     private void HandleZombiesWonState()
     {
         SoundsManager.Instance.StopAll();
-        SoundsManager.Instance.PlaySFX(_winSound);
+        AudioSource.PlayClipAtPoint(_winSound, transform.position);
         AreasManager.Instance.ZombifyArea(_data.Area);
         AreasManager.Instance.SaveData();
         _roundResultsUI.SetActive(true);
@@ -152,7 +152,7 @@ public class RoundManager : MonoBehaviour
     private void HandleDefendersWonState()
     {
         SoundsManager.Instance.StopAll();
-        SoundsManager.Instance.PlaySFX(_loseSound);
+        AudioSource.PlayClipAtPoint(_loseSound, transform.position);
         _roundResultsUI.SetActive(true);
         _state = RoundState.Lost;
     }
@@ -190,7 +190,6 @@ public class RoundManager : MonoBehaviour
         {
             placeholder.gameObject.SetActive(false);
         });
-        Debug.Log(RaidManager.Instance.RaidZombies.Count);
         RaidManager.Instance.RaidZombies.ForEach(zombie =>
         {
             foreach (var placeholder in _zombiePlacholders)
@@ -270,12 +269,18 @@ public class RoundManager : MonoBehaviour
 
     private bool ShouldPlayZombiesSound() => AreThereZombiesAlive() && !_isZombiesSoundPlaying;
 
-    private void PlayBackgroundMusic() => SoundsManager.Instance.PlayBackgroundSound(BackgroundSoundTypes.Area);
+    private void PlayBackgroundMusic()
+    {
+        _audioSource.clip = SoundsManager.GetAreaSound(Map.Instance.SelectedArea.Area);
+        _audioSource.Play();
+    }
 
     private void PlayZombieSpawnSound()
     {
         _isZombiesSoundPlaying = true;
-        SoundsManager.Instance.PlayBackgroundSound(BackgroundSoundTypes.ZombiesSpawned);
+        _audioSource.clip = SoundsManager.GetBackgroundSound(BackgroundSoundTypes.ZombiesSpawned);
+        _audioSource.loop = true;
+        _audioSource.Play();
     }
 
     private void ReduceZombiesSoundVolume()

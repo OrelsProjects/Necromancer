@@ -92,7 +92,7 @@ public class CharactersManager : MonoBehaviour, ISaveable {
     public bool IsZombieMaxLevel(ZombieType type) {
         return type switch {
             ZombieType.ZombieLab => BasicZombieLevel >= _basicZombieData.MaxLevel,
-            ZombieType.ZombieLab1 => BasicZombieLevel >= _basicZombieData.MaxLevel,
+            ZombieType.ZombieLab1 => BasicZombieLevel1 >= _basicZombieData1.MaxLevel,
             ZombieType.Playground => BasicZombieLevel >= _basicZombieData.MaxLevel,
             _ => false,
         };

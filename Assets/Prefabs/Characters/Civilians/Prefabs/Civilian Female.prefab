@@ -252,7 +252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: def432626e2241b41bdf93bc5cd0fbdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _data: {fileID: 11400000, guid: 0b58ef444af3b484d8b762ed58804bd1, type: 2}
+  _data: {fileID: 11400000, guid: feedc147edd7d014ba06de7146acfceb, type: 2}
   _hitScreamSound: {fileID: 8300000, guid: ced6cbe611196dd4a917f04c53be91cd, type: 3}
   _deathSound: {fileID: 8300000, guid: ce13718de83789f4cbcb4301c7311efd, type: 3}
 --- !u!70 &6858789458682310126
@@ -270,7 +270,7 @@ CapsuleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 1536
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2

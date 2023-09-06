@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Round 3
   m_EditorClassIdentifier: 
   Melee: 1
-  _meleesCount: 1
+  _meleesCount: 0
   Ranged: 1
-  _archersCount: 1
+  _archersCount: 0
   Civilians: 1
   _civiliansCount: 10
   _raidCost: 30

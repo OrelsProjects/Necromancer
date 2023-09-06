@@ -7,24 +7,32 @@ public class Map : MonoBehaviour
 
     [SerializeField]
     private DragCamera _dragCamera;
-
     [SerializeField]
     private List<AreaData> _areas = new();
 
-    [HideInInspector]
     public AreaData SelectedArea;
+
+    private AudioSource _audioSource;
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+            _audioSource = GetComponent<AudioSource>();
         }
     }
 
     private void Start()
     {
-        SoundsManager.Instance.PlayBackgroundSound(BackgroundSoundTypes.Map);
+        PlayMapSound();
+    }
+
+    private void PlayMapSound()
+    {
+        _audioSource.clip = SoundsManager.GetBackgroundSound(BackgroundSoundTypes.Map);
+        _audioSource.loop = true;
+        _audioSource.Play();
     }
 
     public void DisableMovement()
@@ -76,7 +84,7 @@ public class Map : MonoBehaviour
     {
         if (SoundsManager.Instance)
         {
-            SoundsManager.Instance.PlayBackgroundSound(BackgroundSoundTypes.Map);
+            PlayMapSound();
         }
     }
 }

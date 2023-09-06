@@ -16,14 +16,14 @@ public class AreaController : MonoBehaviour
     private Areas _area;
     [SerializeField]
     private AreaState _state;
-    [ShowIf("_state", AreaState.Zombified)]
-    [SerializeField]
-    private AreaData _data;
 
     [Header("UI")]
     [ShowIf("_state", AreaState.Zombified)]
     [SerializeField]
     private GameObject _upgradeButton = null;
+    [ShowIf("_state", AreaState.Default)]
+    [SerializeField]
+    private TMPro.TextMeshProUGUI _areaLevelText;
 
 
     private GameObject _currentLab;
@@ -60,6 +60,8 @@ public class AreaController : MonoBehaviour
 
     public void Raid() => RaidAssembleController.Instance.ShowRaidPanel(_area);
 
+    public void PlayClickSound() => AudioSourceHelper.PlayClipAtPoint(UISoundTypes.ButtonClick);
+
     void UpdateUI()
     {
         Dictionary<Areas, AreaState> areasState = AreasManager.Instance.AreasState;
@@ -95,11 +97,12 @@ public class AreaController : MonoBehaviour
 
                 _currentLab = Instantiate(AreasManager.Instance.GetLab(_area), transform);
                 _currentLab.transform.position = _spawnPoint.position;
-                if (_currentLab.TryGetComponent<ClickableObject>(out var clickable))
+                if (_currentLab.TryGetComponent<BoxCollider2D>(out var collider))
                 {
-                    clickable.onClick.AddListener(ShowUpgrade);
+                    collider.size = new(3f, 3f);
                 }
             }
         }
     }
+
 }

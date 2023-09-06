@@ -48,6 +48,10 @@ public class RoundResults : MonoBehaviour
 
     private void Update()
     {
+        if (_isRoundOver)
+        {
+            return;
+        }
         _isRoundOver = RoundManager.Instance.State == RoundState.Lost || RoundManager.Instance.State == RoundState.Won;
         if (RoundManager.Instance.State == RoundState.Lost)
         {
@@ -67,6 +71,7 @@ public class RoundResults : MonoBehaviour
     private void SetUpWin()
     {
         _rewardText.gameObject.SetActive(true);
+        Debug.Log("Reward: " + RoundManager.Instance.Reward.ToString());
         _rewardText.text = RoundManager.Instance.Reward.ToString();
         _title.text = _winTitle;
 

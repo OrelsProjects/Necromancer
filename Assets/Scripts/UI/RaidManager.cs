@@ -24,8 +24,9 @@ public class RaidManager : MonoBehaviour {
         }
     }
 
-    public void StartRaid(Areas area, List<ZombieType> zombies) {
+    public void StartRaid(Areas area, List<ZombieType> zombies, int cost) {
         RaidZombies = zombies;
+        InventoryManager.Instance.UseCurrency(cost);
         Map.Instance.LoadArea(area);
     }
 }

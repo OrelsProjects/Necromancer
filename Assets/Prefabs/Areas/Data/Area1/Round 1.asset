@@ -15,7 +15,7 @@ MonoBehaviour:
   Melee: 1
   _meleesCount: 1
   Ranged: 1
-  _archersCount: 1
+  _archersCount: 16
   Civilians: 1
   _civiliansCount: 5
   _raidCost: 10

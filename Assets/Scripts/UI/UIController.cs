@@ -47,20 +47,20 @@ public class UIController : MonoBehaviour
         _currencyText.text = InventoryManager.Instance.Currency.ToString();
     }
 
+    public bool IsUpgradeAreaOpen() => _areaUpgradeUI.GetComponent<AreaUpgradeController>() != null && _areaUpgradeUI.GetComponent<AreaUpgradeController>().enabled;
+
     public void ShowZombiesUpgrade()
     {
-        _zombiesUpgradeUI.SetActive(!_zombiesUpgradeUI.activeSelf);
-        if (_zombiesUpgradeUI.activeSelf)
-        {
-            Map.Instance.DisableMovement();
-        }
-        else
-        {
-            Map.Instance.EnableMovement();
-        }
+        _zombiesUpgradeUI.SetActive(true);
+        Map.Instance.DisableMovement();
     }
 
-    public bool IsUpgradeAreaOpen() => _areaUpgradeUI.GetComponent<AreaUpgradeController>() != null && _areaUpgradeUI.GetComponent<AreaUpgradeController>().enabled;
+    public void HideZombiesUpgrade()
+    {
+        _zombiesUpgradeUI.SetActive(false);
+        Map.Instance.EnableMovement();
+    }
+
 
     public void ShowAreaUpgrade(Areas area)
     {
@@ -77,5 +77,10 @@ public class UIController : MonoBehaviour
     public void LoadPlayground()
     {
         SceneManager.LoadScene("Playground");
+    }
+
+    public void PlayClickSound()
+    {
+        AudioSourceHelper.PlayClipAtPoint(UISoundTypes.ButtonClick);
     }
 }

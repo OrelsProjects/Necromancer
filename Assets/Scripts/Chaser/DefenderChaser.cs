@@ -3,9 +3,6 @@ using UnityEngine;
 [RequireComponent(typeof(Defender))]
 public class DefenderChaser : MonoBehaviour, IChaser<Zombie> {
 
-    [SerializeField]
-    private float distanceFromTarget = 2f;
-
     private IChaser<Zombie> _chaser;
 
     public event IChaser<Zombie>.TragetChangeDelegate OnTargetChange;

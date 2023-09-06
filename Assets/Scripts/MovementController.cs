@@ -3,7 +3,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(SpriteRenderer))]
-public class MovementController : MonoBehaviour {
+public class MovementController : MonoBehaviour
+{
 
     [SerializeField]
     private AudioClip _stepSound;
@@ -20,23 +21,28 @@ public class MovementController : MonoBehaviour {
     private Vector2 _previousDirection = Vector2.zero;
     private bool _forcedDisabled = false;
 
-    private void Awake() {
+    private void Awake()
+    {
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _spriteSheet = GetComponent<SpriteRenderer>();
         _animationHelper = new AnimationHelper(_animator);
     }
 
-    public void FaceTarget(Transform target) {
+    public void FaceTarget(Transform target)
+    {
         _direction = target.position;
         FlipCharacter(force: true);
     }
 
-    public bool Move(float speed, Vector2 direction) {
-        if (_forcedDisabled) {
+    public bool Move(float speed, Vector2 direction)
+    {
+        if (_forcedDisabled)
+        {
             return false;
         }
-        try {
+        try
+        {
             _speed = speed;
             _direction = direction;
             _rigidbody.velocity = _direction * _speed;
@@ -44,31 +50,39 @@ public class MovementController : MonoBehaviour {
             _animationHelper.PlayAnimation(AnimationType.Walking, _speed > 0 && _speed <= 1);
             FlipCharacter();
             return true;
-        } catch (System.Exception ex) {
+        }
+        catch (System.Exception ex)
+        {
             Debug.LogError("Game object with name: " + gameObject.name + " has thrown an exception: " + ex.Message);
             return false;
         }
     }
 
-    private void FlipCharacter(bool force = false) {
-        if (_speed > 0 || force) {
+    private void FlipCharacter(bool force = false)
+    {
+        if (_speed > 0 || force)
+        {
             _spriteSheet.flipX = _direction.x < 0;
         }
     }
 
-    public bool Move(float speed, GameObject target) {
+    public bool Move(float speed, GameObject target)
+    {
         _direction = (target.transform.position - transform.position).normalized;
         _speed = speed;
         return Move(speed, _direction);
     }
 
-    public void Stop() {
+    public void Stop()
+    {
         Move(0, Vector2.zero);
         _animationHelper.PlayAnimation(AnimationType.Idle);
     }
 
-    public void Enable() {
-        if (enabled || _forcedDisabled) {
+    public void Enable()
+    {
+        if (enabled || _forcedDisabled)
+        {
             return;
         }
         enabled = true;
@@ -78,31 +92,38 @@ public class MovementController : MonoBehaviour {
     ///  Disable movement of character
     /// </summary>
     /// <param name="forced">Disable forever. No way to return.</param>
-    public void Disable(bool forced = false) {
-        _forcedDisabled = forced;
-        if (!enabled) {
+    public void Disable(bool forced = false)
+    {
+        if (forced || _forcedDisabled)
+        {
+            Move(0, Vector2.zero);
+            _forcedDisabled = true;
             return;
         }
-        if (_forcedDisabled) {
-            _rigidbody.velocity = Vector2.one;
-        } else {
-            Stop();
+        if (!enabled)
+        {
+            return;
         }
+        Stop();
         enabled = false;
     }
 
-    private void PlayStepSound() {
+    private void PlayStepSound()
+    {
         // SoundsManager.Instance.PlayStepSound(_stepSound);
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         _previousSpeed = _speed;
         _previousDirection = _direction;
         Move(0, Vector2.zero);
     }
 
-    private void OnEnable() {
-        if (_forcedDisabled) {
+    private void OnEnable()
+    {
+        if (_forcedDisabled)
+        {
             return;
         }
         Move(_previousSpeed, _previousDirection);

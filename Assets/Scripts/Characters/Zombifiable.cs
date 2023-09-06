@@ -21,11 +21,12 @@ public class Zombifiable : MonoBehaviour, IChaseable
     [SerializeField]
     private AudioClip _deathSound;
 
-    private int _hitsToZombify;
+    private int _maxHealth;
+    private int _currentHealth;
     private float _movementBlockedTimeAfterAttack;
     private float _lastHitTime = 0f;
-    private float _timeToZombify = 1f;
-    private float _chanceToScreamOnHit = 0.3f;
+    private readonly float _timeToZombify = 1f;
+    private readonly float _chanceToScreamOnHit = 0.3f;
 
     private ZombifiableState _state = ZombifiableState.Default;
 
@@ -40,22 +41,30 @@ public class Zombifiable : MonoBehaviour, IChaseable
         _animator = GetComponent<Animator>();
         _movementController = GetComponent<MovementController>();
         _animationHelper = new AnimationHelper(_animator);
-        _hitsToZombify = _data.HitsToZombify;
+        _maxHealth = _data.Health;
+        _currentHealth = _maxHealth;
         _movementBlockedTimeAfterAttack = _data.MovementBlockedTimeAfterAttack;
     }
 
-    public void Zombify(GameObject zombiePrefab, int zombifyDamage)
+    public void Zombify(ZombieType zombieType, int damage)
     {
-        _hitsToZombify -= zombifyDamage;
+        if (_state == ZombifiableState.Turning)
+        {
+            return;
+        }
+        _currentHealth -= damage;
+        _currentHealth = Mathf.Clamp(_currentHealth, 0, _maxHealth);
         PlayHitSound();
         _animationHelper.PlayAnimation(AnimationType.Hit);
-        if (_hitsToZombify > 0)
+        if (_currentHealth > 0)
         {
             StartCoroutine(BlockMovement());
         }
         else
         {
-            StartCoroutine(TurnToZombie(zombiePrefab));
+            var zombiePrefab = CharactersManager.Instance.GetZombiePrefab(zombieType);
+            _state = ZombifiableState.Turning;
+            StartCoroutine(TurnToZombie(zombiePrefab.gameObject));
         }
     }
 
@@ -63,30 +72,29 @@ public class Zombifiable : MonoBehaviour, IChaseable
     {
         if (_hitScreamSound != null && Random.Range(0, 1) < _chanceToScreamOnHit)
         {
-            SoundsManager.Instance.PlaySFX(_hitScreamSound);
+            AudioSource.PlayClipAtPoint(_hitScreamSound, transform.position);
         }
     }
 
     private IEnumerator TurnToZombie(GameObject zombiePrefab)
     {
-        GameObject zombie;
-        if (_state != ZombifiableState.Turning)
+        GameObject zombie = null;
+        _movementController.Disable(true);
+        _state = ZombifiableState.Turning;
+        if (Random.Range(0f, 1f) < _data.ChanceToBecomeZombie)
         {
-            _state = ZombifiableState.Turning;
-            if (Random.Range(0f, 1f) < _data.TurnChance)
-            {
-                zombie = Instantiate(zombiePrefab, transform.position, Quaternion.identity);
-                zombie.SetActive(false);
-            }
+            zombie = Instantiate(zombiePrefab, transform.position, Quaternion.identity);
+            zombie.SetActive(false);
         }
-        else
-        {
-            yield break;
-        }
+
         _movementController.Disable(forced: true);
         _animationHelper.PlayAnimation(AnimationType.Death);
-        SoundsManager.Instance.PlaySFX(_deathSound);
+        AudioSource.PlayClipAtPoint(_deathSound, transform.position);
         yield return new WaitForSeconds(_timeToZombify);
+        if (zombie != null)
+        {
+            zombie.SetActive(true);
+        }
         Destroy(gameObject);
     }
 
@@ -104,13 +112,19 @@ public class Zombifiable : MonoBehaviour, IChaseable
 
     public bool IsZombified()
     {
-        return _hitsToZombify == 0 || _state == ZombifiableState.Turning;
+        return _currentHealth <= 0 || _state == ZombifiableState.Turning;
     }
+
+    #region IChaseable
 
     public bool IsAvailable()
     {
         return !IsZombified();
     }
+
+    public bool IsPriority() => GetComponent<Defender>() != null;
+
+    #endregion
 
     private void OnDestroy()
     {

@@ -315,7 +315,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7d21936a07d1f14d9a2cdaa20c3c512, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distanceFromTarget: 10
 --- !u!114 &3690822906193468867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -346,7 +345,7 @@ CapsuleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 1536
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2

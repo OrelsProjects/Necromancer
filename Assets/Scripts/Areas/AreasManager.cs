@@ -172,6 +172,15 @@ public class AreasManager : MonoBehaviour, ISaveable
         return 0;
     }
 
+    public int GetMaxLevel(Areas area)
+    {
+        if (_areasLevels.ContainsKey(area))
+        {
+            return GetAreaData(area).MaxLevel;
+        }
+        return 0;
+    }
+
     public bool IsAreaZombified(Areas area)
     {
         if (_areasState.ContainsKey(area))
@@ -278,5 +287,25 @@ public class AreasManager : MonoBehaviour, ISaveable
             }
         }
         return totalProduction;
+    }
+
+    public int CalculateMaxProduction()
+    {
+        int totalProduction = 0;
+        if (_areaLastProductionCollectionTime != null)
+        {
+            foreach (var area in _areaLastProductionCollectionTime)
+            {
+                if (IsAreaZombified(area.Key))
+                {
+                    int areaMaxLevel = GetMaxLevel(area.Key);
+                    int currencyPerMinute = GetAreaData(area.Key).GetAreaLevel(areaMaxLevel).CurrencyPerMinute;
+                    int production = _maxMinutesToCollectProduction * currencyPerMinute;
+                    totalProduction += production;
+                }
+            }
+        }
+        return totalProduction;
+
     }
 }

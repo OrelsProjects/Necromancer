@@ -4,7 +4,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UpgradeController : MonoBehaviour {
+public class UpgradeController : MonoBehaviour
+{
 
     [Header("Zombies Placeholders")]
     [SerializeField]
@@ -35,6 +36,8 @@ public class UpgradeController : MonoBehaviour {
     [SerializeField]
     private TextMeshProUGUI _upgradeCost;
     [SerializeField]
+    private TextMeshProUGUI _maxLevelText;
+    [SerializeField]
     private Image _upgradeCostIcon;
     [SerializeField]
     private Button _upgradeButton;
@@ -42,16 +45,20 @@ public class UpgradeController : MonoBehaviour {
     private ZombieType _selectedZombieType = ZombieType.ZombieLab;
     private int _selectedIndex = 0;
 
-    private void Start() {
+    private void Start()
+    {
         int index = 0;
-        _zombieTypes.ForEach(zombieType => {
+        _zombieTypes.ForEach(zombieType =>
+        {
             ZombieSelectPlaceholder zombiePlaceholder = _zombiePlaceholders[index++];
-            if (zombiePlaceholder == null) {
+            if (zombiePlaceholder == null)
+            {
                 Debug.LogError("Zombie placeholder is null");
                 return;
             }
             Sprite zombieSprite = CharactersManager.Instance.GetZombieSprite(zombieType);
-            if (zombieSprite == null) {
+            if (zombieSprite == null)
+            {
                 Debug.LogError("Zombie sprite is null");
                 return;
             }
@@ -61,11 +68,13 @@ public class UpgradeController : MonoBehaviour {
         SelectZombieForUpgrade(0);
     }
 
-    void OnEnable() {
+    void OnEnable()
+    {
         UpdateUI();
     }
 
-    public void SelectZombieForUpgrade(int index) {
+    public void SelectZombieForUpgrade(int index)
+    {
         _selectedZombieType = _zombieTypes[index];
         Debug.Log("Selected zombie type: " + _selectedZombieType);
         _selectedIndex = index;
@@ -73,39 +82,44 @@ public class UpgradeController : MonoBehaviour {
         UpdateUI();
     }
 
-    public void Upgrade() {
+    public void Upgrade()
+    {
         int upgradeCost = CharactersManager.Instance.GetZombieData(_selectedZombieType)?.PriceToUpgrade ?? 99999999;
         // TODO: Log if upgradeCost is bad.
-        if (InventoryManager.Instance.UseCurrency(upgradeCost)) {
+        if (InventoryManager.Instance.UseCurrency(upgradeCost))
+        {
             CharactersManager.Instance.UpgradeZombie(_selectedZombieType);
             UpdateUI();
         }
     }
 
-    private void UpdateUI() {
+    private void UpdateUI()
+    {
         ZombieLevel selectedZombieCurrentLevel = CharactersManager.Instance.GetZombieData(_selectedZombieType);
         _currentAttackSpeed.text = selectedZombieCurrentLevel.AttackSpeed.ToString();
         _currentDamage.text = selectedZombieCurrentLevel.Damage.ToString();
         _currentHealth.text = selectedZombieCurrentLevel.Health.ToString();
         _currentSpeed.text = selectedZombieCurrentLevel.Speed.ToString();
-        if (CharactersManager.Instance.IsZombieMaxLevel(_selectedZombieType)) {
+        if (CharactersManager.Instance.IsZombieMaxLevel(_selectedZombieType))
+        {
             string maxString = "MAX";
-            _upgradeCost.text = "MAXED";
-            _upgradeCost.transform.position = new(_upgradeCost.transform.position.x + 0.35f, _upgradeCost.transform.position.y, _upgradeCost.transform.position.z);
-            _upgradeButton.interactable = false;
-            _upgradeButton.GetComponent<Image>().enabled = false;
+
+            _maxLevelText.gameObject.SetActive(true);
+            _upgradeButton.gameObject.SetActive(false);
             _upgradeCostIcon.enabled = false;
 
             _nextAttackSpeed.text = maxString;
             _nextDamage.text = maxString;
             _nextHealth.text = maxString;
             _nextSpeed.text = maxString;
-        } else {
+        }
+        else
+        {
             ZombieLevel selectedZombieNextLevel = CharactersManager.Instance.GetZombieDataNextLevel(_selectedZombieType);
 
-            _upgradeButton.GetComponent<Image>().enabled = true;
+            _maxLevelText.gameObject.SetActive(false);
+            _upgradeButton.gameObject.SetActive(true);
             _upgradeCostIcon.enabled = true;
-            _upgradeButton.interactable = true;
 
             _upgradeCost.text = selectedZombieCurrentLevel.PriceToUpgrade.ToString();
             _nextAttackSpeed.text = selectedZombieNextLevel.AttackSpeed.ToString();
@@ -113,25 +127,35 @@ public class UpgradeController : MonoBehaviour {
             _nextHealth.text = selectedZombieNextLevel.Health.ToString();
             _nextSpeed.text = selectedZombieNextLevel.Speed.ToString();
 
-            if (InventoryManager.Instance.CanAfford(selectedZombieCurrentLevel.PriceToUpgrade)) {
+            if (InventoryManager.Instance.CanAfford(selectedZombieCurrentLevel.PriceToUpgrade))
+            {
                 _upgradeButton.interactable = true;
-            } else {
+            }
+            else
+            {
                 _upgradeButton.interactable = false;
             }
         }
     }
 
-    private void UpdatePlaceholders() {
+    private void UpdatePlaceholders()
+    {
         Sprite zombieSprite = CharactersManager.Instance.GetZombieSprite(_selectedZombieType);
         _currentZombieImage.sprite = zombieSprite;
-        for (int i = 0; i < _zombiePlaceholders.Count; i += 1) {
+        for (int i = 0; i < _zombiePlaceholders.Count; i += 1)
+        {
             ZombieSelectPlaceholder placeholder = _zombiePlaceholders[i];
-            if (i == _selectedIndex) {
+            if (i == _selectedIndex)
+            {
                 placeholder.Button.interactable = false;
-                placeholder.ZombieImage.color = new Color(1, 1, 1, 0.5f);
-            } else {
-                placeholder.Button.interactable = true;
+                placeholder.Container.GetComponent<Image>().color = new Color(1, 1, 1, 1);
                 placeholder.ZombieImage.color = new Color(1, 1, 1, 1);
+            }
+            else
+            {
+                placeholder.Button.interactable = true;
+                placeholder.Container.GetComponent<Image>().color = new Color(1, 1, 1, 0.45f);
+                placeholder.ZombieImage.color = new Color(1, 1, 1, 0.45f);
             }
         }
     }
