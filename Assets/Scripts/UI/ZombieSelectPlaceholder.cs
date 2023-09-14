@@ -18,5 +18,4 @@ public class ZombieSelectPlaceholder {
     public ZombieType SelectedZombie { get; private set; }
 
     public void SetSelectedZombie(ZombieType type) => SelectedZombie = type;
-
 }

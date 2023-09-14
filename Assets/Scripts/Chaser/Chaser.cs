@@ -6,6 +6,7 @@ public enum ChasingType
     Zombie
 }
 
+
 public class Chaser<T> : IChaser<T> where T : MonoBehaviour, IChaseable
 {
 
@@ -14,14 +15,18 @@ public class Chaser<T> : IChaser<T> where T : MonoBehaviour, IChaseable
     private readonly string _tag;
     private readonly GameObject _gameObject;
 
+    // Owner is the only one allowed to set the target.
+    private Owner _owner;
     private float _distanceFromTarget;
     private float _detectionRangePriorityTarget = 3f;
 
     private T Target;
 
-    public event IChaser<T>.TragetChangeDelegate OnTargetChange;
+    public event IChaser<T>.TargetChangeDelegate OnTargetChange;
 
-    public Chaser(GameObject gameObject, float distanceFromTarget)
+    private bool IsOwner(Owner potentialOwner) => potentialOwner.gameObject.GetInstanceID() == _owner.gameObject.GetInstanceID();
+
+    public Chaser(GameObject gameObject, float distanceFromTarget, Owner owner)
     {
         _gameObject = gameObject;
         _distanceFromTarget = distanceFromTarget;
@@ -31,27 +36,8 @@ public class Chaser<T> : IChaser<T> where T : MonoBehaviour, IChaseable
             nameof(Zombifiable) => _zombifiableTag,
             _ => "",
         };
+        SetOwner(owner);
     }
-
-    //public T GetTargets()
-    //{
-    //    var targets = GameObject.FindGameObjectsWithTag(_tag);
-    //    if (typeof(T) == typeof(Zombifiable))
-    //    { // Prioritize Defenders
-    //        foreach (var target in targets)
-    //        {
-    //            var chaseable = target.GetComponent<Defender>();
-    //            if (chaseable != null && chaseable.IsAvailable())
-    //            {
-    //                float distance = Vector3.Distance(_gameObject.transform.position, chaseable.transform.position);
-    //                if (distance < _detectionRangePriorityTarget)
-    //                {
-    //                    return chaseable;
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
 
     public T FindNewTarget()
     {
@@ -76,7 +62,7 @@ public class Chaser<T> : IChaser<T> where T : MonoBehaviour, IChaseable
                 }
             }
         }
-        SetTarget(newTarget);
+        SetTarget(newTarget, _owner);
         return Target;
     }
 
@@ -109,21 +95,36 @@ public class Chaser<T> : IChaser<T> where T : MonoBehaviour, IChaseable
         _distanceFromTarget = distance;
     }
 
-    public void SetTarget(T target)
+    public void SetTarget(T target, Owner owner)
     {
-        Target = target;
-        NotifyTargetChange();
+        if (IsOwner(owner))
+        {
+            Target = target;
+            NotifyTargetChange();
+        }
     }
 
-    public void SubscribeToTargetChanges(IChaser<T>.TragetChangeDelegate action)
+    public void SubscribeToTargetChanges(IChaser<T>.TargetChangeDelegate action)
     {
         OnTargetChange += action;
     }
 
-    public void UnsubscribeFromTargetChanges(IChaser<T>.TragetChangeDelegate action)
+    public void UnsubscribeFromTargetChanges(IChaser<T>.TargetChangeDelegate action)
     {
         OnTargetChange -= action;
     }
 
     private void NotifyTargetChange() => OnTargetChange?.Invoke(Target);
+
+    public void SetOwner(Owner owner)
+    {
+        if (_owner.priority <= owner.priority)
+        {
+            _owner = owner;
+        }
+        else
+        {
+            Debug.LogWarning("Owner must have a higher priority.");
+        }
+    }
 }

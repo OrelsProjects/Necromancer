@@ -18,12 +18,16 @@ public class RoundManager : MonoBehaviour
     public static RoundManager Instance;
 
     [SerializeField]
-    private AreaData _data;
+    private Areas _area;
     [Header("UI")]
     [SerializeField]
     private GameObject _roundResultsUI;
     [SerializeField]
-    private List<ZombiePlaceholder> _zombiePlacholders;
+    private GameObject _zombiesSpawnersContainer;
+    [SerializeField]
+    private ZombieSpawnBehaviour _zombieSpawnerBehaviorPrefab;
+    [SerializeField]
+    private List<Transform> _defendersPositions;
 
     [Header("Sound")]
     [SerializeField]
@@ -46,6 +50,7 @@ public class RoundManager : MonoBehaviour
     private GameObject _zombiesParent;
     private GameObject _zombifiablesParent;
     private GameObject _defendersParent;
+    private AreaData _data;
 
     private bool _areDefendersIdle = true;
     private bool _isZombiesSoundPlaying = false;
@@ -72,22 +77,16 @@ public class RoundManager : MonoBehaviour
         {
             Instance = this;
         }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
-    public Vector3? GetClosestZombiePosition(Vector3 position)
+    private void Start()
     {
-        float closestDistance = Mathf.Infinity;
-        Vector3? closestPosition = null;
-        foreach (var zombie in _zombies)
-        {
-            float distance = Vector3.Distance(position, zombie.transform.position);
-            if (distance < closestDistance)
-            {
-                closestDistance = distance;
-                closestPosition = zombie.transform.position;
-            }
-        }
-        return closestPosition;
+        _data = AreasManager.Instance.GetAreaData(_area);
+        StartRound();
     }
 
     private void Update()
@@ -115,27 +114,24 @@ public class RoundManager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        StartRound();
-    }
-
     private void HandleStartedState()
     {
 
+        if (ShouldPlayZombiesSound())
+        {
+            PlayZombieSpawnSound();
+        }
         if (!AreThereZombies())
         {
             PlayBackgroundMusic();
             _state = RoundState.DefendersWon;
+            return;
         }
-        else if (!AreThereDefenders())
+        if (!AreThereDefenders())
         {
             ReduceZombiesSoundVolume();
             _state = RoundState.ZombiesWon;
-        }
-        else if (ShouldPlayZombiesSound())
-        {
-            PlayZombieSpawnSound();
+            return;
         }
     }
 
@@ -161,7 +157,7 @@ public class RoundManager : MonoBehaviour
     {
         bool areThereZombifiedCivilians = _zombifiables.Find(zombifiable => zombifiable.IsZombified()) != null;
         bool areThereZombies = _zombies.Count > 0;
-        bool areThereZombiesToSpawn = ZombiesSpawnBar.Instance.AreThereZombiesToSpawn();
+        bool areThereZombiesToSpawn = ZombieSpawner.Instance.AreThereZombiesToSpawn();
         return areThereZombifiedCivilians || areThereZombies || areThereZombiesToSpawn;
     }
 
@@ -184,24 +180,20 @@ public class RoundManager : MonoBehaviour
         _areDefendersIdle = false;
     }
 
-    private void InitSpawnBar()
+    public Vector3? GetClosestZombiePosition(Vector3 position)
     {
-        _zombiePlacholders.ForEach(placeholder =>
+        float closestDistance = Mathf.Infinity;
+        Vector3? closestPosition = null;
+        foreach (var zombie in _zombies)
         {
-            placeholder.gameObject.SetActive(false);
-        });
-        RaidManager.Instance.RaidZombies.ForEach(zombie =>
-        {
-            foreach (var placeholder in _zombiePlacholders)
+            float distance = Vector3.Distance(position, zombie.transform.position);
+            if (distance < closestDistance)
             {
-                if (!placeholder.gameObject.activeSelf)
-                {
-                    placeholder.gameObject.SetActive(true);
-                    placeholder.SetZombie(zombie);
-                    break;
-                }
+                closestDistance = distance;
+                closestPosition = zombie.transform.position;
             }
-        });
+        }
+        return closestPosition;
     }
 
     public void StartRound()
@@ -212,7 +204,6 @@ public class RoundManager : MonoBehaviour
             _roundResultsUI.SetActive(false);
         }
         PlayBackgroundMusic();
-        InitSpawnBar();
         _data.RoundData.CiviliansPrefabs.Value.ForEach(civ =>
         {
             Vector3 randomPosition = new(Random.Range(-5, 5), Random.Range(-5, 5));
@@ -254,7 +245,15 @@ public class RoundManager : MonoBehaviour
         {
             _defendersParent = new GameObject("Defenders");
         }
+        Transform spawnPosition = _defendersParent.transform;
+
+        if (_defendersPositions != null && _defendersPositions.Count > 0)
+        {
+            spawnPosition = _defendersPositions[Random.Range(0, _defendersPositions.Count)];
+        }
+
         defender.gameObject.transform.SetParent(_defendersParent.transform);
+        defender.transform.position = spawnPosition.position;
         _defenders.Add(defender);
     }
 

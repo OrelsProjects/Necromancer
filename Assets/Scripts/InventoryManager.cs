@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public struct InventoryData : ISaveableObject
 {
     public int Currency;
+    public ZombieType[] AcquiredZombies;
 
     public string GetObjectType()
     {
@@ -18,11 +20,22 @@ public class InventoryManager : MonoBehaviour, ISaveable
 
     public event CurrencyChangedDelegate OnCurrencyChanged;
 
+    private List<ZombieType> _acquiredZombies;
+
+    public List<ZombieType> AcquiredZombies
+    {
+        get => _acquiredZombies;
+        private set
+        {
+            _acquiredZombies = value;
+        }
+    }
+
     private int _currency;
 
     public int Currency
     {
-        get { return _currency; }
+        get => _currency;
         private set
         {
             if (_currency != value)
@@ -62,11 +75,21 @@ public class InventoryManager : MonoBehaviour, ISaveable
         return false;
     }
 
+    public void AcquireZombie(ZombieType zombie)
+    {
+        if (_acquiredZombies.Contains(zombie))
+        {
+            return;
+        }
+        _acquiredZombies.Add(zombie);
+    }
+
     public ISaveableObject GetData()
     {
         return new InventoryData
         {
-            Currency = _currency
+            Currency = _currency,
+            AcquiredZombies = _acquiredZombies?.ToArray() ?? new ZombieType[0]
         };
     }
 
@@ -81,6 +104,16 @@ public class InventoryManager : MonoBehaviour, ISaveable
             else
             {
                 Currency = data.Currency;
+            }
+            if (data.AcquiredZombies == null || data.AcquiredZombies.Length == 0)
+            {
+                _acquiredZombies = new List<ZombieType>();
+                _acquiredZombies.AddRange(new[] { ZombieType.Small, ZombieType.Medium, ZombieType.Large });
+                SaveManager.Instance.InitiateSave();
+            }
+            else
+            {
+                _acquiredZombies = new List<ZombieType>(data.AcquiredZombies);
             }
         }
     }

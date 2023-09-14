@@ -79,52 +79,52 @@ MonoBehaviour:
     m_CategoryList:
     - m_Name: Idle_0
       m_Hash: 0
-      m_Sprite: {fileID: -1576511827, guid: fbac555fc1cd18748ad21426efa92bd7, type: 3}
+      m_Sprite: {fileID: 0}
     - m_Name: Idle_1
       m_Hash: 0
-      m_Sprite: {fileID: 540525867, guid: fbac555fc1cd18748ad21426efa92bd7, type: 3}
+      m_Sprite: {fileID: 0}
     - m_Name: Idle_0_0
       m_Hash: 0
-      m_Sprite: {fileID: 790387494, guid: fbac555fc1cd18748ad21426efa92bd7, type: 3}
+      m_Sprite: {fileID: 0}
   - m_Name: Running
     m_Hash: 0
     m_CategoryList:
     - m_Name: SpriteSheet_4
       m_Hash: 0
-      m_Sprite: {fileID: 121857430, guid: fbac555fc1cd18748ad21426efa92bd7, type: 3}
+      m_Sprite: {fileID: 0}
     - m_Name: SpriteSheet_7
       m_Hash: 0
-      m_Sprite: {fileID: -158915283, guid: fbac555fc1cd18748ad21426efa92bd7, type: 3}
+      m_Sprite: {fileID: 0}
     - m_Name: SpriteSheet_5
       m_Hash: 0
-      m_Sprite: {fileID: -480613626, guid: fbac555fc1cd18748ad21426efa92bd7, type: 3}
+      m_Sprite: {fileID: 0}
     - m_Name: SpriteSheet_6
       m_Hash: 0
-      m_Sprite: {fileID: -1530573599, guid: fbac555fc1cd18748ad21426efa92bd7, type: 3}
+      m_Sprite: {fileID: 0}
   - m_Name: Attack Melee
     m_Hash: 0
     m_CategoryList:
     - m_Name: SpriteSheet_24
       m_Hash: 0
-      m_Sprite: {fileID: -1447039127, guid: fbac555fc1cd18748ad21426efa92bd7, type: 3}
+      m_Sprite: {fileID: 0}
     - m_Name: SpriteSheet_25
       m_Hash: 0
-      m_Sprite: {fileID: 1941392512, guid: fbac555fc1cd18748ad21426efa92bd7, type: 3}
+      m_Sprite: {fileID: 0}
     - m_Name: SpriteSheet_26
       m_Hash: 0
-      m_Sprite: {fileID: 751431408, guid: fbac555fc1cd18748ad21426efa92bd7, type: 3}
+      m_Sprite: {fileID: 0}
   - m_Name: Death
     m_Hash: 0
     m_CategoryList:
     - m_Name: SpriteSheet_37
       m_Hash: 0
-      m_Sprite: {fileID: 1741691334, guid: fbac555fc1cd18748ad21426efa92bd7, type: 3}
+      m_Sprite: {fileID: 0}
     - m_Name: SpriteSheet_38
       m_Hash: 0
-      m_Sprite: {fileID: 1445258134, guid: fbac555fc1cd18748ad21426efa92bd7, type: 3}
+      m_Sprite: {fileID: 0}
     - m_Name: SpriteSheet_39
       m_Hash: 0
-      m_Sprite: {fileID: -1405686062, guid: fbac555fc1cd18748ad21426efa92bd7, type: 3}
+      m_Sprite: {fileID: 0}
   m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 3d1de1bb79fbb9244b504edf0f8b8e4f, type: 3}
 --- !u!114 &200481458404878060
 MonoBehaviour:
@@ -183,7 +183,7 @@ SpriteRenderer:
   m_SortingLayerID: -2097405675
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: -158915283, guid: fbac555fc1cd18748ad21426efa92bd7, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -191,7 +191,7 @@ SpriteRenderer:
   m_Size: {x: 0.13, y: 0.17}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!50 &3578955630126137664

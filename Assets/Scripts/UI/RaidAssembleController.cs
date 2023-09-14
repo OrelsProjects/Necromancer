@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 
 
-[System.Serializable]
+[Serializable]
 public class ZombieOption
 {
     public ZombieType Type;
@@ -24,7 +24,7 @@ public class RaidAssembleController : MonoBehaviour
     [SerializeField]
     private GameObject _raidButton;
     [SerializeField]
-    private RaidZombieOption _zombieOptionPrefab;
+    private UIZombieOption _zombieOptionPrefab;
     [SerializeField]
     private Transform _optionsList;
     [SerializeField]
@@ -60,11 +60,6 @@ public class RaidAssembleController : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        InitOptionsList();
-    }
-
     private void InitOptionsList()
     {
         foreach (Transform child in _optionsList)
@@ -78,18 +73,18 @@ public class RaidAssembleController : MonoBehaviour
 
 
         int position = 0;
-        foreach (ZombieType zombieType in Enum.GetValues(typeof(ZombieType)))
+        foreach (ZombieType zombieType in InventoryManager.Instance.AcquiredZombies)
         {
-            RaidZombieOption raidZombieOption = GetRaidZombieUI(zombieType, position++);
+            UIZombieOption raidZombieOption = GetRaidZombieUI(zombieType, position++);
             AddToOptionsList(raidZombieOption);
         }
         UpdateRaidCost(AreasManager.Instance.GetAreaData(_area).RaidCost);
         UpdateRaidButtonInteractable();
     }
 
-    private RaidZombieOption GetRaidZombieUI(ZombieType zombieType, int positionInList = 0)
+    private UIZombieOption GetRaidZombieUI(ZombieType zombieType, int positionInList = 0)
     {
-        RaidZombieOption raidZombieOption = Instantiate(_zombieOptionPrefab);
+        UIZombieOption raidZombieOption = Instantiate(_zombieOptionPrefab);
         Sprite sprite = CharactersManager.Instance.GetZombieSprite(zombieType);
         int cost = CharactersManager.Instance.GetZombieData(zombieType).PriceToUse;
 
@@ -101,20 +96,20 @@ public class RaidAssembleController : MonoBehaviour
         return raidZombieOption;
     }
 
-    private void AddToOptionsList(RaidZombieOption raidZombieOption)
+    private void AddToOptionsList(UIZombieOption raidZombieOption)
     {
         raidZombieOption.transform.SetParent(_optionsList);
         raidZombieOption.transform.localPosition = new(raidZombieOption.PositionInList, raidZombieOption.PositionInList);
         raidZombieOption.transform.localScale = Vector2.one;
     }
 
-    private void AddToSelectedList(RaidZombieOption raidZombieOption)
+    private void AddToSelectedList(UIZombieOption raidZombieOption)
     {
         raidZombieOption.transform.SetParent(_selectedList);
         raidZombieOption.transform.localScale = Vector2.one;
     }
 
-    private void SelectZombie(RaidZombieOption raidZombieOption)
+    private void SelectZombie(UIZombieOption raidZombieOption)
     {
         raidZombieOption.ResetButtonListeners();
         raidZombieOption.Button.onClick.AddListener(() => RemoveZombieSelection(raidZombieOption));
@@ -123,7 +118,7 @@ public class RaidAssembleController : MonoBehaviour
         UpdateRaidButtonInteractable();
     }
 
-    private void RemoveZombieSelection(RaidZombieOption raidZombieOption)
+    private void RemoveZombieSelection(UIZombieOption raidZombieOption)
     {
         raidZombieOption.ResetButtonListeners();
         raidZombieOption.Button.onClick.AddListener(() => SelectZombie(raidZombieOption));
@@ -137,7 +132,7 @@ public class RaidAssembleController : MonoBehaviour
         List<ZombieType> selectedZombies = new();
         for (int i = 0; i < _selectedList.childCount; i++)
         {
-            ZombieType selectedZombieType = _selectedList.GetChild(i).GetComponent<RaidZombieOption>().Type;
+            ZombieType selectedZombieType = _selectedList.GetChild(i).GetComponent<UIZombieOption>().Type;
             selectedZombies.Add(selectedZombieType);
         }
 

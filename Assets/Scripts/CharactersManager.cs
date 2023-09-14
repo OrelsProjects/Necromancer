@@ -1,38 +1,50 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public enum ZombieType {
-    ZombieLab,
-    ZombieLab1,
+public enum ZombieType
+{
+    Small,
+    Medium,
+    Large,
     Playground
 }
 
-public struct CharacterData : ISaveableObject {
-    public int BasicZombieLevel;
-    public int BasicZombieLevel1;
+public struct CharacterData : ISaveableObject
+{
+    public int SmallZombieLevel;
+    public int MediumZombieLevel;
+    public int LargeZombieLevel;
 
-    public string GetObjectType() {
+    public string GetObjectType()
+    {
         return GetType().FullName;
     }
 }
 
-public class CharactersManager : MonoBehaviour, ISaveable {
+public class CharactersManager : MonoBehaviour, ISaveable
+{
     public static CharactersManager Instance;
 
-    // TODO: Remove sprite from here.
     [SerializeField]
-    private Sprite _basicZombieSprite;
+    private Sprite _smallZombieSprite;
     [SerializeField]
-    private ZombieData _basicZombieData;
+    private ZombieData _smallZombieData;
     [SerializeField]
-    private Sprite _basicZombieSprite1;
+    private Sprite _mediumZombieSprite;
     [SerializeField]
-    private ZombieData _basicZombieData1;
+    private ZombieData _mediumZombieData;
+    [SerializeField]
+    private Sprite _largeZombieSprite;
+    [SerializeField]
+    private ZombieData _largeZombieData;
+
     [Header("Prefabs")]
     [SerializeField]
-    private Zombie _basicZombiePrefab;
+    private Zombie _smallZombiePrefab;
     [SerializeField]
-    private Zombie _basicZombiePrefab1;
+    private Zombie _mediumZombiePrefab;
+    [SerializeField]
+    private Zombie _largeZombiePrefab;
     [SerializeField]
     private Zombie _playgroundZombiePrefab;
     [SerializeField]
@@ -40,86 +52,136 @@ public class CharactersManager : MonoBehaviour, ISaveable {
     [SerializeField]
     private Defender _archerDefenderPrefab;
     [SerializeField]
-    private List<Civilian> _civilianPrefabs = new();
+    private List<Civilian> _civilianPrefabs = new List<Civilian>();
 
-    private int _basicZombieLevel = 1;
-    private int _basicZombieLevel1 = 1;
+    private int _smallZombieLevel = 1;
+    private int _mediumZombieLevel = 1;
+    private int _largeZombieLevel = 1;
 
-    public int BasicZombieLevel {
-        get { return _basicZombieLevel; }
-        private set {
-            if (_basicZombieLevel != value) {
-                if (value <= 0) {
-                    _basicZombieLevel = 1;
-                } else {
-                    _basicZombieLevel = value;
+    public int SmallZombieLevel
+    {
+        get { return _smallZombieLevel; }
+        private set
+        {
+            if (_smallZombieLevel != value)
+            {
+                if (value <= 0)
+                {
+                    _smallZombieLevel = 1;
+                }
+                else
+                {
+                    _smallZombieLevel = value;
                 }
                 SaveManager.Instance.InitiateSave();
             }
         }
     }
 
-    public int BasicZombieLevel1 {
-        get { return _basicZombieLevel1; }
-        private set {
-            if (_basicZombieLevel1 != value) {
-                if (value <= 0) {
-                    _basicZombieLevel1 = 1;
-                } else {
-                    _basicZombieLevel1 = value;
+    public int MediumZombieLevel
+    {
+        get { return _mediumZombieLevel; }
+        private set
+        {
+            if (_mediumZombieLevel != value)
+            {
+                if (value <= 0)
+                {
+                    _mediumZombieLevel = 1;
+                }
+                else
+                {
+                    _mediumZombieLevel = value;
                 }
                 SaveManager.Instance.InitiateSave();
             }
         }
     }
 
-    private void Awake() {
-        if (Instance == null) {
+    public int LargeZombieLevel
+    {
+        get { return _largeZombieLevel; }
+        private set
+        {
+            if (_largeZombieLevel != value)
+            {
+                if (value <= 0)
+                {
+                    _largeZombieLevel = 1;
+                }
+                else
+                {
+                    _largeZombieLevel = value;
+                }
+                SaveManager.Instance.InitiateSave();
+            }
+        }
+    }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
             Instance = this;
             return;
         }
     }
 
-    public ZombieLevel GetZombieData(ZombieType type) {
-        return type switch {
-            ZombieType.ZombieLab => _basicZombieData.GetLevel(BasicZombieLevel),
-            ZombieType.ZombieLab1 => _basicZombieData1.GetLevel(BasicZombieLevel1),
-            ZombieType.Playground => _basicZombieData.GetLevel(BasicZombieLevel),
-            _ => new(),
+    public ZombieLevel GetZombieData(ZombieType type)
+    {
+        return type switch
+        {
+            ZombieType.Small => _smallZombieData.GetLevel(SmallZombieLevel),
+            ZombieType.Medium => _mediumZombieData.GetLevel(MediumZombieLevel),
+            ZombieType.Large => _largeZombieData.GetLevel(LargeZombieLevel),
+            ZombieType.Playground => _smallZombieData.GetLevel(SmallZombieLevel), // Adjust as needed.
+            _ => null,
         };
     }
 
-    public bool IsZombieMaxLevel(ZombieType type) {
-        return type switch {
-            ZombieType.ZombieLab => BasicZombieLevel >= _basicZombieData.MaxLevel,
-            ZombieType.ZombieLab1 => BasicZombieLevel1 >= _basicZombieData1.MaxLevel,
-            ZombieType.Playground => BasicZombieLevel >= _basicZombieData.MaxLevel,
+    public bool IsZombieMaxLevel(ZombieType type)
+    {
+        return type switch
+        {
+            ZombieType.Small => SmallZombieLevel >= _smallZombieData.MaxLevel,
+            ZombieType.Medium => MediumZombieLevel >= _mediumZombieData.MaxLevel,
+            ZombieType.Large => LargeZombieLevel >= _largeZombieData.MaxLevel,
+            ZombieType.Playground => SmallZombieLevel >= _smallZombieData.MaxLevel, // Adjust as needed.
             _ => false,
         };
     }
 
-    public ZombieLevel GetZombieDataNextLevel(ZombieType type) {
-        return type switch {
-            ZombieType.ZombieLab => _basicZombieData.GetLevel(BasicZombieLevel + 1),
-            ZombieType.ZombieLab1 => _basicZombieData1.GetLevel(BasicZombieLevel + 1),
-            ZombieType.Playground => _basicZombieData.GetLevel(BasicZombieLevel + 1),
-            _ => new(),
+    public ZombieLevel GetZombieDataNextLevel(ZombieType type)
+    {
+        return type switch
+        {
+            ZombieType.Small => _smallZombieData.GetLevel(SmallZombieLevel + 1),
+            ZombieType.Medium => _mediumZombieData.GetLevel(MediumZombieLevel + 1),
+            ZombieType.Large => _largeZombieData.GetLevel(LargeZombieLevel + 1),
+            ZombieType.Playground => _smallZombieData.GetLevel(SmallZombieLevel + 1), // Adjust as needed.
+            _ => new ZombieLevel(), // Adjust as needed.
         };
     }
 
-    public Zombie GetZombiePrefab(ZombieType type) {
-        return type switch {
-            ZombieType.ZombieLab => _basicZombiePrefab,
-            ZombieType.ZombieLab1 => _basicZombiePrefab1,
+    public Zombie GetZombiePrefab(ZombieType type)
+    {
+        return type switch
+        {
+            ZombieType.Small => _smallZombiePrefab,
+            ZombieType.Medium => _mediumZombiePrefab,
+            ZombieType.Large => _largeZombiePrefab,
             ZombieType.Playground => _playgroundZombiePrefab,
             _ => null,
         };
     }
 
-    public Defender GetDefenderPrefab(DefenderType type, DefenderRangedType rangedType = default) {
-        return type switch {
+    public Defender GetDefenderPrefab(DefenderType type, DefenderRangedType rangedType = default)
+    {
+        return type switch
+        {
             DefenderType.Melee => _meleeDefenderPrefab,
-            DefenderType.Ranged => rangedType switch {
+            DefenderType.Ranged => rangedType switch
+            {
                 DefenderRangedType.Archer => _archerDefenderPrefab,
                 _ => null,
             },
@@ -127,38 +189,59 @@ public class CharactersManager : MonoBehaviour, ISaveable {
         };
     }
 
-    public Civilian GetRandomCivlian() => _civilianPrefabs[Random.Range(0, _civilianPrefabs.Count)];
+    public Civilian GetRandomCivilian() => _civilianPrefabs.Count > 0 ? _civilianPrefabs[Random.Range(0, _civilianPrefabs.Count)] : null;
 
-    public Sprite GetZombieSprite(ZombieType type) => type switch {
-        ZombieType.ZombieLab => _basicZombieSprite,
-        ZombieType.ZombieLab1 => _basicZombieSprite1,
-        ZombieType.Playground => _basicZombieSprite,
-        _ => null,
-    };
+    public Sprite GetZombieSprite(ZombieType type)
+    {
+        return type switch
+        {
+            ZombieType.Small => _smallZombieSprite,
+            ZombieType.Medium => _mediumZombieSprite,
+            ZombieType.Large => _largeZombieSprite,
+            ZombieType.Playground => _smallZombieSprite, // Adjust as needed.
+            _ => null,
+        };
+    }
 
-    public void LoadData(ISaveableObject item) {
-        if (item is CharacterData data) {
-            BasicZombieLevel = data.BasicZombieLevel;
-        } else {
-            BasicZombieLevel = 1;
+    public void LoadData(ISaveableObject item)
+    {
+        if (item is CharacterData data)
+        {
+            SmallZombieLevel = data.SmallZombieLevel;
+            MediumZombieLevel = data.MediumZombieLevel;
+            LargeZombieLevel = data.LargeZombieLevel;
+        }
+        else
+        {
+            SmallZombieLevel = 1;
+            MediumZombieLevel = 1;
+            LargeZombieLevel = 1;
         }
     }
 
     public ISaveableObject GetData() =>
-        new CharacterData {
-            BasicZombieLevel = BasicZombieLevel,
-            BasicZombieLevel1 = BasicZombieLevel1
+        new CharacterData
+        {
+            SmallZombieLevel = SmallZombieLevel,
+            MediumZombieLevel = MediumZombieLevel,
+            LargeZombieLevel = LargeZombieLevel
         };
 
-
-    public void UpgradeZombie(ZombieType type) {
-        switch (type) {
-            case ZombieType.ZombieLab:
-                BasicZombieLevel++;
+    public void UpgradeZombie(ZombieType type)
+    {
+        switch (type)
+        {
+            case ZombieType.Small:
+                SmallZombieLevel++;
                 break;
-            case ZombieType.ZombieLab1:
-                BasicZombieLevel1++;
+            case ZombieType.Medium:
+                MediumZombieLevel++;
+                break;
+            case ZombieType.Large:
+                LargeZombieLevel++;
                 break;
         }
     }
+
+    public Civilian GetRandomCivlian() => _civilianPrefabs[Random.Range(0, _civilianPrefabs.Count)];
 }

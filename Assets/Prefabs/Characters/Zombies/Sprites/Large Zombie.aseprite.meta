@@ -1,0 +1,1540 @@
+fileFormatVersion: 2
+guid: 2d2b1212eec254f15ae2ed5029799f4b
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 62a9f0aa5b59740cfbadc7e5f9823bb0, type: 3}
+  textureImporterSettings:
+    alphaSource: 1
+    mipMapMode: 0
+    enableMipMap: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+    convertToNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+    swizzle: 50462976
+    isReadable: 0
+    streamingMipmaps: 0
+    streamingMipmapsPriority: 0
+    vTOnly: 0
+    ignoreMipmapLimit: 0
+    nPOTScale: 1
+    sRGBTexture: 1
+    spriteMode: 2
+    spriteExtrude: 1
+    spriteMeshType: 1
+    alignment: 0
+    spritePivot: {x: 0.5, y: 0.5}
+    spritePixelsToUnits: 100
+    spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+    spriteGenerateFallbackPhysicsShape: 0
+    generateCubemap: 6
+    cubemapConvolution: 0
+    seamlessCubemap: 0
+    alphaIsTransparency: 1
+    spriteTessellationDetail: -1
+    textureType: 8
+    textureShape: 1
+    singleChannelComponent: 0
+    flipbookRows: 0
+    flipbookColumns: 0
+    ignorePngGamma: 0
+    cookieMode: 0
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+    normalMap: 0
+    textureFormat: 0
+    maxTextureSize: 0
+    lightmap: 0
+    compressionQuality: 0
+    linearTexture: 0
+    grayScaleToAlpha: 0
+    rGBM: 0
+    cubemapConvolutionSteps: 0
+    cubemapConvolutionExponent: 0
+    maxTextureSizeSet: 0
+    compressionQualitySet: 0
+    textureFormatSet: 0
+    applyGammaDecoding: 0
+  previousAsepriteImporterSettings:
+    fileImportMode: 0
+    importHiddenLayers: 0
+    layerImportMode: 1
+    defaultPivotSpace: 0
+    defaultPivotAlignment: 7
+    customPivotPosition: {x: 0.5, y: 0.5}
+    spritePadding: 0
+    generateModelPrefab: 1
+    generateAnimationClips: 1
+    addSortingGroup: 1
+    addShadowCasters: 0
+  asepriteImporterSettings:
+    fileImportMode: 0
+    importHiddenLayers: 0
+    layerImportMode: 1
+    defaultPivotSpace: 0
+    defaultPivotAlignment: 7
+    customPivotPosition: {x: 0.5, y: 0.5}
+    spritePadding: 0
+    generateModelPrefab: 1
+    generateAnimationClips: 1
+    addSortingGroup: 1
+    addShadowCasters: 0
+  importFileNodeState: 1
+  platformSettingsDirtyTick: 638299313844190890
+  textureAssetName: 
+  singleSpriteImportData:
+  - name: 
+    originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    spriteID: 
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  animatedSpriteImportData:
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_0
+    originalName: 
+    pivot: {x: 0.11538454, y: -0.7878788}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 222
+      y: 48
+      width: 26
+      height: 33
+    spriteID: 31dd0ebfc8a9f4499b07b19b9e542e71
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 222, y: 48}
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_1
+    originalName: 
+    pivot: {x: 0.17241378, y: -0.7647059}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 90
+      y: 4
+      width: 29
+      height: 34
+    spriteID: f1350fa36e44b4f528ce31c359a3a041
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 90, y: 4}
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_2
+    originalName: 
+    pivot: {x: 0.1481481, y: -0.8387097}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 75
+      y: 97
+      width: 27
+      height: 31
+    spriteID: 8c13f2df02eed4fc8a24f6c64a5d6900
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 75, y: 97}
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_3
+    originalName: 
+    pivot: {x: 0.1481481, y: -0.8666667}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 155
+      y: 97
+      width: 27
+      height: 30
+    spriteID: 045379585077a47ad8333fffe4541560
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 155, y: 97}
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_4
+    originalName: 
+    pivot: {x: 0.11538454, y: -0.7878788}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 97
+      width: 26
+      height: 33
+    spriteID: c9327ffdf9a57420c9bdff318230d109
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 97}
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_5
+    originalName: 
+    pivot: {x: -0.033333216, y: -0.7647059}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 52
+      y: 4
+      width: 30
+      height: 34
+    spriteID: 84d5357cec45342c4b2da26660a3d285
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 52, y: 4}
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_6
+    originalName: 
+    pivot: {x: -0.103448205, y: -0.8125}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 205
+      y: 4
+      width: 29
+      height: 32
+    spriteID: fb363fec6120a474c915279688f44c52
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 205, y: 4}
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_7
+    originalName: 
+    pivot: {x: 0, y: -0.8125}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 187
+      y: 48
+      width: 27
+      height: 32
+    spriteID: 9ffb4c22f2f984fa0a90f8ba1c11d24f
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 187, y: 48}
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_8
+    originalName: 
+    pivot: {x: 0.1428571, y: -0.7878788}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 43
+      y: 48
+      width: 28
+      height: 33
+    spriteID: c3aa2b027830742de82b781a8b7a90e5
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 43, y: 48}
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_9
+    originalName: 
+    pivot: {x: 0.1428571, y: -0.7878788}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 79
+      y: 48
+      width: 28
+      height: 33
+    spriteID: 809bff8a0b9db4750b22ecd68581b784
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 79, y: 48}
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_10
+    originalName: 
+    pivot: {x: 0.11538454, y: -0.72222227}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 127
+      y: 4
+      width: 26
+      height: 36
+    spriteID: e054f82aeb72d4a8896e8df558a6371e
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 127, y: 4}
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_11
+    originalName: 
+    pivot: {x: 0.1612903, y: -0.63414633}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 48
+      width: 31
+      height: 41
+    spriteID: 4beb0aaa2098f418aaf8f3e81076cb45
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 48}
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_12
+    originalName: 
+    pivot: {x: -0.066666715, y: -0.962963}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 190
+      y: 97
+      width: 30
+      height: 27
+    spriteID: a91c5c9fb205e4efa80d846625523242
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 190, y: 97}
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_13
+    originalName: 
+    pivot: {x: 0, y: -0.86206895}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 38
+      y: 97
+      width: 29
+      height: 29
+    spriteID: 190bc06311ab14c1aa7456689c470107
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 38, y: 97}
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_14
+    originalName: 
+    pivot: {x: 0.1428571, y: -0.7878788}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 115
+      y: 48
+      width: 28
+      height: 33
+    spriteID: f7f28b4b92a4443bc8ad70ae013f28ee
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 115, y: 48}
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_15
+    originalName: 
+    pivot: {x: 0.1428571, y: -0.7878788}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 151
+      y: 48
+      width: 28
+      height: 33
+    spriteID: 4b52112501ce5461e95f59611b0b60e4
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 151, y: 48}
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_16
+    originalName: 
+    pivot: {x: 0.32500005, y: -0.72222227}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 40
+      height: 36
+    spriteID: f721d2226bcc14ed1a69c089872b959d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 4}
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_17
+    originalName: 
+    pivot: {x: 0.47222224, y: -1.2307693}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 161
+      y: 4
+      width: 36
+      height: 26
+    spriteID: fa68ca72ee1c6470e8fb2b3333687a95
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 161, y: 4}
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_18
+    originalName: 
+    pivot: {x: 0.5405405, y: -1.5454545}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 110
+      y: 97
+      width: 37
+      height: 22
+    spriteID: 93506f349a1f0426ba38eb5964d66637
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 110, y: 97}
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_19
+    originalName: 
+    pivot: {x: 0.5869565, y: -2.1538463}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 138
+      width: 46
+      height: 13
+    spriteID: 1527bb2bbb3f7461d8d6e6c61db041c0
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 138}
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_20
+    originalName: 
+    pivot: {x: 0.59999996, y: -2.8}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 58
+      y: 138
+      width: 45
+      height: 10
+    spriteID: d052b80a589fa41ca873c1537ccaeedd
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 58, y: 138}
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_21
+    originalName: 
+    pivot: {x: 0.55, y: -3.5}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 111
+      y: 138
+      width: 40
+      height: 8
+    spriteID: 61f32910f375e4372abe3720cd71fa9f
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 111, y: 138}
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_22
+    originalName: 
+    pivot: {x: 0.56410253, y: -4}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 159
+      y: 138
+      width: 39
+      height: 7
+    spriteID: 44653b487e7c94924881b40ffdc5fe8a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 159, y: 138}
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_23
+    originalName: 
+    pivot: {x: 0.4482759, y: -5.6}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 206
+      y: 138
+      width: 29
+      height: 5
+    spriteID: 2080c728fa289455aac5f55ebd997a74
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 206, y: 138}
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_24
+    originalName: 
+    pivot: {x: 0.44, y: -7}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 159
+      width: 25
+      height: 4
+    spriteID: 4308dccc1abdd4088a97a7d346f0fd94
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 159}
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_25
+    originalName: 
+    pivot: {x: 0.40909085, y: -9.333334}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 110
+      y: 127
+      width: 22
+      height: 3
+    spriteID: f60c5527a514f4e65ab625d691cc7e2e
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 110, y: 127}
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_26
+    originalName: 
+    pivot: {x: 0.33333328, y: -14}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 161
+      y: 38
+      width: 15
+      height: 2
+    spriteID: a8ca153beb26546cea9cb88f3b3f4bed
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 161, y: 38}
+  - name: LARGE ZOMBIE ANIMATIONS_Frame_27
+    originalName: 
+    pivot: {x: 0.111111194, y: -14}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 184
+      y: 38
+      width: 9
+      height: 2
+    spriteID: 4f9b71d8273ee45c182d6041a3f498e6
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 184, y: 38}
+  spriteSheetImportData:
+  - name: death_10
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 159
+      width: 25
+      height: 4
+    spriteID: 93c229807801d42709359e9175f4f2f4
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: death_5
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 138
+      width: 46
+      height: 13
+    spriteID: 3135bf6ab380646aa85686b371bf60c6
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: death_6
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 58
+      y: 138
+      width: 45
+      height: 10
+    spriteID: f83c1b6e5fa9e45dfb6ac6deabfb5dec
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: death_7
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 111
+      y: 138
+      width: 40
+      height: 8
+    spriteID: d7a87472395334d75bd44a8e910acc55
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: death_8
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 159
+      y: 138
+      width: 39
+      height: 7
+    spriteID: c4cffd513bedb44febf251cc46957a5a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: death_9
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 206
+      y: 138
+      width: 29
+      height: 5
+    spriteID: 2b303504191c64df69f4c3893716e311
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: idle_3
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 97
+      width: 26
+      height: 33
+    spriteID: 1355577c643084744be0b6627abbfd09
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: attack_4
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 38
+      y: 97
+      width: 29
+      height: 29
+    spriteID: ad9a36c6e9c0849c2acb5b9614a4c2ed
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: idle_1
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 75
+      y: 97
+      width: 27
+      height: 31
+    spriteID: 3831dadd9e36644b2960f2697cfb49d2
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: death_4
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 115
+      y: 97
+      width: 32
+      height: 22
+    spriteID: e18eea4a34a164ff68023499da38ff24
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: idle_2
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 155
+      y: 97
+      width: 27
+      height: 30
+    spriteID: 60525d24641af4ee18a3564488467b32
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: attack_3
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 190
+      y: 97
+      width: 30
+      height: 27
+    spriteID: 8e1fc2e9b8a384c8a9d0e42d49b2a456
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: attack_2
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 48
+      width: 31
+      height: 41
+    spriteID: ee280e34a71244f7c99a816be030d40a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: attack_0
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 43
+      y: 48
+      width: 28
+      height: 33
+    spriteID: 57d2fd4f8162a4d1e93ffa8eb7f5c94e
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: death_1
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 79
+      y: 48
+      width: 28
+      height: 33
+    spriteID: 5ed4363e1a763470986d504c81280316
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: death_0
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 115
+      y: 48
+      width: 28
+      height: 33
+    spriteID: 13dad9060bca248b2b37ea5e14e2c066
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: walk_3
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 151
+      y: 48
+      width: 28
+      height: 33
+    spriteID: 049cfcf39dda94dac9baaeaf20fdb877
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: walk_2
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 187
+      y: 48
+      width: 27
+      height: 32
+    spriteID: fa63d4413beba43838a54cfdf50395e3
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: LARGE ZOMBIE ANIMATIONS_18
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 222
+      y: 48
+      width: 26
+      height: 33
+    spriteID: 69e9c282c8ab04b6399af8c51bdea8e1
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: death_2
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 40
+      height: 36
+    spriteID: 2bde3d4e4f9584dfab74d441d10113a6
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: walk_0
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 52
+      y: 4
+      width: 30
+      height: 34
+    spriteID: 87e8da8765a524383ae97fcbd7293c3c
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: idle_0
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 90
+      y: 4
+      width: 29
+      height: 34
+    spriteID: 727b9db8c7e1443cfb47007a4526ab0c
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: attack_1
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 127
+      y: 4
+      width: 26
+      height: 36
+    spriteID: a8e4ac44f541c4a528ac1c7cefdc36ab
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: death_3
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 161
+      y: 4
+      width: 36
+      height: 26
+    spriteID: 419e1df3a9814471fa422abd1569d4b5
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: walk_1
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 205
+      y: 4
+      width: 29
+      height: 32
+    spriteID: 568a48fc54772455096575f431de38bd
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: death_11
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 110
+      y: 127
+      width: 22
+      height: 3
+    spriteID: bcfb3f32a1f21478bb86fc3a47dfc806
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: death_13
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 184
+      y: 38
+      width: 9
+      height: 2
+    spriteID: 395ba59815b9344fc837c964a78c8c54
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: death_12
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 161
+      y: 38
+      width: 15
+      height: 2
+    spriteID: f9a0495eff332432fa31601f473207ed
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  asepriteLayers:
+  - layerIndex: 0
+    guid: -355415157
+    name: Large Zombie
+    layerFlags: 0
+    layerType: 0
+    blendMode: 0
+    cells:
+    - name: Large Zombie_Frame_0
+      frameIndex: 0
+      cellRect:
+        x: 68
+        y: 26
+        width: 26
+        height: 33
+      spriteId: a2a00053fe7324816aa8644c3599fea2
+    - name: Large Zombie_Frame_1
+      frameIndex: 1
+      cellRect:
+        x: 66
+        y: 26
+        width: 29
+        height: 34
+      spriteId: 220fa35cf4fcc410893576fa448b5151
+    - name: Large Zombie_Frame_2
+      frameIndex: 2
+      cellRect:
+        x: 67
+        y: 26
+        width: 27
+        height: 31
+      spriteId: 2be63fc63d13c4efe95521f97ab004ce
+    - name: Large Zombie_Frame_3
+      frameIndex: 3
+      cellRect:
+        x: 67
+        y: 26
+        width: 27
+        height: 30
+      spriteId: 5c2fd3ba36f0344c096b969e77eafbdf
+    - name: Large Zombie_Frame_4
+      frameIndex: 4
+      cellRect:
+        x: 68
+        y: 26
+        width: 26
+        height: 33
+      spriteId: 1ac9a07ff91f047b59e2f4b42ae5c942
+    - name: Large Zombie_Frame_5
+      frameIndex: 5
+      cellRect:
+        x: 72
+        y: 26
+        width: 30
+        height: 34
+      spriteId: bbc91237dbe0d4515b1fd9d6f899213e
+    - name: Large Zombie_Frame_6
+      frameIndex: 6
+      cellRect:
+        x: 74
+        y: 26
+        width: 29
+        height: 32
+      spriteId: c22167fc6c6894a26a6d2427d90c96d9
+    - name: Large Zombie_Frame_7
+      frameIndex: 7
+      cellRect:
+        x: 71
+        y: 26
+        width: 27
+        height: 32
+      spriteId: 8102ece35cbd14ad998a74e52fafbafd
+    - name: Large Zombie_Frame_8
+      frameIndex: 8
+      cellRect:
+        x: 67
+        y: 26
+        width: 28
+        height: 33
+      spriteId: f28e75c4a49f841bf8d141f330979283
+    - name: Large Zombie_Frame_9
+      frameIndex: 9
+      cellRect:
+        x: 67
+        y: 26
+        width: 28
+        height: 33
+      spriteId: 47b196f4578e645c48c918b0c3e26723
+    - name: Large Zombie_Frame_10
+      frameIndex: 10
+      cellRect:
+        x: 68
+        y: 26
+        width: 26
+        height: 36
+      spriteId: cf5444f1119bf453096539e48b1a24d5
+    - name: Large Zombie_Frame_11
+      frameIndex: 11
+      cellRect:
+        x: 66
+        y: 26
+        width: 31
+        height: 41
+      spriteId: 5310de2304f6d44eba1791b429eea4a4
+    - name: Large Zombie_Frame_12
+      frameIndex: 12
+      cellRect:
+        x: 73
+        y: 26
+        width: 30
+        height: 27
+      spriteId: 743908a33f700409f8f79a4bef26247b
+    - name: Large Zombie_Frame_13
+      frameIndex: 13
+      cellRect:
+        x: 71
+        y: 25
+        width: 29
+        height: 29
+      spriteId: 2a0fd51d3c87944458c244304b03ce07
+    - name: Large Zombie_Frame_14
+      frameIndex: 14
+      cellRect:
+        x: 67
+        y: 26
+        width: 28
+        height: 33
+      spriteId: 912ebb16d50764e9e8ab740042bd91b7
+    - name: Large Zombie_Frame_15
+      frameIndex: 15
+      cellRect:
+        x: 67
+        y: 26
+        width: 28
+        height: 33
+      spriteId: 3a6dd9d4b1c7742a48af6f3c724c2392
+    - name: Large Zombie_Frame_16
+      frameIndex: 16
+      cellRect:
+        x: 58
+        y: 26
+        width: 40
+        height: 36
+      spriteId: 09f9beb8ae77d4eb585141244f65c682
+    - name: Large Zombie_Frame_17
+      frameIndex: 17
+      cellRect:
+        x: 54
+        y: 32
+        width: 36
+        height: 26
+      spriteId: bb28ec6fabfd2445cae8b0b8564e41ae
+    - name: Large Zombie_Frame_18
+      frameIndex: 18
+      cellRect:
+        x: 51
+        y: 34
+        width: 37
+        height: 22
+      spriteId: 8e1d9451603444f6891c411b6b256814
+    - name: Large Zombie_Frame_19
+      frameIndex: 19
+      cellRect:
+        x: 44
+        y: 28
+        width: 46
+        height: 13
+      spriteId: 0a19ef08ef5894712a2272f9d67109af
+    - name: Large Zombie_Frame_20
+      frameIndex: 20
+      cellRect:
+        x: 44
+        y: 28
+        width: 45
+        height: 10
+      spriteId: bc4f23450ff1d4027b2dd1f37672ecf6
+    - name: Large Zombie_Frame_21
+      frameIndex: 21
+      cellRect:
+        x: 49
+        y: 28
+        width: 40
+        height: 8
+      spriteId: ca84cc45b56bb49ab8da3c8e6a943d80
+    - name: Large Zombie_Frame_22
+      frameIndex: 22
+      cellRect:
+        x: 49
+        y: 28
+        width: 39
+        height: 7
+      spriteId: 0edf9cee797c343b2aae0933f925cfbd
+    - name: Large Zombie_Frame_23
+      frameIndex: 23
+      cellRect:
+        x: 58
+        y: 28
+        width: 29
+        height: 5
+      spriteId: 3897e5aea20a64678b544c75c06159f7
+    - name: Large Zombie_Frame_24
+      frameIndex: 24
+      cellRect:
+        x: 60
+        y: 28
+        width: 25
+        height: 4
+      spriteId: e1028fc63fc774560956ea18d65cd521
+    - name: Large Zombie_Frame_25
+      frameIndex: 25
+      cellRect:
+        x: 62
+        y: 28
+        width: 22
+        height: 3
+      spriteId: 23329a76beda748e6a4d9646f3c0d07b
+    - name: Large Zombie_Frame_26
+      frameIndex: 26
+      cellRect:
+        x: 66
+        y: 28
+        width: 15
+        height: 2
+      spriteId: 1328c0a4f9214469b96e2468be22fa05
+    - name: Large Zombie_Frame_27
+      frameIndex: 27
+      cellRect:
+        x: 70
+        y: 28
+        width: 9
+        height: 2
+      spriteId: 9e3692a338b474ae282a89af6f6687f7
+    linkedCells: []
+    parentIndex: -1
+  platformSettings:
+  - name: DefaultTexturePlatform
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Standalone
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Server
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Android
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: iPhone
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  secondarySpriteTextures: []
+  spritePackingTag: 
+  canvasSize: {x: 142, y: 134}

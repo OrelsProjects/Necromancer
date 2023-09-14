@@ -21,6 +21,8 @@ public class MovementController : MonoBehaviour
     private Vector2 _previousDirection = Vector2.zero;
     private bool _forcedDisabled = false;
 
+    public bool isEnabled;
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
@@ -86,6 +88,7 @@ public class MovementController : MonoBehaviour
             return;
         }
         enabled = true;
+        isEnabled = true;
     }
 
     /// <summary>
@@ -118,6 +121,7 @@ public class MovementController : MonoBehaviour
         _previousSpeed = _speed;
         _previousDirection = _direction;
         Move(0, Vector2.zero);
+        isEnabled = false;
     }
 
     private void OnEnable()
@@ -127,6 +131,7 @@ public class MovementController : MonoBehaviour
             return;
         }
         Move(_previousSpeed, _previousDirection);
+        isEnabled = true;
     }
 
 }

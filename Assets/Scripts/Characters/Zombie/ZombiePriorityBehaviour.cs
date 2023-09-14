@@ -14,6 +14,8 @@ public class ZombiePriorityBehaviour : MonoBehaviour
     private Rigidbody2D _rigidBody;
     private List<GameObject> _defendersInSight = new();
 
+    private Owner _owner;
+
     private ZombieLevel Data
     {
         get
@@ -48,12 +50,14 @@ public class ZombiePriorityBehaviour : MonoBehaviour
         {
             _collider = gameObject.AddComponent(typeof(CircleCollider2D)) as CircleCollider2D;
         }
+        _owner = new() { gameObject = gameObject, priority = OwnerPriority.Default };
     }
 
     private void Start()
     {
         InitRigidbody();
         InitCollider();
+        _zombieChaser.SetOwner(_owner);
     }
 
     private void Update()
@@ -63,10 +67,7 @@ public class ZombiePriorityBehaviour : MonoBehaviour
         {
             return;
         }
-        if (_zombieChaser.Target == null || !IsDefender(_zombieChaser.Target.gameObject))
-        {
-            UpdateTarget();
-        }
+        UpdateTarget();
     }
 
     private void UpdateTarget()
@@ -78,7 +79,7 @@ public class ZombiePriorityBehaviour : MonoBehaviour
         }
         if (ShouldChangeTargets(closestDefender))
         {
-            _zombieChaser.SetTarget(closestDefender.GetComponent<Zombifiable>());
+            _zombieChaser.SetTarget(closestDefender.GetComponent<Zombifiable>(), _owner);
         }
     }
 
@@ -127,13 +128,31 @@ public class ZombiePriorityBehaviour : MonoBehaviour
         {
             if (ShouldChangeTargets(collision.gameObject))
             {
-                _zombieChaser.SetTarget(collision.gameObject.GetComponent<Zombifiable>());
+                _zombieChaser.SetTarget(collision.gameObject.GetComponent<Zombifiable>(), _owner);
             }
         }
     }
 
     private bool IsDefender(GameObject gameObject) =>
          gameObject && gameObject.GetComponent<Defender>() != null;
+
+    private bool IsClosestDefender(GameObject gameObject)
+    {
+        float closestTarget = Vector3.Distance(transform.position, gameObject.transform.position);
+        foreach (var defender in _defendersInSight)
+        {
+            if (defender == null)
+            {
+                continue;
+            }
+            float distance = Vector3.Distance(transform.position, defender.transform.position);
+            if (distance < closestTarget)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 
     /// <summary>
     /// If the zombie is chasing a defender, it will continue to do so.
@@ -142,7 +161,7 @@ public class ZombiePriorityBehaviour : MonoBehaviour
     /// <returns> True if the zombie is chasing a civilian, false otherwise </returns> 
     private bool ShouldChangeTargets(GameObject gameObject) =>
         _zombieChaser.Target == null
-        || IsDefender(gameObject) && !IsDefender(_zombieChaser.Target.gameObject);
+        || IsDefender(gameObject) && !IsDefender(_zombieChaser.Target.gameObject) && !IsClosestDefender(gameObject);
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

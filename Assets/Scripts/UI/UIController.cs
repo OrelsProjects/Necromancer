@@ -47,7 +47,7 @@ public class UIController : MonoBehaviour
         _currencyText.text = InventoryManager.Instance.Currency.ToString();
     }
 
-    public bool IsUpgradeAreaOpen() => _areaUpgradeUI.GetComponent<AreaUpgradeController>() != null && _areaUpgradeUI.GetComponent<AreaUpgradeController>().enabled;
+    public bool IsUpgradeAreaOpen() => _areaUpgradeUI.GetComponent<AreaUpgradeController>() != null;
 
     public void ShowZombiesUpgrade()
     {
@@ -60,7 +60,6 @@ public class UIController : MonoBehaviour
         _zombiesUpgradeUI.SetActive(false);
         Map.Instance.EnableMovement();
     }
-
 
     public void ShowAreaUpgrade(Areas area)
     {
