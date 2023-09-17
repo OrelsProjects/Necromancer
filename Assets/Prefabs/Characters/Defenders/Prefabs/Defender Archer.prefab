@@ -49,7 +49,6 @@ GameObject:
   - component: {fileID: 7743316011326211327}
   - component: {fileID: 8500372773892179639}
   - component: {fileID: 3690822906193468867}
-  - component: {fileID: 6605930328438912686}
   - component: {fileID: 4090938225344827335}
   m_Layer: 9
   m_Name: Defender Archer
@@ -286,6 +285,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stepSound: {fileID: 8300000, guid: d56c5b0ebc0adaf4ebe7d59ec25ba44b, type: 3}
+  isEnabled: 0
 --- !u!114 &7743316011326211327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -298,6 +298,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0414f319fe0685d41af3157ccf6cff48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nextPosition: {x: 0, y: 0}
   _speed: 0.9
   _range: 0.5
   _maxDistanceY: 4
@@ -330,41 +331,6 @@ MonoBehaviour:
   _data: {fileID: 11400000, guid: feedc147edd7d014ba06de7146acfceb, type: 2}
   _hitScreamSound: {fileID: 8300000, guid: 4f4a7b185b7a9404eb185c1a7b5f472f, type: 3}
   _deathSound: {fileID: 8300000, guid: a6c96b765543a694a803e5c7e8a6f715, type: 3}
---- !u!70 &6605930328438912686
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1036798099327359381}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 1536
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.15999998, y: 0.17999999}
-  m_Direction: 0
 --- !u!114 &4090938225344827335
 MonoBehaviour:
   m_ObjectHideFlags: 0

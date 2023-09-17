@@ -10,6 +10,9 @@ public enum WanderState
 
 public class WanderController : MonoBehaviour
 {
+
+    public Vector2 nextPosition;
+
     [SerializeField]
     private float _speed = 0.8f;
     [SerializeField]
@@ -26,19 +29,12 @@ public class WanderController : MonoBehaviour
 
     void Start()
     {
-        if (enabled)
-        {
-            SetNewDestination();
-            _state = WanderState.MovingToTarget;
-        }
+        SetNewDestination();
+        _state = WanderState.MovingToTarget;
     }
 
     void Update()
     {
-        if (!enabled)
-        {
-            return;
-        }
         switch (_state)
         {
             case WanderState.MovingToTarget:
@@ -70,26 +66,15 @@ public class WanderController : MonoBehaviour
     {
         _target = new Vector2(Random.Range(-_maxDistanceX, _maxDistanceX), Random.Range(-_maxDistanceY, _maxDistanceY));
         _movementController.Move(_speed, (_target - transform.position).normalized);
+        nextPosition = _target;
     }
 
     public void Enable()
     {
-        if (enabled)
-        {
-            return;
-        }
         enabled = true;
         SetNewDestination();
         _state = WanderState.MovingToTarget;
     }
 
-    public void Disable()
-    {
-        if (!enabled)
-        {
-            return;
-        }
-        enabled = false;
-        _state = WanderState.Waiting;
-    }
+    public void Disable() => enabled = false;
 }

@@ -1,9 +1,11 @@
 using Sirenix.OdinInspector;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum DefenderState
 {
+    WaitingForDetection,
     Idle,
     Chasing,
     AboutToAttack,
@@ -42,6 +44,7 @@ public abstract class Defender : MonoBehaviour
     private Zombifiable _zombifiable;
     private Animator _animator;
     private Zombie _currentTarget;
+    private readonly List<Zombie> _zombiesNearby = new();
 
     protected DefenderState State = DefenderState.Idle;
     protected AnimationHelper _animationHelper;
@@ -59,6 +62,7 @@ public abstract class Defender : MonoBehaviour
         _animationHelper = new AnimationHelper(_animator);
         _animationHelper.SetAttackSpeed(Data.AttackSpeed);
 
+        SetCollider();
         SetState(DefenderState.Idle);
     }
 
@@ -69,6 +73,7 @@ public abstract class Defender : MonoBehaviour
 
     public virtual void Update()
     {
+        CleanZombiesList();
         if (IsSelfZombified())
         {
             return;
@@ -98,6 +103,17 @@ public abstract class Defender : MonoBehaviour
         }
     }
 
+    private void SetCollider()
+    {
+        CircleCollider2D collider = gameObject.AddComponent<CircleCollider2D>();
+        collider.isTrigger = true;
+        collider.radius = 2;
+        collider.offset = Vector2.zero;
+    }
+
+    public void CleanZombiesList() => _zombiesNearby.RemoveAll(zombie => zombie == null || !zombie.IsAvailable());
+
+
     public virtual void StartBattle()
     {
         SetState(DefenderState.Idle);
@@ -110,17 +126,19 @@ public abstract class Defender : MonoBehaviour
             SetState(DefenderState.Chasing);
             _wanderController.Disable();
         }
-        else if (!_chaser.FindNewTarget())
+        else if (IsZombiesNearby())
+        {
+            SetNewTarget();
+        }
+        else
         {
             _animationHelper.PlayAnimation(AnimationType.Idle);
-            _movementController.Stop();
             _wanderController.Enable();
-            if (!ZombieSpawner.Instance.AreThereZombiesToSpawn())
-            {
-                SetState(DefenderState.RoundOver);
-            }
+            SetState(DefenderState.WaitingForDetection);
         }
     }
+
+    private bool IsZombiesNearby() => _zombiesNearby.Count > 0;
 
     private void HandleChasingState()
     {
@@ -196,9 +214,52 @@ public abstract class Defender : MonoBehaviour
         State = state;
     }
 
+    private void SetNewTarget()
+    {
+        if (!IsZombiesNearby())
+        {
+            return;
+        }
+        Zombie closestZombie = _zombiesNearby[0];
+        float distanceToClosestZombie = Vector2.Distance(transform.position, closestZombie.transform.position);
+        foreach (Zombie zombie in _zombiesNearby)
+        {
+            if (zombie.IsAvailable())
+            {
+                float distanceToZombie = Vector2.Distance(transform.position, zombie.transform.position);
+                if (distanceToZombie < distanceToClosestZombie)
+                {
+                    closestZombie = zombie;
+                    distanceToClosestZombie = distanceToZombie;
+                }
+            }
+        }
+        _chaser.SetTarget(closestZombie);
+    }
+
     private void OnDestroy()
     {
         _chaser.UnsubscribeFromTargetChanges(OnTargetChange);
         RoundManager.Instance.RemoveDefender(this);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Zombie"))
+        {
+            _zombiesNearby.Add(collision.gameObject.GetComponent<Zombie>());
+            if (State == DefenderState.WaitingForDetection)
+            {
+                SetState(DefenderState.Idle);
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Zombie"))
+        {
+            _zombiesNearby.Remove(collision.gameObject.GetComponent<Zombie>());
+        }
     }
 }

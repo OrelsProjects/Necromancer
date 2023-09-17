@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2859682169815749186}
   - component: {fileID: 7348835711517348172}
   - component: {fileID: 5416242771531631109}
+  - component: {fileID: 3247598260657880555}
   m_Layer: 0
   m_Name: Lab 3
   m_TagString: Untagged
@@ -30,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.18875, y: 2.18875, z: 2.18875}
+  m_LocalScale: {x: 4.2, y: 4.2, z: 4.2}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -76,12 +77,12 @@ SpriteRenderer:
   m_SortingLayerID: 777884379
   m_SortingLayer: 6
   m_SortingOrder: 0
-  m_Sprite: {fileID: -8873174173766206679, guid: c51338aa5d13c40438b768ec742bb00b, type: 3}
+  m_Sprite: {fileID: -2643618260286507233, guid: b8b62b2123c2a43af9c5221d9d810ff7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 3.04, y: 3.7}
+  m_Size: {x: 2.08, y: 2.22}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -142,14 +143,30 @@ MonoBehaviour:
     m_CategoryList:
     - m_Name: Stage 1
       m_Hash: 0
-      m_Sprite: {fileID: -8873174173766206679, guid: c51338aa5d13c40438b768ec742bb00b, type: 3}
+      m_Sprite: {fileID: -2643618260286507233, guid: b8b62b2123c2a43af9c5221d9d810ff7, type: 3}
     - m_Name: Stage 2
       m_Hash: 0
-      m_Sprite: {fileID: -8030694394456968455, guid: c51338aa5d13c40438b768ec742bb00b, type: 3}
+      m_Sprite: {fileID: 8342314264467694527, guid: b8b62b2123c2a43af9c5221d9d810ff7, type: 3}
     - m_Name: Stage 3
       m_Hash: 0
-      m_Sprite: {fileID: 1302079145461105815, guid: c51338aa5d13c40438b768ec742bb00b, type: 3}
+      m_Sprite: {fileID: 1059183170261181838, guid: b8b62b2123c2a43af9c5221d9d810ff7, type: 3}
     - m_Name: Stage 4
       m_Hash: 0
-      m_Sprite: {fileID: -5387642526501431761, guid: c51338aa5d13c40438b768ec742bb00b, type: 3}
+      m_Sprite: {fileID: 454151695844605570, guid: b8b62b2123c2a43af9c5221d9d810ff7, type: 3}
   m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 7606682216e457341b19573f23e77af8, type: 3}
+--- !u!114 &3247598260657880555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5155007589475733278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe55e3ba7db94b14796670b173840836, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onClick:
+    m_PersistentCalls:
+      m_Calls: []
+  interactable: 1

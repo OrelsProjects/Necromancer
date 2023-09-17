@@ -17,7 +17,7 @@ public static class Settings
     public static bool Sound = true;
 }
 
-public class SettingsManager : MonoBehaviour, ISaveable
+public class SettingsManager : DisableMapMovement, ISaveable
 {
     public static SettingsManager Instance;
 
@@ -63,7 +63,8 @@ public class SettingsManager : MonoBehaviour, ISaveable
             if (Settings.Sound)
             {
                 AudioListener.volume = 1f;
-            } else
+            }
+            else
             {
                 AudioListener.volume = 0f;
             }
@@ -116,6 +117,7 @@ public class SettingsManager : MonoBehaviour, ISaveable
     public void ShowSettings()
     {
         _settingsUI.SetActive(true);
+
     }
 
     public void HideSettings()

@@ -13,7 +13,6 @@ public enum ZombieState
     RoundOver,
 }
 
-[RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(MovementController))]
 [RequireComponent(typeof(Animator))]
 public class Zombie : MonoBehaviour, IChaseable
@@ -67,7 +66,7 @@ public class Zombie : MonoBehaviour, IChaseable
         _chaser = GetComponent<ZombieChaser>();
         _wanderController = GetComponent<WanderController>();
         _animationHelper = new AnimationHelper(_animator, true);
-        CreateColliderBetweenZombies();
+        SetCollider();
     }
 
     private void Start()
@@ -127,24 +126,11 @@ public class Zombie : MonoBehaviour, IChaseable
     /// Creates a collider between the zombies so that they won't overlap.
     /// The collider's parent is this zombie.
     /// </summary>
-    private void CreateColliderBetweenZombies()
+    private void SetCollider()
     {
-        GameObject zombiesColliderObject = new GameObject("Zombies Collider");
-        Rigidbody2D rb = zombiesColliderObject.AddComponent<Rigidbody2D>();
-        BoxCollider2D collider = zombiesColliderObject.AddComponent<BoxCollider2D>();
-
-        zombiesColliderObject.transform.SetParent(transform);
-        zombiesColliderObject.transform.localPosition = Vector3.zero;
-        zombiesColliderObject.transform.localScale = Vector3.one;
-        zombiesColliderObject.transform.localRotation = Quaternion.identity;
-
-        rb.bodyType = RigidbodyType2D.Dynamic;
-        rb.mass = 999999;
-
-        collider.isTrigger = false;
+        BoxCollider2D collider = gameObject.AddComponent<BoxCollider2D>();
+        collider.isTrigger = true;
         collider.size = new Vector2(0.1f, 0.05f);
-        collider.excludeLayers = LayerMask.GetMask("Zombifiable");
-        collider.includeLayers = LayerMask.GetMask("Zombie");
     }
 
     private void HandleIdleState()

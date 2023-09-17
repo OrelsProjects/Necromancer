@@ -52,25 +52,21 @@ public class UIController : MonoBehaviour
     public void ShowZombiesUpgrade()
     {
         _zombiesUpgradeUI.SetActive(true);
-        Map.Instance.DisableMovement();
     }
 
     public void HideZombiesUpgrade()
     {
         _zombiesUpgradeUI.SetActive(false);
-        Map.Instance.EnableMovement();
     }
 
     public void ShowAreaUpgrade(Areas area)
     {
         _areaUpgradeUI.GetComponent<AreaUpgradeController>().Enable(area);
-        Map.Instance.DisableMovement();
     }
 
     public void HideAreaUpgrade()
     {
         _areaUpgradeUI.GetComponent<AreaUpgradeController>().Disable();
-        Map.Instance.EnableMovement();
     }
 
     public void LoadPlayground()

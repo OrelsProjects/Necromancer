@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AreaUpgradeController : MonoBehaviour
+public class AreaUpgradeController : DisableMapMovement
 {
     [Header("UI")]
     [SerializeField]
@@ -25,20 +25,14 @@ public class AreaUpgradeController : MonoBehaviour
     private Button _upgradeButton;
 
     private Areas _area;
-
     private AreaData _areaData;
+
     private int CurrentLevel
     {
         get
         {
             return AreasManager.Instance.GetAreaLevel(_area);
         }
-    }
-
-    void OnEnable()
-    {
-        _areaData = AreasManager.Instance.GetAreaData(_area);
-        UpdateUI();
     }
 
     public void Enable(Areas area)
@@ -52,12 +46,18 @@ public class AreaUpgradeController : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    public override void OnEnable()
+    {
+        base.OnEnable();
+        _areaData = AreasManager.Instance.GetAreaData(_area);
+        UpdateUI();
+    }
+
     public void Upgrade()
     {
         AreaLevel level = _areaData.GetAreaLevel(CurrentLevel);
-        if (InventoryManager.Instance.CanAfford(level.PriceToUpgrade))
+        if (InventoryManager.Instance.UseCurrency(level.PriceToUpgrade))
         {
-            InventoryManager.Instance.UseCurrency(level.PriceToUpgrade);
             AreasManager.Instance.UpgradeArea(_area);
             UpdateUI();
         }
@@ -74,6 +74,7 @@ public class AreaUpgradeController : MonoBehaviour
     private void UpdateStats()
     {
         AreaLevel level = _areaData.GetAreaLevel(CurrentLevel);
+        Debug.Log("Got the level!" + level);
         _currentCurrencyPerMinuteText.text = level.CurrencyPerMinute.ToString();
         if (AreasManager.Instance.IsAreaMaxLevel(_area))
         {

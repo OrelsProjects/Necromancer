@@ -13,7 +13,7 @@ public class ZombieOption
     public GameObject Container;
     public TMPro.TextMeshProUGUI CostText;
 }
-public class RaidAssembleController : MonoBehaviour
+public class RaidAssembleController : DisableMapMovement
 {
 
     public static RaidAssembleController Instance { get; private set; }

@@ -60,7 +60,6 @@ GameObject:
   - component: {fileID: 1359111681615036401}
   - component: {fileID: 1210468108988486175}
   - component: {fileID: 458917145473307003}
-  - component: {fileID: 3380046446805814269}
   - component: {fileID: 4589220626325958492}
   - component: {fileID: 2358551904943097087}
   - component: {fileID: 2307081087279434325}
@@ -317,41 +316,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!70 &3380046446805814269
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2607877854947050983}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 1536
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.0048198, y: 0.002478146}
-  m_Size: {x: 0.14963965, y: 0.21256761}
-  m_Direction: 0
 --- !u!114 &4589220626325958492
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -365,6 +329,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stepSound: {fileID: 0}
+  isEnabled: 0
 --- !u!114 &2358551904943097087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -377,6 +342,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0414f319fe0685d41af3157ccf6cff48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nextPosition: {x: 0, y: 0}
   _speed: 0.8
   _range: 10
   _maxDistanceY: 4

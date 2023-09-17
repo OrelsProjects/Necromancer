@@ -28,13 +28,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5155007589475733278}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.18875, y: 2.18875, z: 2.18875}
+  m_LocalScale: {x: 4.1, y: 4.1, z: 4.1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4431135614843054666
 SpriteRenderer:
@@ -77,12 +77,12 @@ SpriteRenderer:
   m_SortingLayerID: 777884379
   m_SortingLayer: 6
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1405294439838594615, guid: 612b658c19fce8f44ba528ac3cacac10, type: 3}
+  m_Sprite: {fileID: 475220646942365040, guid: 41174d00711944c548728ff7820544ae, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.98, y: 3.62}
+  m_Size: {x: 1.87, y: 2.14}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -143,16 +143,16 @@ MonoBehaviour:
     m_CategoryList:
     - m_Name: Stage 1
       m_Hash: 0
-      m_Sprite: {fileID: 1405294439838594615, guid: 612b658c19fce8f44ba528ac3cacac10, type: 3}
+      m_Sprite: {fileID: 475220646942365040, guid: 41174d00711944c548728ff7820544ae, type: 3}
     - m_Name: Stage 2
       m_Hash: 0
-      m_Sprite: {fileID: -8012144265231924972, guid: 612b658c19fce8f44ba528ac3cacac10, type: 3}
+      m_Sprite: {fileID: -8233611899756681313, guid: 41174d00711944c548728ff7820544ae, type: 3}
     - m_Name: Stage 3
       m_Hash: 0
-      m_Sprite: {fileID: -6135687164510904236, guid: 612b658c19fce8f44ba528ac3cacac10, type: 3}
+      m_Sprite: {fileID: 7834829836628844983, guid: 41174d00711944c548728ff7820544ae, type: 3}
     - m_Name: Stage 4
       m_Hash: 0
-      m_Sprite: {fileID: 8498427830064224535, guid: 612b658c19fce8f44ba528ac3cacac10, type: 3}
+      m_Sprite: {fileID: 1172216575634531735, guid: 41174d00711944c548728ff7820544ae, type: 3}
   m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 7606682216e457341b19573f23e77af8, type: 3}
 --- !u!114 &4292433964416204609
 MonoBehaviour:
@@ -169,3 +169,4 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  interactable: 1

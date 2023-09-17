@@ -28,13 +28,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5155007589475733278}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.18875, y: 2.18875, z: 2.18875}
+  m_LocalScale: {x: 3.9999998, y: 3.9999998, z: 3.9999998}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4431135614843054666
 SpriteRenderer:
@@ -77,12 +77,12 @@ SpriteRenderer:
   m_SortingLayerID: 777884379
   m_SortingLayer: 6
   m_SortingOrder: 0
-  m_Sprite: {fileID: -4242090768380191199, guid: 71e400f51af2d144fb638ae481dae74f, type: 3}
+  m_Sprite: {fileID: -676598724161210037, guid: fa991768c5674430bb0799bb20ad8044, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.98, y: 3.63}
+  m_Size: {x: 1.5, y: 1.98}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -143,16 +143,16 @@ MonoBehaviour:
     m_CategoryList:
     - m_Name: Stage 1
       m_Hash: 0
-      m_Sprite: {fileID: -4242090768380191199, guid: 71e400f51af2d144fb638ae481dae74f, type: 3}
+      m_Sprite: {fileID: -676598724161210037, guid: fa991768c5674430bb0799bb20ad8044, type: 3}
     - m_Name: Stage 2
       m_Hash: 0
-      m_Sprite: {fileID: -5477237220537795946, guid: 71e400f51af2d144fb638ae481dae74f, type: 3}
+      m_Sprite: {fileID: 1577892693285227757, guid: fa991768c5674430bb0799bb20ad8044, type: 3}
     - m_Name: Stage 3
       m_Hash: 0
-      m_Sprite: {fileID: 8826384102584239376, guid: 71e400f51af2d144fb638ae481dae74f, type: 3}
+      m_Sprite: {fileID: 5192800913847994249, guid: fa991768c5674430bb0799bb20ad8044, type: 3}
     - m_Name: Stage 4
       m_Hash: 0
-      m_Sprite: {fileID: 2755858299182628260, guid: 71e400f51af2d144fb638ae481dae74f, type: 3}
+      m_Sprite: {fileID: -273096309603465857, guid: fa991768c5674430bb0799bb20ad8044, type: 3}
   m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 7606682216e457341b19573f23e77af8, type: 3}
 --- !u!114 &3247598260657880555
 MonoBehaviour:
@@ -169,3 +169,4 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  interactable: 1

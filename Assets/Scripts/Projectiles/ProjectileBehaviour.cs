@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 [RequireComponent(typeof(MovementController))]
 [RequireComponent(typeof(Collider2D))]
@@ -21,6 +20,7 @@ public class Projectile : MonoBehaviour, IProjectile
     private void Awake()
     {
         _movementController = GetComponent<MovementController>();
+        GetComponent<Collider2D>().isTrigger = false;
         Destroy(this, ProjectileLifetime);
     }
 
@@ -50,15 +50,17 @@ public class Projectile : MonoBehaviour, IProjectile
         onAttack();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+
+
+    private void OnTriggerEnter2D(Collider2D collider)
     {
         if (_isUsed)
         {
             return;
         }
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Zombie"))
+        if (collider.gameObject.layer == LayerMask.NameToLayer("Zombie"))
         {
-            if (collision.gameObject.TryGetComponent<Zombie>(out var zombie))
+            if (collider.gameObject.TryGetComponent<Zombie>(out var zombie))
             {
                 _isUsed = true;
                 zombie.TakeDamage(_damage);

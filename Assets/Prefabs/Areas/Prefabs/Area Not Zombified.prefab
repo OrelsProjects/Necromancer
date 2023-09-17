@@ -48,7 +48,6 @@ MonoBehaviour:
   _spawnPoint: {fileID: 0}
   _area: 0
   _state: 0
-  _data: {fileID: 0}
   _upgradeButton: {fileID: 0}
   _areaLevelText: {fileID: 1085318707077774834}
 --- !u!1001 &8722682942465159651

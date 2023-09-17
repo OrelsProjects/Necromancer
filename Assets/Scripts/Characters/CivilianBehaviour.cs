@@ -1,9 +1,11 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum CivilianState
 {
     Idle,
+    Wander,
     AboutToRun,
     Running,
     Dead,
@@ -29,21 +31,28 @@ public class Civilian : MonoBehaviour
     private WanderController _wanderController;
     private Zombifiable _zombifiable;
     private CivilianState _state = CivilianState.Idle;
+    private List<Zombie> _zombiesNearby = new();
 
     private void Awake()
     {
         _movementController = GetComponent<MovementController>();
         _wanderController = GetComponent<WanderController>();
         _zombifiable = GetComponent<Zombifiable>();
+        SetCollider();
     }
 
     private void Update()
     {
+        CleanZombiesList();
         if (_zombifiable.IsZombified())
         {
             SetState(CivilianState.Dead);
             _movementController.Disable(true);
             return;
+        }
+        if (IsZombieNearby())
+        {
+            SetState(CivilianState.AboutToRun);
         }
         switch (_state)
         {
@@ -56,6 +65,18 @@ public class Civilian : MonoBehaviour
         }
     }
 
+    private void SetCollider()
+    {
+        CircleCollider2D collider = gameObject.AddComponent<CircleCollider2D>();
+        collider.isTrigger = true;
+        collider.radius = 1;
+        collider.offset = Vector2.zero;
+        collider.includeLayers = LayerMask.GetMask("Zombie");
+        collider.excludeLayers = -1;
+    }
+
+    private void CleanZombiesList() => _zombiesNearby.RemoveAll(zombie => zombie == null || !zombie.IsAvailable());
+
     private void HandleIdleState()
     {
         if (IsZombieNearby())
@@ -65,6 +86,7 @@ public class Civilian : MonoBehaviour
         else
         {
             _wanderController.Enable();
+            SetState(CivilianState.Wander);
         }
     }
 
@@ -94,7 +116,9 @@ public class Civilian : MonoBehaviour
 
     private void RunAwayFromZombie()
     {
-        Vector3? zombiePosition = RoundManager.Instance.GetClosestZombiePosition(transform.position);
+        Vector3? zombiePosition;
+        zombiePosition = _zombiesNearby[0].transform.position;
+
         if (zombiePosition == null)
         {
             return;
@@ -112,15 +136,7 @@ public class Civilian : MonoBehaviour
         SetState(CivilianState.AboutToRun);
     }
 
-    private bool IsZombieNearby()
-    {
-        Vector3? closestZombie = RoundManager.Instance.GetClosestZombiePosition(transform.position);
-        if (closestZombie == null)
-        {
-            return false;
-        }
-        return Vector3.Distance(transform.position, closestZombie.Value) < _maxDistanceFromZombie;
-    }
+    private bool IsZombieNearby() => _zombiesNearby.Count > 0;
 
     private IEnumerator DelayChangingTargets()
     {
@@ -132,4 +148,21 @@ public class Civilian : MonoBehaviour
     {
         _state = state;
     }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Zombie"))
+        {
+            _zombiesNearby.Add(other.gameObject.GetComponent<Zombie>());
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Zombie"))
+        {
+            _zombiesNearby.Remove(other.gameObject.GetComponent<Zombie>());
+        }
+    }
+
 }

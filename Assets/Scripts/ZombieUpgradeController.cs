@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UpgradeController : MonoBehaviour
+public class UpgradeController : DisableMapMovement
 {
 
     const string STRING_MAX = "MAX";
@@ -69,14 +69,11 @@ public class UpgradeController : MonoBehaviour
         get => InventoryManager.Instance.AcquiredZombies;
     }
 
-    private List<ZombieType> CurrentZombieTypes = new(); // The user might upgrade and get a new zombie, so I need a list that holds the previous zombie types for upgrade for comparison
+    private List<ZombieType> CurrentZombieTypes = new(); // The user might upgrade and get a new zombie, so I need a list that holds the previous zombie types for upgrade for 
 
-    private void Start()
+    public override void OnEnable()
     {
-    }
-
-    private void OnEnable()
-    {
+        base.OnEnable();
         bool isZombieSelectedForUpgrade = false;
 
         // Get the difference and add the new zombie to the list via AddZombieOption
@@ -100,6 +97,7 @@ public class UpgradeController : MonoBehaviour
                 }
             }
         }
+        Map.Instance.DisableMovement();
         UpdateUI();
     }
 

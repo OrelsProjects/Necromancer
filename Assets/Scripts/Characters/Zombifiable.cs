@@ -8,7 +8,6 @@ public enum ZombifiableState
 }
 
 [RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(Collider2D))]
 public class Zombifiable : MonoBehaviour, IChaseable
 {
 
@@ -126,8 +125,6 @@ public class Zombifiable : MonoBehaviour, IChaseable
 
     #endregion
 
-    private void OnDestroy()
-    {
-        RoundManager.Instance.RemoveZombifiable(this);
-    }
+    private void OnDestroy() => RoundManager.Instance.RemoveZombifiable(this);
+
 }
