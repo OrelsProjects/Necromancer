@@ -15,6 +15,8 @@ public class AreaController : MonoBehaviour
     private Areas _area;
     [SerializeField]
     private AreaState _state;
+    [SerializeField]
+    private GameObject _areaNotZombifiedUI;
 
     [Header("UI")]
     [ShowIf("_state", AreaState.Zombified)]
@@ -23,7 +25,6 @@ public class AreaController : MonoBehaviour
     [ShowIf("_state", AreaState.Default)]
     [SerializeField]
     private TMPro.TextMeshProUGUI _areaLevelText;
-
 
     private GameObject _currentLab;
 
@@ -87,6 +88,10 @@ public class AreaController : MonoBehaviour
         if (_state == AreaState.Zombified)
         {
             GameObject newLab = AreasManager.Instance.GetLab(_area);
+            if (_areaNotZombifiedUI != null)
+            {
+                _areaNotZombifiedUI.SetActive(false);
+            }
             if (newLab != null)
             {
                 if (_currentLab != null)
