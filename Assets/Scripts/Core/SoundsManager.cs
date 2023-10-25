@@ -79,7 +79,10 @@ public class SoundsManager : MonoBehaviour
 
     public void StopAll()
     {
-        _backgroundAudioSource.Stop();
+        if (_backgroundAudioSource != null)
+        {
+            _backgroundAudioSource.Stop();
+        }
     }
 
     public static AudioClip GetAreaSound(Areas area)

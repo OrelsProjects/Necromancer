@@ -21,13 +21,13 @@ public class Zombifiable : MonoBehaviour, IChaseable
     private AudioClip _deathSound;
 
     private int _maxHealth;
-    private int _currentHealth;
+    public int _currentHealth;
     private float _movementBlockedTimeAfterAttack;
     private float _lastHitTime = 0f;
     private readonly float _timeToZombify = 1f;
     private readonly float _chanceToScreamOnHit = 0.3f;
 
-    private ZombifiableState _state = ZombifiableState.Default;
+    public ZombifiableState _state = ZombifiableState.Default;
 
     MovementController _movementController;
     Animator _animator;

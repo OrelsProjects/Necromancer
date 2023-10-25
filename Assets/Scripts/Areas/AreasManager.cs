@@ -238,6 +238,7 @@ public class AreasManager : MonoBehaviour, ISaveable
 
     public void LoadData(ISaveableObject item)
     {
+        Debug.Log("Loading data");
         if (item is AreasData data)
         {
             _areasState = data.AreasState; // Trigger event after loading data   

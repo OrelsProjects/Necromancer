@@ -70,9 +70,10 @@ public class MovementController : MonoBehaviour
 
     public bool Move(float speed, GameObject target)
     {
-        _direction = (target.transform.position - transform.position).normalized;
+        _direction = target.transform.position - transform.position;
+        Vector2 directionNormalized = _direction.normalized;
         _speed = speed;
-        return Move(speed, _direction);
+        return Move(speed, directionNormalized);
     }
 
     public void Stop()

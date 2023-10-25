@@ -18,6 +18,9 @@ public class RoundManager : MonoBehaviour
     public static RoundManager Instance;
 
     [SerializeField]
+    private WaveController _waveController;
+
+    [SerializeField]
     private Areas _area;
     [Header("UI")]
     [SerializeField]
@@ -71,6 +74,8 @@ public class RoundManager : MonoBehaviour
 
     public RoundState State => _state;
 
+    public bool IsRoundOver => (_state == RoundState.ZombiesWon || _state == RoundState.DefendersWon) && _waveController != null && _waveController.IsWaveInProgress;
+
     private void Awake()
     {
         if (Instance == null)
@@ -81,6 +86,11 @@ public class RoundManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void OnEnable() // So it happens before Start of WaveController
+    {
+        _waveController.Initialize(_area);
     }
 
     private void Start()
@@ -94,7 +104,7 @@ public class RoundManager : MonoBehaviour
         switch (_state)
         {
             case RoundState.NotStarted:
-                _state = AreThereZombiesAlive() ? RoundState.Started : RoundState.NotStarted;
+                HandleNotStartedState();
                 break;
             case RoundState.Started:
                 HandleStartedState();
@@ -107,10 +117,19 @@ public class RoundManager : MonoBehaviour
                 break;
         }
 
-        if (AreThereZombiesAlive() && _areDefendersIdle && (_state != RoundState.Won || _state != RoundState.Lost))
+        // if (AreThereZombiesAlive() && _areDefendersIdle && (_state != RoundState.Won || _state != RoundState.Lost))
+        // {
+        //     PlayZombieSpawnSound();
+        //     SendDefenders();
+        // }
+    }
+
+    private void HandleNotStartedState()
+    {
+        if (AreThereZombiesAlive())
         {
-            PlayZombieSpawnSound();
-            SendDefenders();
+            _state = RoundState.Started;
+            _waveController.StartWaves();
         }
     }
 
@@ -121,17 +140,20 @@ public class RoundManager : MonoBehaviour
         {
             PlayZombieSpawnSound();
         }
-        if (!AreThereZombies())
+        if (_waveController == null || _waveController.State == WaveState.Done)
         {
-            PlayBackgroundMusic();
-            _state = RoundState.DefendersWon;
-            return;
-        }
-        if (!AreThereDefenders())
-        {
-            ReduceZombiesSoundVolume();
-            _state = RoundState.ZombiesWon;
-            return;
+            if (!AreThereZombies())
+            {
+                PlayBackgroundMusic();
+                _state = RoundState.DefendersWon;
+                return;
+            }
+            if (!AreThereDefenders())
+            {
+                ReduceZombiesSoundVolume();
+                _state = RoundState.ZombiesWon;
+                return;
+            }
         }
     }
 
@@ -204,18 +226,30 @@ public class RoundManager : MonoBehaviour
             _roundResultsUI.SetActive(false);
         }
         PlayBackgroundMusic();
+        SpawnCivilians();
+        _state = RoundState.NotStarted;
+    }
+
+    public void SpawnCivilians()
+    {
+        int counter = 0;
         _data.RoundData.CiviliansPrefabs.Value.ForEach(civ =>
         {
             Vector3 randomPosition = new(Random.Range(-5, 5), Random.Range(-5, 5));
             Zombifiable zombifiableInstance = Instantiate(civ, randomPosition, Quaternion.identity);
+            zombifiableInstance.name = zombifiableInstance.name + " " + counter;
             AddZombifiable(zombifiableInstance);
         });
+    }
+
+    public void SpawnDefenders()
+    {
         _data.RoundData.Defenders.Value.ForEach(defender =>
-        {
-            Defender defenderInstance = Instantiate(defender, Vector3.zero, Quaternion.identity);
-            AddDefender(defenderInstance);
-        });
-        _state = RoundState.NotStarted;
+                {
+                    Defender defenderInstance = Instantiate(defender, Vector3.zero, Quaternion.identity);
+                    AddDefender(defenderInstance);
+                });
+
     }
 
     public void AddZombie(Zombie zombie)

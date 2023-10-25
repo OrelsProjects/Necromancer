@@ -125,8 +125,9 @@ public class Civilian : MonoBehaviour
         }
 
         Vector3 randomDirectionBias = Random.insideUnitCircle;
-        Vector3 direction = (transform.position - zombiePosition.Value + randomDirectionBias).normalized;
-        _movementController.Move(_speed, direction);
+        Vector3 direction = transform.position - zombiePosition.Value + randomDirectionBias;
+        Vector3 directionNormalized = direction.normalized;
+        _movementController.Move(_speed, directionNormalized);
         StartCoroutine(ChangeDirection());
     }
 

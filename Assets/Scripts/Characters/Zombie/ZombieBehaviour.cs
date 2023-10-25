@@ -10,7 +10,7 @@ public enum ZombieState
     Attacking,
     AboutToDie,
     Dead,
-    RoundOver,
+    Wandering,
 }
 
 [RequireComponent(typeof(MovementController))]
@@ -36,11 +36,9 @@ public class Zombie : MonoBehaviour, IChaseable
     [SerializeField]
     private bool _playground = false;
 
-    private ZombieLevel _data;
-
     public ZombieLevel Data
     {
-        get { return _data; }
+        get { return CharactersManager.Instance.GetZombieData(_type); }
     }
 
     private bool _isAttackSoundPlaying = false;
@@ -50,8 +48,9 @@ public class Zombie : MonoBehaviour, IChaseable
     private ZombieChaser _chaser;
     private WanderController _wanderController;
     private AnimationHelper _animationHelper;
-    private ZombieState _state = ZombieState.Idle;
-    private Zombifiable _target;
+    public ZombieState _state = ZombieState.Idle;
+    public Zombifiable _target;
+    public string targetName;
 
     // Used to check if the target is dead after the attack animaion is played
     // So that the defender won't attack a target that is not reached
@@ -72,9 +71,8 @@ public class Zombie : MonoBehaviour, IChaseable
     private void Start()
     {
         // Relying on the fact that the zombie will be spawned on command and not instantly. (It's in Awake instead of Start)
-        _data = CharactersManager.Instance.GetZombieData(_type);
-        _animationHelper.SetAttackSpeed(_data.AttackSpeed);
-        _currentHealth = _data.Health;
+        _animationHelper.SetAttackSpeed(Data.AttackSpeed);
+        _currentHealth = Data.Health;
 
         _chaser.SubscribeToTargetChanges(OnTargetChange);
         RoundManager.Instance.AddZombie(this);
@@ -119,6 +117,11 @@ public class Zombie : MonoBehaviour, IChaseable
                     SetState(ZombieState.Idle);
                 }
                 break;
+            case ZombieState.Wandering:
+                _movementController.Enable();
+                _wanderController.Enable();
+                break;
+
         }
     }
 
@@ -129,6 +132,7 @@ public class Zombie : MonoBehaviour, IChaseable
     private void SetCollider()
     {
         BoxCollider2D collider = gameObject.AddComponent<BoxCollider2D>();
+        //collider.includeLayers = LayerMask.GetMask("Zombie");
         collider.isTrigger = true;
         collider.size = new Vector2(0.1f, 0.05f);
     }
@@ -137,7 +141,7 @@ public class Zombie : MonoBehaviour, IChaseable
     {
         if (_target == null || !_target.IsAvailable())
         {
-            _movementController.Stop();
+            SetState(ZombieState.Wandering);
             _chaser.FindNewTarget();
         }
     }
@@ -156,15 +160,9 @@ public class Zombie : MonoBehaviour, IChaseable
         }
         else
         {
-            _movementController.Move(_data.Speed, _target.gameObject);
+            _movementController.Move(Data.Speed, _target.gameObject);
             _animationHelper.PlayAnimation(AnimationType.Running);
         }
-    }
-
-    private void FinishRound()
-    {
-        _wanderController.Enable();
-        SetState(ZombieState.RoundOver);
     }
 
     private void OnTargetChange(Zombifiable target)
@@ -172,12 +170,10 @@ public class Zombie : MonoBehaviour, IChaseable
         _target = target;
         if (_target == null)
         {
-            FinishRound();
+            SetState(ZombieState.Wandering);
+            return;
         }
-        else
-        {
-            SetState(ZombieState.Chasing);
-        }
+        SetState(ZombieState.Chasing);
     }
 
     private IEnumerator ZombifyTarget()
@@ -191,7 +187,7 @@ public class Zombie : MonoBehaviour, IChaseable
         SetState(ZombieState.Attacking);
         _animationHelper.PlayAnimation(AnimationType.AttackZombie);
         AudioSource.PlayClipAtPoint(_hitSound, transform.position);
-        yield return new WaitForSeconds(1 / _data.AttackSpeed);
+        yield return new WaitForSeconds(1 / Data.AttackSpeed);
 
         if (_state == ZombieState.Attacking)
         {
@@ -218,7 +214,7 @@ public class Zombie : MonoBehaviour, IChaseable
         }
         if (_target.IsAvailable())
         {
-            _target.Zombify(_type, _data.Damage);
+            _target.Zombify(_type, Data.Damage);
         }
     }
 
@@ -238,7 +234,7 @@ public class Zombie : MonoBehaviour, IChaseable
 
     private IEnumerator AttackSoundCooldown()
     {
-        yield return new WaitForSeconds(1 / _data.AttackSpeed);
+        yield return new WaitForSeconds(1 / Data.AttackSpeed);
         _isAttackSoundPlaying = false;
     }
 

@@ -63,7 +63,7 @@ public class RoundResults : MonoBehaviour
 
     public void FinishRound()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Map");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Map1");
         RoundManager.Instance.FinishRound();
     }
 

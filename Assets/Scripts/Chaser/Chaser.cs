@@ -24,7 +24,7 @@ public class Chaser<T> : IChaser<T> where T : MonoBehaviour, IChaseable
 
     public event IChaser<T>.TargetChangeDelegate OnTargetChange;
 
-    private bool IsOwner(Owner potentialOwner) => potentialOwner.gameObject.GetInstanceID() == _owner.gameObject.GetInstanceID();
+    private bool IsOwner(Owner potentialOwner) => potentialOwner.gameObject != null && _owner.gameObject != null && potentialOwner.gameObject.GetInstanceID() == _owner.gameObject.GetInstanceID();
 
     public Chaser(GameObject gameObject, float distanceFromTarget, Owner owner)
     {
@@ -42,17 +42,22 @@ public class Chaser<T> : IChaser<T> where T : MonoBehaviour, IChaseable
     public T FindNewTarget()
     {
         float closestDistance = Mathf.Infinity;
-        var targets = GameObject.FindGameObjectsWithTag(_tag);
+        bool isPriorityTargetsOnly = false;
+        GameObject[] targets = GameObject.FindGameObjectsWithTag(_tag);
         T newTarget = null;
         foreach (var target in targets)
         {
             var chaseable = target.GetComponent<T>();
             if (chaseable != null && chaseable.IsAvailable())
             {
-                if (chaseable.IsPriority())
+                if (isPriorityTargetsOnly && !chaseable.IsPriority())
                 {
+                    continue;
+                }
+                if (!isPriorityTargetsOnly && chaseable.IsPriority())
+                {
+                    isPriorityTargetsOnly = true;
                     newTarget = chaseable;
-                    break;
                 }
                 float distance = Vector3.Distance(_gameObject.transform.position, chaseable.transform.position);
                 if (distance < closestDistance)

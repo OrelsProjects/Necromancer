@@ -33,7 +33,6 @@ public class AreaData : ScriptableObject
 
     public AreaLevel GetAreaLevel(int level)
     {
-        Debug.Log("What??");
         int clampedLevel = Mathf.Clamp(level, 0, MaxLevel);
         return Levels[clampedLevel];
     }

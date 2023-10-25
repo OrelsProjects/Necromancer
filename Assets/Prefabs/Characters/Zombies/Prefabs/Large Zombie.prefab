@@ -55,6 +55,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 174792779760761756}
+  - component: {fileID: 6554708439953443105}
   - component: {fileID: 8062408778323882238}
   - component: {fileID: 2602475852248738683}
   - component: {fileID: 3546028585933335406}
@@ -62,7 +63,6 @@ GameObject:
   - component: {fileID: 1600356070544221806}
   - component: {fileID: 3423973381300386030}
   - component: {fileID: 5530434575241766576}
-  - component: {fileID: 6554708439953443105}
   - component: {fileID: 5027472256861975055}
   - component: {fileID: 7382131866971435836}
   - component: {fileID: 8331322325000841781}
@@ -82,8 +82,8 @@ RectTransform:
   m_GameObject: {fileID: 5362080560260885041}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.0017616637}
-  m_LocalScale: {x: 7, y: 5.8347054, z: 2.656244}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 4, y: 3.3341174, z: 1.5178539}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7008899303643834263}
   m_Father: {fileID: 0}
@@ -93,6 +93,30 @@ RectTransform:
   m_AnchoredPosition: {x: 21.833202, y: 63.719734}
   m_SizeDelta: {x: 0.15, y: 0.19}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &6554708439953443105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5362080560260885041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddf2ece95b5b0f64bb956167c52db66c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _type: 2
+  _spawnSound: {fileID: 8300000, guid: da34b283cf7f0d64bb59a8e36a08937f, type: 3}
+  _attackSounds:
+  - {fileID: 8300000, guid: 592ab58b002a7284f9835145a50eff72, type: 3}
+  - {fileID: 8300000, guid: 4ba027eb87a30854a8f5c61202532fc7, type: 3}
+  - {fileID: 8300000, guid: fa4285618671f8c49a277381677489d4, type: 3}
+  - {fileID: 8300000, guid: 4527bd88b3841cf47bd0aaee15d582dd, type: 3}
+  _hitSound: {fileID: 8300000, guid: 30c0080e49df1944b92bf602eccb1253, type: 3}
+  _deathSound: {fileID: 8300000, guid: 056e0486bb22f9b40a2271c3c72bb864, type: 3}
+  _playground: 0
+  _state: 0
+  _target: {fileID: 0}
 --- !u!95 &8062408778323882238
 Animator:
   serializedVersion: 5
@@ -348,28 +372,6 @@ MonoBehaviour:
   _maxDistanceY: 4
   _maxDistanceX: 10
   _movementController: {fileID: 3423973381300386030}
---- !u!114 &6554708439953443105
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5362080560260885041}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddf2ece95b5b0f64bb956167c52db66c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _type: 2
-  _spawnSound: {fileID: 8300000, guid: da34b283cf7f0d64bb59a8e36a08937f, type: 3}
-  _attackSounds:
-  - {fileID: 8300000, guid: 592ab58b002a7284f9835145a50eff72, type: 3}
-  - {fileID: 8300000, guid: 4ba027eb87a30854a8f5c61202532fc7, type: 3}
-  - {fileID: 8300000, guid: fa4285618671f8c49a277381677489d4, type: 3}
-  - {fileID: 8300000, guid: 4527bd88b3841cf47bd0aaee15d582dd, type: 3}
-  _hitSound: {fileID: 8300000, guid: 30c0080e49df1944b92bf602eccb1253, type: 3}
-  _deathSound: {fileID: 8300000, guid: 056e0486bb22f9b40a2271c3c72bb864, type: 3}
-  _playground: 0
 --- !u!114 &5027472256861975055
 MonoBehaviour:
   m_ObjectHideFlags: 0

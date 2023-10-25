@@ -1,4 +1,5 @@
 ﻿using Sirenix.OdinInspector;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,16 +16,19 @@ public class AreaController : MonoBehaviour
     private Areas _area;
     [SerializeField]
     private AreaState _state;
-    [SerializeField]
-    private GameObject _areaNotZombifiedUI;
 
     [Header("UI")]
     [ShowIf("_state", AreaState.Zombified)]
     [SerializeField]
     private GameObject _upgradeButton = null;
+    [SerializeField]
+    private GameObject _areaTiles;
+
+
     [ShowIf("_state", AreaState.Default)]
     [SerializeField]
     private TMPro.TextMeshProUGUI _areaLevelText;
+
 
     private GameObject _currentLab;
 
@@ -76,22 +80,19 @@ public class AreaController : MonoBehaviour
                 _upgradeButton.SetActive(true);
             }
         }
-        if (areasState.ContainsKey(_area) && areasState[_area] != _state)
+
+        // Update UI
+        if (areasState.ContainsKey(_area))
         {
-            gameObject.SetActive(false);
-        }
-        else
-        {
-            gameObject.SetActive(true);
+            bool isStateEquals = areasState[_area] == _state; // Does the state in the database equals to the state of this area?
+            gameObject.SetActive(isStateEquals);
+            _areaTiles.SetActive(isStateEquals);
         }
 
         if (_state == AreaState.Zombified)
         {
             GameObject newLab = AreasManager.Instance.GetLab(_area);
-            if (_areaNotZombifiedUI != null)
-            {
-                _areaNotZombifiedUI.SetActive(false);
-            }
+
             if (newLab != null)
             {
                 if (_currentLab != null)

@@ -72,15 +72,7 @@ public class ZombiePriorityBehaviour : MonoBehaviour
 
     private void UpdateTarget()
     {
-        GameObject closestDefender = FindClosestDefender();
-        if (closestDefender == null)
-        {
-            return;
-        }
-        if (ShouldChangeTargets(closestDefender))
-        {
-            _zombieChaser.SetTarget(closestDefender.GetComponent<Zombifiable>(), _owner);
-        }
+        
     }
 
     private GameObject FindClosestDefender()
@@ -138,7 +130,12 @@ public class ZombiePriorityBehaviour : MonoBehaviour
 
     private bool IsClosestDefender(GameObject gameObject)
     {
-        float closestTarget = Vector3.Distance(transform.position, gameObject.transform.position);
+        float currentTargetDistance = Vector3.Distance(transform.position, _zombieChaser.Target.transform.position);
+        float closestTargetDistance = Vector3.Distance(transform.position, gameObject.transform.position);
+        if (currentTargetDistance > closestTargetDistance)
+        {
+            return false;
+        }
         foreach (var defender in _defendersInSight)
         {
             if (defender == null)
@@ -146,7 +143,7 @@ public class ZombiePriorityBehaviour : MonoBehaviour
                 continue;
             }
             float distance = Vector3.Distance(transform.position, defender.transform.position);
-            if (distance < closestTarget)
+            if (distance < closestTargetDistance)
             {
                 return false;
             }
@@ -161,7 +158,7 @@ public class ZombiePriorityBehaviour : MonoBehaviour
     /// <returns> True if the zombie is chasing a civilian, false otherwise </returns> 
     private bool ShouldChangeTargets(GameObject gameObject) =>
         _zombieChaser.Target == null
-        || IsDefender(gameObject) && !IsDefender(_zombieChaser.Target.gameObject) && !IsClosestDefender(gameObject);
+        || IsDefender(gameObject) && !IsClosestDefender(gameObject);
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

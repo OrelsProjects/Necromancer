@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[RequireComponent(typeof(MovementController))]
 [RequireComponent(typeof(Collider2D))]
 public class Projectile : MonoBehaviour, IProjectile
 {
@@ -11,15 +10,12 @@ public class Projectile : MonoBehaviour, IProjectile
     [SerializeField]
     private AudioClip _hitSound;
 
-    private MovementController _movementController;
-
     private const float ProjectileLifetime = 3f;
     private float _damage;
     private bool _isUsed;
 
     private void Awake()
     {
-        _movementController = GetComponent<MovementController>();
         GetComponent<Collider2D>().isTrigger = false;
         Destroy(this, ProjectileLifetime);
     }
@@ -42,7 +38,9 @@ public class Projectile : MonoBehaviour, IProjectile
         }
         FaceTarget(target);
         _damage = damage;
-        _movementController.Move(speed, target.gameObject);
+        Vector2 direction = target.transform.position - transform.position;
+        Vector2 directionNormalized = direction.normalized;
+        GetComponent<Rigidbody2D>().velocity = directionNormalized * speed;
     }
 
     public void AddAttackCallback(Action onAttack)

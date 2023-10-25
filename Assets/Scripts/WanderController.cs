@@ -65,12 +65,18 @@ public class WanderController : MonoBehaviour
     private void SetNewDestination()
     {
         _target = new Vector2(Random.Range(-_maxDistanceX, _maxDistanceX), Random.Range(-_maxDistanceY, _maxDistanceY));
-        _movementController.Move(_speed, (_target - transform.position).normalized);
+        Vector2 direction = _target - transform.position;
+        Vector2 directionNormalized = direction.normalized;
+        _movementController.Move(_speed, directionNormalized);
         nextPosition = _target;
     }
 
     public void Enable()
     {
+        if (enabled)
+        {
+            return;
+        }
         enabled = true;
         SetNewDestination();
         _state = WanderState.MovingToTarget;

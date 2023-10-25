@@ -32,6 +32,8 @@ public class ZombieSpawnBehaviour : MonoBehaviour
 
     public void SpawnZombies(Vector2 position)
     {
+        if (!IsAvailable) { return; }
+        
         Vector3 circleCenter = position;
 
         int amountToSpawn = CharactersManager.Instance.GetZombieData(_type.Value).AmountSpawned;
@@ -46,7 +48,7 @@ public class ZombieSpawnBehaviour : MonoBehaviour
 
             Instantiate(CharactersManager.Instance.GetZombiePrefab(_type.Value).gameObject, spawnPosition, Quaternion.identity);
         }
-
+        _isSpawned = true;
         StartCoroutine(WaitForZombiesSpawn()); // Allow zombies to spawn before checking if there are any zombies left to spawn.
     }
 
@@ -78,7 +80,6 @@ public class ZombieSpawnBehaviour : MonoBehaviour
     private IEnumerator WaitForZombiesSpawn()
     {
         yield return new WaitForSeconds(0.3f);
-        _isSpawned = true;
         Destroy(this);
     }
 }

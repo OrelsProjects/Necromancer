@@ -5,7 +5,7 @@ public class ZombieChaser : MonoBehaviour, IChaser<Zombifiable>
     [SerializeField]
     private float distanceFromTarget = 2f;
 
-    private Owner _selfOwner = new() { gameObject = null, priority = OwnerPriority.Default };
+    private Owner _selfOwner;
 
     private IChaser<Zombifiable> _chaser;
 
@@ -15,12 +15,13 @@ public class ZombieChaser : MonoBehaviour, IChaser<Zombifiable>
 
     void Awake()
     {
+        _selfOwner = new() { gameObject = null, priority = OwnerPriority.Default };
         _chaser = new Chaser<Zombifiable>(gameObject, distanceFromTarget, _selfOwner);
     }
 
     public Zombifiable FindNewTarget() => _chaser.FindNewTarget();
 
-    public void SetTarget(Zombifiable zombifiable, Owner owner) => _chaser.SetTarget(zombifiable, _selfOwner);
+    public void SetTarget(Zombifiable zombifiable, Owner owner) => _chaser.SetTarget(zombifiable, owner);
 
     public TargetDistanceState GetTargetDistanceState() => _chaser.GetTargetDistanceState();
 

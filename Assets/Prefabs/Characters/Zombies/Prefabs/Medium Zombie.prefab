@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3378874548808240951}
+  - component: {fileID: 8323852267778882466}
+  - component: {fileID: 3717402332467061889}
   - component: {fileID: 3454579180990727390}
   - component: {fileID: 5505122913581098451}
   - component: {fileID: 8827342997923373397}
@@ -16,8 +18,6 @@ GameObject:
   - component: {fileID: 5566528573532472138}
   - component: {fileID: 7607634770842324143}
   - component: {fileID: 5267711009943958385}
-  - component: {fileID: 8323852267778882466}
-  - component: {fileID: 3717402332467061889}
   - component: {fileID: 1774961679940506019}
   - component: {fileID: 7149099191970565981}
   m_Layer: 10
@@ -36,8 +36,8 @@ RectTransform:
   m_GameObject: {fileID: 4714456201219556354}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.0017616637}
-  m_LocalScale: {x: 7, y: 5.8347054, z: 2.656244}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 4, y: 3.3341174, z: 1.5178539}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 589109400418845535}
   m_Father: {fileID: 0}
@@ -47,6 +47,43 @@ RectTransform:
   m_AnchoredPosition: {x: 21.833202, y: 63.719734}
   m_SizeDelta: {x: 0.15, y: 0.19}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8323852267778882466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4714456201219556354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddf2ece95b5b0f64bb956167c52db66c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _type: 1
+  _spawnSound: {fileID: 8300000, guid: da34b283cf7f0d64bb59a8e36a08937f, type: 3}
+  _attackSounds:
+  - {fileID: 8300000, guid: 592ab58b002a7284f9835145a50eff72, type: 3}
+  - {fileID: 8300000, guid: 4ba027eb87a30854a8f5c61202532fc7, type: 3}
+  - {fileID: 8300000, guid: fa4285618671f8c49a277381677489d4, type: 3}
+  - {fileID: 8300000, guid: 4527bd88b3841cf47bd0aaee15d582dd, type: 3}
+  _hitSound: {fileID: 8300000, guid: 30c0080e49df1944b92bf602eccb1253, type: 3}
+  _deathSound: {fileID: 8300000, guid: 056e0486bb22f9b40a2271c3c72bb864, type: 3}
+  _playground: 0
+  _state: 0
+  _target: {fileID: 0}
+--- !u!114 &3717402332467061889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4714456201219556354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42a4aa5d03fe26c4bb3209dbf505eeb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distanceFromTarget: 1
 --- !u!95 &3454579180990727390
 Animator:
   serializedVersion: 5
@@ -296,41 +333,6 @@ MonoBehaviour:
   _maxDistanceY: 4
   _maxDistanceX: 10
   _movementController: {fileID: 7607634770842324143}
---- !u!114 &8323852267778882466
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4714456201219556354}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddf2ece95b5b0f64bb956167c52db66c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _type: 1
-  _spawnSound: {fileID: 8300000, guid: da34b283cf7f0d64bb59a8e36a08937f, type: 3}
-  _attackSounds:
-  - {fileID: 8300000, guid: 592ab58b002a7284f9835145a50eff72, type: 3}
-  - {fileID: 8300000, guid: 4ba027eb87a30854a8f5c61202532fc7, type: 3}
-  - {fileID: 8300000, guid: fa4285618671f8c49a277381677489d4, type: 3}
-  - {fileID: 8300000, guid: 4527bd88b3841cf47bd0aaee15d582dd, type: 3}
-  _hitSound: {fileID: 8300000, guid: 30c0080e49df1944b92bf602eccb1253, type: 3}
-  _deathSound: {fileID: 8300000, guid: 056e0486bb22f9b40a2271c3c72bb864, type: 3}
-  _playground: 0
---- !u!114 &3717402332467061889
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4714456201219556354}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42a4aa5d03fe26c4bb3209dbf505eeb4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  distanceFromTarget: 1
 --- !u!222 &1774961679940506019
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -5,14 +5,12 @@ using UnityEngine;
 
 public enum DefenderState
 {
-    WaitingForDetection,
     Idle,
     Chasing,
     AboutToAttack,
     Attacking,
     AboutToDie,
     Death,
-    RoundOver,
 }
 
 public enum DefenderType
@@ -134,7 +132,6 @@ public abstract class Defender : MonoBehaviour
         {
             _animationHelper.PlayAnimation(AnimationType.Idle);
             _wanderController.Enable();
-            SetState(DefenderState.WaitingForDetection);
         }
     }
 
@@ -142,21 +139,25 @@ public abstract class Defender : MonoBehaviour
 
     private void HandleChasingState()
     {
-        if (_currentTarget == null)
+        if (_currentTarget == null || !_currentTarget.IsAvailable())
         {
             SetState(DefenderState.Idle);
         }
         else
         {
-            if (_chaser.GetTargetDistanceState() == TargetDistanceState.Reached)
+            switch (_chaser.GetTargetDistanceState())
             {
-                _movementController.FaceTarget(_currentTarget.transform);
-                SetState(DefenderState.AboutToAttack);
-            }
-            else
-            {
-                _movementController.Move(Data.Speed, _currentTarget.gameObject);
-                _animationHelper.PlayAnimation(AnimationType.Running);
+                case TargetDistanceState.Reached:
+                    _movementController.FaceTarget(_currentTarget.transform);
+                    SetState(DefenderState.AboutToAttack);
+                    break;
+                case TargetDistanceState.NotReached:
+                    _movementController.Move(Data.Speed, _currentTarget.gameObject);
+                    _animationHelper.PlayAnimation(AnimationType.Running);
+                    break;
+                case TargetDistanceState.NotAvailable:
+                    SetState(DefenderState.Idle);
+                    break;
             }
         }
     }
@@ -248,10 +249,6 @@ public abstract class Defender : MonoBehaviour
         if (collision.gameObject.CompareTag("Zombie"))
         {
             _zombiesNearby.Add(collision.gameObject.GetComponent<Zombie>());
-            if (State == DefenderState.WaitingForDetection)
-            {
-                SetState(DefenderState.Idle);
-            }
         }
     }
 
