@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public enum RoundState
 {
@@ -46,7 +45,7 @@ public class RoundManager : MonoBehaviour
     [SerializeField]
     private bool _playground = false;
 
-    private readonly List<Zombie> _zombies = new();
+    private readonly List<ZombieBehaviour> _zombies = new();
     private readonly List<Zombifiable> _zombifiables = new();
     private readonly List<Defender> _defenders = new();
 
@@ -55,7 +54,6 @@ public class RoundManager : MonoBehaviour
     private GameObject _defendersParent;
     private AreaData _data;
 
-    private bool _areDefendersIdle = true;
     private bool _isZombiesSoundPlaying = false;
 
     private RoundState _state = RoundState.NotStarted;
@@ -116,12 +114,23 @@ public class RoundManager : MonoBehaviour
                 HandleDefendersWonState();
                 break;
         }
-
-        // if (AreThereZombiesAlive() && _areDefendersIdle && (_state != RoundState.Won || _state != RoundState.Lost))
-        // {
-        //     PlayZombieSpawnSound();
-        //     SendDefenders();
-        // }
+    }
+    /// <summary>
+    /// This function adds 30 spawn points around the map, 30px outside the camera.
+    /// </summary>
+    private void InitDefendersPositions()
+    {
+        _defendersPositions = new List<Transform>();
+        Transform _defendersPositionsParent = new GameObject("Defenders Positions").transform;
+        _defendersPositionsParent.SetParent(transform);
+        Vector2 cameraSize = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
+        for (int i = 0; i < 30; i++)
+        {
+            Vector2 randomPosition = new(Random.Range(-cameraSize.x - 1, cameraSize.x + 1), Random.Range(-cameraSize.y - 1, cameraSize.y + 1));
+            _defendersPositions.Add(new GameObject("Defender Position").transform);
+            _defendersPositions[i].position = randomPosition;
+            _defendersPositions[i].SetParent(_defendersPositionsParent);
+        }
     }
 
     private void HandleNotStartedState()
@@ -177,10 +186,15 @@ public class RoundManager : MonoBehaviour
 
     private bool AreThereZombies()
     {
-        bool areThereZombifiedCivilians = _zombifiables.Find(zombifiable => zombifiable.IsZombified()) != null;
-        bool areThereZombies = _zombies.Count > 0;
+        bool areThereZombifiedCharacters = _zombifiables.Exists(zombifiable => zombifiable.IsZombified());
+        bool areThereZombiesAlive = _zombies.Count > 0;
         bool areThereZombiesToSpawn = ZombieSpawner.Instance.AreThereZombiesToSpawn();
-        return areThereZombifiedCivilians || areThereZombies || areThereZombiesToSpawn;
+
+        // Check for zombies in various conditions, including those that might not have reached their Start function yet.
+        return areThereZombifiedCharacters
+            || areThereZombiesAlive
+            || areThereZombiesToSpawn
+            || FindAnyObjectByType<ZombieBehaviour>() != null;
     }
 
     private bool AreThereZombiesAlive()
@@ -191,15 +205,6 @@ public class RoundManager : MonoBehaviour
     private bool AreThereDefenders()
     {
         return _defenders.Count > 0;
-    }
-
-    private void SendDefenders()
-    {
-        foreach (var defender in _defenders)
-        {
-            defender.StartBattle();
-        }
-        _areDefendersIdle = false;
     }
 
     public Vector3? GetClosestZombiePosition(Vector3 position)
@@ -225,6 +230,7 @@ public class RoundManager : MonoBehaviour
             _data = Map.Instance.SelectedArea;
             _roundResultsUI.SetActive(false);
         }
+        InitDefendersPositions();
         PlayBackgroundMusic();
         SpawnCivilians();
         _state = RoundState.NotStarted;
@@ -244,6 +250,8 @@ public class RoundManager : MonoBehaviour
 
     public void SpawnDefenders()
     {
+        var defenders = _data.RoundData.Defenders.Value;
+        Debug.Log("Spawning defenders: " + defenders.Count + " For area: " + _area);
         _data.RoundData.Defenders.Value.ForEach(defender =>
                 {
                     Defender defenderInstance = Instantiate(defender, Vector3.zero, Quaternion.identity);
@@ -252,7 +260,7 @@ public class RoundManager : MonoBehaviour
 
     }
 
-    public void AddZombie(Zombie zombie)
+    public void AddZombie(ZombieBehaviour zombie)
     {
         if (_zombiesParent == null)
         {
@@ -260,7 +268,6 @@ public class RoundManager : MonoBehaviour
         }
         zombie.gameObject.transform.SetParent(_zombiesParent.transform);
         _zombies.Add(zombie);
-        _areDefendersIdle = true;
     }
 
     public void AddZombifiable(Zombifiable zombifiable)
@@ -291,7 +298,7 @@ public class RoundManager : MonoBehaviour
         _defenders.Add(defender);
     }
 
-    public void RemoveZombie(Zombie zombie) => _zombies.Remove(zombie);
+    public void RemoveZombie(ZombieBehaviour zombie) => _zombies.Remove(zombie);
     public void RemoveZombifiable(Zombifiable zombifiable) => _zombifiables.Remove(zombifiable);
     public void RemoveDefender(Defender defender) => _defenders.Remove(defender);
 

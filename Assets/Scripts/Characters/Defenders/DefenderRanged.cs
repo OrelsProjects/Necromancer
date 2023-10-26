@@ -27,7 +27,7 @@ public class DefenderRanged : Defender
         set { _attackSound = value; }
     }
 
-    public override void Attack(Zombie target)
+    public override void Attack(ZombieBehaviour target)
     {
         if (target == null || !target.IsAvailable())
         {

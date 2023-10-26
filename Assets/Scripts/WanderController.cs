@@ -55,7 +55,7 @@ public class WanderController : MonoBehaviour
 
     private IEnumerator WaitRandomTime()
     {
-        float randomDelay = Random.Range(1f, 5f);
+        float randomDelay = Random.Range(1f, 2f);
         _movementController.Stop();
         yield return new WaitForSeconds(randomDelay);
         SetNewDestination();
@@ -71,9 +71,9 @@ public class WanderController : MonoBehaviour
         nextPosition = _target;
     }
 
-    public void Enable()
+    public void Enable(bool forceEnable = false)
     {
-        if (enabled)
+        if (enabled && !forceEnable)
         {
             return;
         }

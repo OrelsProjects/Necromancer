@@ -63,6 +63,6 @@ TagManager:
   - name: UI
     uniqueID: 777884379
     locked: 0
-  - name: UI Clickable
+  - name: Area
     uniqueID: 801590435
     locked: 0

@@ -49,6 +49,12 @@ public class WaveController : MonoBehaviour
     {
         if (_state == WaveState.Started)
         {
+            if (_currentWave >= WavesCount.Value - 1)
+            {
+                _state = WaveState.Done;
+                _waveSlider.value = 1;
+                return;
+            }
             _waveSlider.value += 1 / TimeBetweenWaves.Value * Time.deltaTime;
             if (_waveSlider.value >= 1)
             {
@@ -58,10 +64,6 @@ public class WaveController : MonoBehaviour
                     SpawnWave();
                     UpdateWaveText();
                     _waveSlider.value = 0;
-                }
-                else
-                {
-                    _state = WaveState.Done;
                 }
             }
         }
@@ -75,10 +77,5 @@ public class WaveController : MonoBehaviour
     private void UpdateWaveText()
     {
         _waveText.text = $"Wave {_currentWave + 1}/{WavesCount.Value}";
-    }
-
-    private void ResetWaveText()
-    {
-
     }
 }

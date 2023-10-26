@@ -15,10 +15,10 @@ MonoBehaviour:
   Melee: 1
   _meleesCount: 1
   Ranged: 1
-  _archersCount: 16
+  _archersCount: 1
   Civilians: 1
   _civiliansCount: 5
-  _wavesCount: 5
+  _wavesCount: 1
   _timeBetweenWavesInSeconds: 10
   _raidCost: 10
   Reward: 200

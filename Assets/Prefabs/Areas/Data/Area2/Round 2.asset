@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Round 2
   m_EditorClassIdentifier: 
   Melee: 1
-  _meleesCount: 0
+  _meleesCount: 4
   Ranged: 1
-  _archersCount: 3
+  _archersCount: 4
   Civilians: 1
   _civiliansCount: 10
-  _wavesCount: 8
+  _wavesCount: 2
   _timeBetweenWavesInSeconds: 5
   _raidCost: 20
   Reward: 200

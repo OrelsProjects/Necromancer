@@ -17,7 +17,6 @@ public class Projectile : MonoBehaviour, IProjectile
     private void Awake()
     {
         GetComponent<Collider2D>().isTrigger = false;
-        Destroy(this, ProjectileLifetime);
     }
 
     private void FaceTarget(Transform target)
@@ -41,6 +40,7 @@ public class Projectile : MonoBehaviour, IProjectile
         Vector2 direction = target.transform.position - transform.position;
         Vector2 directionNormalized = direction.normalized;
         GetComponent<Rigidbody2D>().velocity = directionNormalized * speed;
+        Destroy(gameObject, ProjectileLifetime);
     }
 
     public void AddAttackCallback(Action onAttack)
@@ -58,7 +58,7 @@ public class Projectile : MonoBehaviour, IProjectile
         }
         if (collider.gameObject.layer == LayerMask.NameToLayer("Zombie"))
         {
-            if (collider.gameObject.TryGetComponent<Zombie>(out var zombie))
+            if (collider.gameObject.TryGetComponent<ZombieBehaviour>(out var zombie))
             {
                 _isUsed = true;
                 zombie.TakeDamage(_damage);

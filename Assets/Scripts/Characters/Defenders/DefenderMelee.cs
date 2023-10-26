@@ -6,14 +6,14 @@ public class DefenderMelee : Defender {
     [SerializeField]
     private AudioClip _attackSound;
 
-    private Zombie _target;
+    private ZombieBehaviour _target;
 
     public override AudioClip AttackSound {
         get { return _attackSound; }
         set { _attackSound = value; }
     }
 
-    public override void Attack(Zombie target) {
+    public override void Attack(ZombieBehaviour target) {
         _target = target;
         _animationHelper.PlayAnimation(AnimationType.AttackMelee);
     }

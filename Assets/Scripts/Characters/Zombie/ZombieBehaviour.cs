@@ -10,12 +10,13 @@ public enum ZombieState
     Attacking,
     AboutToDie,
     Dead,
+    AboutToWander,
     Wandering,
 }
 
 [RequireComponent(typeof(MovementController))]
 [RequireComponent(typeof(Animator))]
-public class Zombie : MonoBehaviour, IChaseable
+public class ZombieBehaviour : MonoBehaviour, IChaseable
 {
 
     [SerializeField]
@@ -52,9 +53,6 @@ public class Zombie : MonoBehaviour, IChaseable
     public Zombifiable _target;
     public string targetName;
 
-    // Used to check if the target is dead after the attack animaion is played
-    // So that the defender won't attack a target that is not reached
-    private bool _isTargetAttackedDead;
     private float _currentHealth;
 
     private void Awake()
@@ -111,15 +109,16 @@ public class Zombie : MonoBehaviour, IChaseable
                 HandleDeath();
                 break;
             case ZombieState.Attacking:
-                if (_target == null)
+                if (_target == null || !_target.IsAvailable())
                 {
-                    _isTargetAttackedDead = true;
                     SetState(ZombieState.Idle);
                 }
                 break;
+            case ZombieState.AboutToWander:
+                HandleAboutToWanderState();
+                break;
             case ZombieState.Wandering:
-                _movementController.Enable();
-                _wanderController.Enable();
+                HandleWanderState();
                 break;
 
         }
@@ -137,11 +136,24 @@ public class Zombie : MonoBehaviour, IChaseable
         collider.size = new Vector2(0.1f, 0.05f);
     }
 
+    private void HandleAboutToWanderState()
+    {
+        _movementController.Enable();
+        _movementController.Stop();
+        _wanderController.Enable(forceEnable: true);
+        SetState(ZombieState.Wandering);
+    }
+
+    private void HandleWanderState()
+    {
+        _chaser.FindNewTarget();
+    }
+
     private void HandleIdleState()
     {
         if (_target == null || !_target.IsAvailable())
         {
-            SetState(ZombieState.Wandering);
+            SetState(ZombieState.AboutToWander);
             _chaser.FindNewTarget();
         }
     }
@@ -170,7 +182,10 @@ public class Zombie : MonoBehaviour, IChaseable
         _target = target;
         if (_target == null)
         {
-            SetState(ZombieState.Wandering);
+            if (_state != ZombieState.Wandering)
+            {
+                SetState(ZombieState.AboutToWander);
+            }
             return;
         }
         SetState(ZombieState.Chasing);
@@ -209,7 +224,6 @@ public class Zombie : MonoBehaviour, IChaseable
         }
         if (_state != ZombieState.Attacking)
         {
-            _isTargetAttackedDead = false;
             return;
         }
         if (_target.IsAvailable())

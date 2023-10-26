@@ -40,13 +40,13 @@ public class CharactersManager : MonoBehaviour, ISaveable
 
     [Header("Prefabs")]
     [SerializeField]
-    private Zombie _smallZombiePrefab;
+    private ZombieBehaviour _smallZombiePrefab;
     [SerializeField]
-    private Zombie _mediumZombiePrefab;
+    private ZombieBehaviour _mediumZombiePrefab;
     [SerializeField]
-    private Zombie _largeZombiePrefab;
+    private ZombieBehaviour _largeZombiePrefab;
     [SerializeField]
-    private Zombie _playgroundZombiePrefab;
+    private ZombieBehaviour _playgroundZombiePrefab;
     [SerializeField]
     private Defender _meleeDefenderPrefab;
     [SerializeField]
@@ -163,7 +163,7 @@ public class CharactersManager : MonoBehaviour, ISaveable
         };
     }
 
-    public Zombie GetZombiePrefab(ZombieType type)
+    public ZombieBehaviour GetZombiePrefab(ZombieType type)
     {
         return type switch
         {

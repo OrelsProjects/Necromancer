@@ -31,7 +31,7 @@ public class Civilian : MonoBehaviour
     private WanderController _wanderController;
     private Zombifiable _zombifiable;
     private CivilianState _state = CivilianState.Idle;
-    private List<Zombie> _zombiesNearby = new();
+    private List<ZombieBehaviour> _zombiesNearby = new();
 
     private void Awake()
     {
@@ -154,7 +154,7 @@ public class Civilian : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Zombie"))
         {
-            _zombiesNearby.Add(other.gameObject.GetComponent<Zombie>());
+            _zombiesNearby.Add(other.gameObject.GetComponent<ZombieBehaviour>());
         }
     }
 
@@ -162,7 +162,7 @@ public class Civilian : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Zombie"))
         {
-            _zombiesNearby.Remove(other.gameObject.GetComponent<Zombie>());
+            _zombiesNearby.Remove(other.gameObject.GetComponent<ZombieBehaviour>());
         }
     }
 

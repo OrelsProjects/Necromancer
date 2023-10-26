@@ -49,7 +49,7 @@ public class PodController : MonoBehaviour
     {
         _state = PodState.Spawning;
         float currentTime = 0;
-        Zombie zombiePrefab = CharactersManager.Instance.GetZombiePrefab(Level.ZombieType);
+        ZombieBehaviour zombiePrefab = CharactersManager.Instance.GetZombiePrefab(Level.ZombieType);
         while (currentTime < Level.SpawnRate.time)
         {
             currentTime += Time.deltaTime;

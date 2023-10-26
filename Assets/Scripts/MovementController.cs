@@ -89,7 +89,7 @@ public class MovementController : MonoBehaviour
             return;
         }
         enabled = true;
-        isEnabled = true;
+        isEnabled = true; // TODO: Is it necessery?
     }
 
     /// <summary>

@@ -6,7 +6,7 @@ public class ZombiePriorityBehaviour : MonoBehaviour
 
     [Header("Zombie Behaviours")]
     [SerializeField]
-    private Zombie _zombie;
+    private ZombieBehaviour _zombie;
     [SerializeField]
     private ZombieChaser _zombieChaser;
 

@@ -12,8 +12,8 @@ public class ZombieSpawner : MonoBehaviour
     [SerializeField]
     private GameObject _zombieSpawnersContainer;
 
-    private readonly Dictionary<ZombieType, ZombieSpawnBehaviour> _zombiesList = new();
-    private ZombieSpawnBehaviour _selectedZombie;
+    private readonly Dictionary<ZombieType, ZombieSpawnBehaviour> _zombieTypeToZombieSpawnBehaviour = new();
+    private ZombieSpawnBehaviour _selectedZombieSpawnBehaviour;
 
     private void Awake()
     {
@@ -34,7 +34,7 @@ public class ZombieSpawner : MonoBehaviour
 
     void Update()
     {
-        if (Input.touchCount > 0 && _selectedZombie != null)
+        if (Input.touchCount > 0 && _selectedZombieSpawnBehaviour != null)
         {
             Touch touch = Input.GetTouch(0);
 
@@ -42,30 +42,29 @@ public class ZombieSpawner : MonoBehaviour
             {
                 Vector2 touchPosition = touch.position;
                 Vector2 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(touchPosition.x, touchPosition.y, Camera.main.nearClipPlane));
-                _selectedZombie.SpawnZombies(worldPosition);
+                _selectedZombieSpawnBehaviour.SpawnZombies(worldPosition);
                 SelectZombie(null);
             }
         }
 
 #if UNITY_EDITOR
-        if (Input.GetMouseButtonDown(0) && _selectedZombie != null)
+        if (Input.GetMouseButtonDown(0) && _selectedZombieSpawnBehaviour != null)
         {
             Vector2 touchPosition = Input.mousePosition;
             Vector2 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(touchPosition.x, touchPosition.y, Camera.main.nearClipPlane));
-            _selectedZombie.SpawnZombies(worldPosition);
-            _selectedZombie.GetComponent<Button>().interactable = false;
+            _selectedZombieSpawnBehaviour.SpawnZombies(worldPosition);
+            _selectedZombieSpawnBehaviour.GetComponent<Button>().interactable = false;
             SelectZombie(null);
         }
 #endif
     }
-
 
     private void InitSpawnBar()
     {
         RaidManager.Instance.RaidZombies.ForEach(zombie =>
         {
             ZombieSpawnBehaviour zombieSpawner = InitSpawningBehaviour(zombie);
-            _zombiesList.Add(zombie, zombieSpawner);
+            _zombieTypeToZombieSpawnBehaviour.Add(zombie, zombieSpawner);
         });
     }
 
@@ -83,20 +82,20 @@ public class ZombieSpawner : MonoBehaviour
 
     private void SelectZombie(ZombieSpawnBehaviour zombieSpawner)
     {
-        if (_selectedZombie != null)
+        if (_selectedZombieSpawnBehaviour != null)
         {
-            _selectedZombie.Select(false);
+            _selectedZombieSpawnBehaviour.Select(false);
         }
         if (zombieSpawner != null)
         {
-            _selectedZombie = zombieSpawner;
-            _selectedZombie.Select(true);
+            _selectedZombieSpawnBehaviour = zombieSpawner;
+            _selectedZombieSpawnBehaviour.Select(true);
         }
     }
 
     public bool AreThereZombiesToSpawn()
     {
-        foreach (var zombie in _zombiesList)
+        foreach (var zombie in _zombieTypeToZombieSpawnBehaviour)
         {
             if (zombie.Value.IsAvailable)
             {

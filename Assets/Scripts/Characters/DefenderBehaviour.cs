@@ -6,6 +6,7 @@ using UnityEngine;
 public enum DefenderState
 {
     Idle,
+    Wandering,
     Chasing,
     AboutToAttack,
     Attacking,
@@ -41,13 +42,13 @@ public abstract class Defender : MonoBehaviour
     private WanderController _wanderController;
     private Zombifiable _zombifiable;
     private Animator _animator;
-    private Zombie _currentTarget;
-    private readonly List<Zombie> _zombiesNearby = new();
+    private ZombieBehaviour _currentTarget;
+    private readonly List<ZombieBehaviour> _zombiesNearby = new();
 
-    protected DefenderState State = DefenderState.Idle;
+    public DefenderState State = DefenderState.Idle;
     protected AnimationHelper _animationHelper;
 
-    public abstract void Attack(Zombie target);
+    public abstract void Attack(ZombieBehaviour target);
 
     public virtual void Awake()
     {
@@ -85,7 +86,7 @@ public abstract class Defender : MonoBehaviour
                 HandleChasingState();
                 break;
             case DefenderState.AboutToAttack:
-                StartCoroutine(HandleAboutToAttackState());
+                HandleAboutToAttackState();
                 break;
             case DefenderState.AboutToDie:
                 HandleDeathState();
@@ -95,6 +96,9 @@ public abstract class Defender : MonoBehaviour
                 {
                     SetState(DefenderState.Idle);
                 }
+                break;
+            case DefenderState.Wandering:
+                HandleWanderingState();
                 break;
             default:
                 break;
@@ -117,6 +121,14 @@ public abstract class Defender : MonoBehaviour
         SetState(DefenderState.Idle);
     }
 
+    private void HandleWanderingState()
+    {
+        if (IsZombiesNearby())
+        {
+            SetNewTarget();
+        }
+    }
+
     private void HandleIdleState()
     {
         if (_chaser.Target != null && _chaser.Target.IsAvailable())
@@ -130,8 +142,9 @@ public abstract class Defender : MonoBehaviour
         }
         else
         {
-            _animationHelper.PlayAnimation(AnimationType.Idle);
-            _wanderController.Enable();
+            _movementController.Stop();
+            _wanderController.Enable(forceEnable: true);
+            SetState(DefenderState.Wandering);
         }
     }
 
@@ -162,7 +175,7 @@ public abstract class Defender : MonoBehaviour
         }
     }
 
-    private void OnTargetChange(Zombie target)
+    private void OnTargetChange(ZombieBehaviour target)
     {
         _currentTarget = target;
         if (_currentTarget != null)
@@ -175,16 +188,22 @@ public abstract class Defender : MonoBehaviour
         }
     }
 
-    public IEnumerator HandleAboutToAttackState()
+    private void HandleAboutToAttackState()
     {
         if (_chaser.GetTargetDistanceState() != TargetDistanceState.Reached)
         {
             SetState(DefenderState.Idle);
-            yield break;
+            return;
         }
         _movementController.Stop();
         SetState(DefenderState.Attacking);
-        Attack(_currentTarget.GetComponent<Zombie>());
+        Attack(_currentTarget.GetComponent<ZombieBehaviour>());
+        StartCoroutine(HandleAboutToAttackStateCore());
+    }
+
+    public IEnumerator HandleAboutToAttackStateCore()
+    {
+
         yield return new WaitForSeconds(1 / Data.AttackSpeed);
         if (State == DefenderState.Attacking)
         {
@@ -221,9 +240,9 @@ public abstract class Defender : MonoBehaviour
         {
             return;
         }
-        Zombie closestZombie = _zombiesNearby[0];
+        ZombieBehaviour closestZombie = _zombiesNearby[0];
         float distanceToClosestZombie = Vector2.Distance(transform.position, closestZombie.transform.position);
-        foreach (Zombie zombie in _zombiesNearby)
+        foreach (ZombieBehaviour zombie in _zombiesNearby)
         {
             if (zombie.IsAvailable())
             {
@@ -248,7 +267,7 @@ public abstract class Defender : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Zombie"))
         {
-            _zombiesNearby.Add(collision.gameObject.GetComponent<Zombie>());
+            _zombiesNearby.Add(collision.gameObject.GetComponent<ZombieBehaviour>());
         }
     }
 
@@ -256,7 +275,7 @@ public abstract class Defender : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Zombie"))
         {
-            _zombiesNearby.Remove(collision.gameObject.GetComponent<Zombie>());
+            _zombiesNearby.Remove(collision.gameObject.GetComponent<ZombieBehaviour>());
         }
     }
 }

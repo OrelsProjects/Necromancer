@@ -32,7 +32,7 @@ public class Chaser<T> : IChaser<T> where T : MonoBehaviour, IChaseable
         _distanceFromTarget = distanceFromTarget;
         _tag = typeof(T).Name switch
         {
-            nameof(Zombie) => _zombieTag,
+            nameof(ZombieBehaviour) => _zombieTag,
             nameof(Zombifiable) => _zombifiableTag,
             _ => "",
         };
