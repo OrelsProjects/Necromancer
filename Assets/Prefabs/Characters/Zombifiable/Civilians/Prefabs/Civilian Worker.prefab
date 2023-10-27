@@ -35,7 +35,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.25845498, y: -0.19403803, z: 0.0017616637}
-  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_LocalScale: {x: 7, y: 7, z: 7}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -229,6 +229,8 @@ MonoBehaviour:
   _data: {fileID: 11400000, guid: feedc147edd7d014ba06de7146acfceb, type: 2}
   _hitScreamSound: {fileID: 8300000, guid: 463fcf188c7b78b4f81a0a41d6bf2a50, type: 3}
   _deathSound: {fileID: 8300000, guid: b38c6f19ee8f64f499bbdda0bf035451, type: 3}
+  _currentHealth: 0
+  _state: 0
 --- !u!114 &3522475167000035339
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -2,7 +2,6 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using AssetKits.ParticleImage;
 public class RoundResults : MonoBehaviour
 {
 
@@ -59,12 +58,6 @@ public class RoundResults : MonoBehaviour
     private void OnDisable()
     {
         StopCoroutine(ShowRewardCoroutine());
-    }
-
-    public void FinishRound()
-    {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Map1");
-        RoundManager.Instance.FinishRound();
     }
 
     private void SetUpWin()

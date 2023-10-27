@@ -21,25 +21,22 @@ public class UIController : MonoBehaviour
             Instance = this;
         }
     }
-    private void OnEnable()
-    {
-        InventoryManager.Instance.OnCurrencyChanged += OnCurrencyChanged;
 
+    private void Start()
+    {
+        UpdateUI();
+        
+        InventoryManager.Instance.OnCurrencyChanged += OnCurrencyChanged;
         OnCurrencyChanged(InventoryManager.Instance.Currency);
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         InventoryManager.Instance.OnCurrencyChanged -= OnCurrencyChanged;
     }
     private void OnCurrencyChanged(int newCurrency)
     {
         _currencyText.text = newCurrency.ToString();
-    }
-
-    private void Start()
-    {
-        UpdateUI();
     }
 
     public void UpdateUI()

@@ -67,7 +67,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.1561996, y: -0.76696897, z: 0.015904132}
-  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_LocalScale: {x: 7, y: 7, z: 7}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3571141667264064459}
@@ -348,6 +348,7 @@ MonoBehaviour:
   Data: {fileID: 11400000, guid: be3a277aa3238264795895908537c95a, type: 2}
   Type: 1
   ProjectileSpawnPosition: {fileID: 3571141667264064459}
+  State: 0
   _projectile: {fileID: 59762328039087663, guid: 67eba1529445ec14490af7c88f24a72c, type: 3}
   _projectileSpeed: 31.2
   _rangedType: 0

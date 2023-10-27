@@ -23,7 +23,9 @@ public class RoundManager : MonoBehaviour
     private Areas _area;
     [Header("UI")]
     [SerializeField]
-    private GameObject _roundResultsUI;
+    private GameObject _winUI;
+    [SerializeField]
+    private GameObject _loseUI;
     [SerializeField]
     private GameObject _zombiesSpawnersContainer;
     [SerializeField]
@@ -172,16 +174,18 @@ public class RoundManager : MonoBehaviour
         AudioSource.PlayClipAtPoint(_winSound, transform.position);
         AreasManager.Instance.ZombifyArea(_data.Area);
         AreasManager.Instance.SaveData();
-        _roundResultsUI.SetActive(true);
+        ShowWinUI();
         _state = RoundState.Won;
+        StartCoroutine(FinishRound());
     }
 
     private void HandleDefendersWonState()
     {
         SoundsManager.Instance.StopAll();
         AudioSource.PlayClipAtPoint(_loseSound, transform.position);
-        _roundResultsUI.SetActive(true);
+        ShowLoseUI();
         _state = RoundState.Lost;
+        StartCoroutine(FinishRound());
     }
 
     private bool AreThereZombies()
@@ -228,7 +232,7 @@ public class RoundManager : MonoBehaviour
         if (!_playground)
         {
             _data = Map.Instance.SelectedArea;
-            _roundResultsUI.SetActive(false);
+            HideResultUI();
         }
         InitDefendersPositions();
         PlayBackgroundMusic();
@@ -251,7 +255,6 @@ public class RoundManager : MonoBehaviour
     public void SpawnDefenders()
     {
         var defenders = _data.RoundData.Defenders.Value;
-        Debug.Log("Spawning defenders: " + defenders.Count + " For area: " + _area);
         _data.RoundData.Defenders.Value.ForEach(defender =>
                 {
                     Defender defenderInstance = Instantiate(defender, Vector3.zero, Quaternion.identity);
@@ -302,10 +305,36 @@ public class RoundManager : MonoBehaviour
     public void RemoveZombifiable(Zombifiable zombifiable) => _zombifiables.Remove(zombifiable);
     public void RemoveDefender(Defender defender) => _defenders.Remove(defender);
 
-    public void FinishRound()
+    public IEnumerator FinishRound()
     {
-        Destroy(gameObject);
+        Destroy(gameObject, 2.3f);
+        yield return new WaitForSeconds(2f);
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Map1");
     }
+
+    private void ShowWinUI()
+    {
+        _winUI.SetActive(true);
+        _loseUI.SetActive(false);
+    }
+
+    private void ShowLoseUI()
+    {
+        _winUI.SetActive(false);
+        _loseUI.SetActive(true);
+    }
+
+    private void HideResultUI()
+    {
+        _winUI.SetActive(false);
+        _loseUI.SetActive(false);
+    }
+
+    private void animateUIFade()
+    {
+
+    }
+
 
     private bool ShouldPlayZombiesSound() => AreThereZombiesAlive() && !_isZombiesSoundPlaying;
 

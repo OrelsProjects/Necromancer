@@ -256,7 +256,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5.96
+  orthographic size: 13.21
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -406,7 +406,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!223 &785865979
 Canvas:
   m_ObjectHideFlags: 0
@@ -18824,10 +18824,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1813659791958352825, guid: 79d18cf08c3fa497990e7c81dbf09779, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4041125323024906260, guid: 79d18cf08c3fa497990e7c81dbf09779, type: 3}
-      propertyPath: _area
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5477904604162028230, guid: 79d18cf08c3fa497990e7c81dbf09779, type: 3}
