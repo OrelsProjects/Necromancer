@@ -21,20 +21,28 @@ public struct CharacterData : ISaveableObject
     }
 }
 
+[System.Serializable]
+public struct ZombieImage
+{
+    public Sprite sprite;
+    public float xDim;
+    public float yDim;
+}
+
 public class CharactersManager : MonoBehaviour, ISaveable
 {
     public static CharactersManager Instance;
 
     [SerializeField]
-    private Sprite _smallZombieSprite;
+    private ZombieImage _smallZombieSprite;
     [SerializeField]
     private ZombieData _smallZombieData;
     [SerializeField]
-    private Sprite _mediumZombieSprite;
+    private ZombieImage _mediumZombieSprite;
     [SerializeField]
     private ZombieData _mediumZombieData;
     [SerializeField]
-    private Sprite _largeZombieSprite;
+    private ZombieImage _largeZombieSprite;
     [SerializeField]
     private ZombieData _largeZombieData;
 
@@ -191,7 +199,7 @@ public class CharactersManager : MonoBehaviour, ISaveable
 
     public Civilian GetRandomCivilian() => _civilianPrefabs.Count > 0 ? _civilianPrefabs[Random.Range(0, _civilianPrefabs.Count)] : null;
 
-    public Sprite GetZombieSprite(ZombieType type)
+    public ZombieImage? GetZombieSprite(ZombieType type)
     {
         return type switch
         {

@@ -108,6 +108,30 @@ public class AreaController : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            int areaLevel = CalculateAreaLevel();
+            _areaLevelText.text = $"{areaLevel}";
+        }
     }
 
+    private int CalculateAreaLevel()
+    {
+        AreaData areaData = AreasManager.Instance.GetAreaData(_area);
+        if (areaData == null)
+        {
+            Debug.Log("area: " + _area + " is null");
+            return 0;
+        }
+        RoundData roundData = areaData.RoundData;
+        if (roundData == null)
+        {
+            Debug.Log("round data: " + _area + " is null");
+            return 0;
+        }
+        int wavesCount = Mathf.Clamp(roundData.WavesCount, 1, roundData.WavesCount);
+        int defendersCount = roundData.DefendersCount;
+        defendersCount = Mathf.Clamp(defendersCount, 1, defendersCount);
+        return wavesCount * defendersCount;
+    }
 }

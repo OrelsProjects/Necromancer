@@ -22,7 +22,9 @@ public class ZombieSpawnBehaviour : MonoBehaviour
         {
             throw new("Did you call SetZombieType?");
         }
-        ZombieImage.sprite = CharactersManager.Instance.GetZombieSprite(_type.Value);
+        var zombieImageData = CharactersManager.Instance.GetZombieSprite(_type.Value).Value;
+        ZombieImage.sprite = zombieImageData.sprite;
+        ZombieImage.transform.localScale = new Vector3(zombieImageData.xDim, zombieImageData.yDim, 1);
     }
 
     public void SetZombieType(ZombieType type)
@@ -33,7 +35,7 @@ public class ZombieSpawnBehaviour : MonoBehaviour
     public void SpawnZombies(Vector2 position)
     {
         if (!IsAvailable) { return; }
-        
+
         Vector3 circleCenter = position;
 
         int amountToSpawn = CharactersManager.Instance.GetZombieData(_type.Value).AmountSpawned;

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
 
 public enum RoundState
@@ -26,6 +27,8 @@ public class RoundManager : MonoBehaviour
     private GameObject _winUI;
     [SerializeField]
     private GameObject _loseUI;
+    [SerializeField]
+    private GameObject _speedFastImage;
     [SerializeField]
     private GameObject _zombiesSpawnersContainer;
     [SerializeField]
@@ -56,6 +59,10 @@ public class RoundManager : MonoBehaviour
     private GameObject _defendersParent;
     private AreaData _data;
 
+
+    private float _currentGameSpeed = 1;
+    private readonly float _minGameSpeed = 1;
+    private readonly float _maxGameSpeed = 5;
     private bool _isZombiesSoundPlaying = false;
 
     private RoundState _state = RoundState.NotStarted;
@@ -128,7 +135,7 @@ public class RoundManager : MonoBehaviour
         Vector2 cameraSize = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
         for (int i = 0; i < 30; i++)
         {
-            Vector2 randomPosition = new(Random.Range(-cameraSize.x - 1, cameraSize.x + 1), Random.Range(-cameraSize.y - 1, cameraSize.y + 1));
+            Vector2 randomPosition = new(Random.Range(-cameraSize.x + 5, cameraSize.x - 5), Random.Range(-cameraSize.y + 6, cameraSize.y - 6));
             _defendersPositions.Add(new GameObject("Defender Position").transform);
             _defendersPositions[i].position = randomPosition;
             _defendersPositions[i].SetParent(_defendersPositionsParent);
@@ -146,7 +153,6 @@ public class RoundManager : MonoBehaviour
 
     private void HandleStartedState()
     {
-
         if (ShouldPlayZombiesSound())
         {
             PlayZombieSpawnSound();
@@ -176,7 +182,7 @@ public class RoundManager : MonoBehaviour
         AreasManager.Instance.SaveData();
         ShowWinUI();
         _state = RoundState.Won;
-        StartCoroutine(FinishRound());
+        FinishRound();
     }
 
     private void HandleDefendersWonState()
@@ -185,7 +191,7 @@ public class RoundManager : MonoBehaviour
         AudioSource.PlayClipAtPoint(_loseSound, transform.position);
         ShowLoseUI();
         _state = RoundState.Lost;
-        StartCoroutine(FinishRound());
+        FinishRound();
     }
 
     private bool AreThereZombies()
@@ -305,11 +311,32 @@ public class RoundManager : MonoBehaviour
     public void RemoveZombifiable(Zombifiable zombifiable) => _zombifiables.Remove(zombifiable);
     public void RemoveDefender(Defender defender) => _defenders.Remove(defender);
 
-    public IEnumerator FinishRound()
+    public void SpeedUpGame()
+    {
+        _currentGameSpeed = _currentGameSpeed == _minGameSpeed ? _maxGameSpeed : _minGameSpeed;
+        _speedFastImage.SetActive(_currentGameSpeed == _minGameSpeed);
+        Time.timeScale = _currentGameSpeed;
+    }
+
+    public void FinishRound(bool immediate = false)
+    {
+        Time.timeScale = _minGameSpeed;
+        if (immediate)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Map1");
+        }
+        else
+        {
+            StartCoroutine(FinishRoundCore());
+        }
+    }
+
+    private IEnumerator FinishRoundCore()
     {
         Destroy(gameObject, 2.3f);
         yield return new WaitForSeconds(2f);
         UnityEngine.SceneManagement.SceneManager.LoadScene("Map1");
+        Time.timeScale = 1f;
     }
 
     private void ShowWinUI()

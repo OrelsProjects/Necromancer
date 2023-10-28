@@ -41,6 +41,7 @@ public class RoundData : ScriptableObject
     public int CiviliansCount => _civiliansCount;
     public int ArchersCount => _archersCount;
     public int MeleesCount => _meleesCount;
+    public int DefendersCount => _archersCount + _meleesCount;
     public int WavesCount => _wavesCount;
     public float TimeBetweenWaves => _timeBetweenWavesInSeconds;
     public int RaidCost => _raidCost;

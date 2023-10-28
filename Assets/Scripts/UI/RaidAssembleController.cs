@@ -85,11 +85,12 @@ public class RaidAssembleController : DisableMapMovement
     private UIZombieOption GetRaidZombieUI(ZombieType zombieType, int positionInList = 0)
     {
         UIZombieOption raidZombieOption = Instantiate(_zombieOptionPrefab);
-        Sprite sprite = CharactersManager.Instance.GetZombieSprite(zombieType);
+        ZombieImage zombieImage = CharactersManager.Instance.GetZombieSprite(zombieType).Value;
         int cost = CharactersManager.Instance.GetZombieData(zombieType).PriceToUse;
 
         raidZombieOption.Type = zombieType;
-        raidZombieOption.Image.sprite = sprite;
+        raidZombieOption.Image.sprite = zombieImage.sprite;
+        raidZombieOption.Image.transform.localScale = new Vector3(zombieImage.xDim, zombieImage.yDim, 1);
         raidZombieOption.CostText.text = cost.ToString();
         raidZombieOption.PositionInList = positionInList;
         raidZombieOption.Button.onClick.AddListener(() => SelectZombie(raidZombieOption));

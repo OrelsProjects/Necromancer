@@ -43,13 +43,15 @@ public class WaveController : MonoBehaviour
     {
         SpawnWave();
         _state = WaveState.Started;
+        _currentWave = 1;
+        UpdateWaveText();
     }
 
     private void Update()
     {
         if (_state == WaveState.Started)
         {
-            if (_currentWave >= WavesCount.Value - 1)
+            if (_currentWave > WavesCount.Value)
             {
                 _state = WaveState.Done;
                 _waveSlider.value = 1;
@@ -76,6 +78,9 @@ public class WaveController : MonoBehaviour
 
     private void UpdateWaveText()
     {
-        _waveText.text = $"Wave {_currentWave + 1}/{WavesCount.Value}";
+        int currentWave = Mathf.Clamp(_currentWave, 0, WavesCount.Value + 1);
+        Debug.Log("Current wave: " + _currentWave + "current wave clamped: " + currentWave);
+        int maxWaves = Mathf.Clamp(WavesCount.Value, 1, WavesCount.Value);
+        _waveText.text = $"Wave   {currentWave}/{maxWaves}";
     }
 }

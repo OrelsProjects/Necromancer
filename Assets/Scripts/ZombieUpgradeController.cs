@@ -24,6 +24,8 @@ public class UpgradeController : DisableMapMovement
     [SerializeField]
     private TextMeshProUGUI _currentSpeed;
     [SerializeField]
+    private TextMeshProUGUI _currentSpawnAmount;
+    [SerializeField]
     private TextMeshProUGUI _nextAttackSpeed;
     [SerializeField]
     private TextMeshProUGUI _nextDamage;
@@ -31,6 +33,10 @@ public class UpgradeController : DisableMapMovement
     private TextMeshProUGUI _nextHealth;
     [SerializeField]
     private TextMeshProUGUI _nextSpeed;
+    [SerializeField]
+    private TextMeshProUGUI _nextSpawnAmount;
+    [SerializeField]
+    private GameObject _nextSpawnAmountContainer;
     [SerializeField]
     private TextMeshProUGUI _upgradeCost;
     [SerializeField]
@@ -104,12 +110,13 @@ public class UpgradeController : DisableMapMovement
     private UIZombieOption AddZombieOption(ZombieType zombieType)
     {
         UIZombieOption uiZombieOption = Instantiate(_zombieOptionPrefab);
-        Sprite zombieSprite = CharactersManager.Instance.GetZombieSprite(zombieType);
+        ZombieImage zombieImage = CharactersManager.Instance.GetZombieSprite(zombieType).Value;
         uiZombieOption.Type = zombieType;
         uiZombieOption.DisableCost();
         uiZombieOption.transform.SetParent(_zombiesContainer);
         uiZombieOption.transform.localScale = new(1.6f, 1.6f);
-        uiZombieOption.Image.sprite = zombieSprite;
+        uiZombieOption.Image.sprite = zombieImage.sprite;
+        uiZombieOption.Image.transform.localScale = new Vector3(zombieImage.xDim, zombieImage.yDim, 1);
         uiZombieOption.Button.onClick.AddListener(() => SelectZombieForUpgrade(uiZombieOption));
         CurrentZombieTypes.Add(zombieType);
         return uiZombieOption;
@@ -123,8 +130,9 @@ public class UpgradeController : DisableMapMovement
         }
         EnableZombieOption(zombieOption, false);
         _selectedZombieOption = zombieOption;
-        Sprite zombieSprite = CharactersManager.Instance.GetZombieSprite(SelectedZombieType.Value);
-        _currentZombieImage.sprite = zombieSprite;
+        ZombieImage zombieImage = CharactersManager.Instance.GetZombieSprite(SelectedZombieType.Value).Value;
+        _currentZombieImage.sprite = zombieImage.sprite;
+        _currentZombieImage.transform.localScale = new Vector3(zombieImage.xDim, zombieImage.yDim, 1);
         UpdateUI();
     }
 
@@ -153,6 +161,7 @@ public class UpgradeController : DisableMapMovement
         _currentDamage.text = selectedZombieCurrentLevel.Damage.ToString();
         _currentHealth.text = selectedZombieCurrentLevel.Health.ToString();
         _currentSpeed.text = selectedZombieCurrentLevel.Speed.ToString();
+        _currentSpawnAmount.text = selectedZombieCurrentLevel.AmountSpawned.ToString();
         if (CharactersManager.Instance.IsZombieMaxLevel(SelectedZombieType.Value))
         {
             _maxLevelText.gameObject.SetActive(true);
@@ -163,6 +172,7 @@ public class UpgradeController : DisableMapMovement
             _nextDamage.text = STRING_MAX;
             _nextHealth.text = STRING_MAX;
             _nextSpeed.text = STRING_MAX;
+            _nextSpawnAmountContainer.SetActive(false);
         }
         else
         {
@@ -177,6 +187,8 @@ public class UpgradeController : DisableMapMovement
             _nextDamage.text = selectedZombieNextLevel.Damage.ToString();
             _nextHealth.text = selectedZombieNextLevel.Health.ToString();
             _nextSpeed.text = selectedZombieNextLevel.Speed.ToString();
+            _nextSpawnAmount.text = selectedZombieNextLevel.AmountSpawned.ToString();
+            _nextSpawnAmountContainer.SetActive(true);
 
             if (InventoryManager.Instance.CanAfford(selectedZombieCurrentLevel.PriceToUpgrade))
             {

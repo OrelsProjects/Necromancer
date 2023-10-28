@@ -93,6 +93,7 @@ public class ProductionController : MonoBehaviour
     {
         if (_productionToCollect <= 0 || _state == ProductionState.ProductionCollecting)
         {
+            _productionParticles.gameObject.SetActive(false);
             return;
         }
         SetState(ProductionState.ProductionCollecting);
