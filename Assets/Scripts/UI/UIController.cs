@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,6 +14,8 @@ public class UIController : MonoBehaviour
     private GameObject _areaUpgradeUI;
     [SerializeField]
     private TextMeshProUGUI _currencyText;
+    [SerializeField]
+    private GameObject _addedCurrencyContainer;
 
     private void Awake()
     {
@@ -25,23 +28,31 @@ public class UIController : MonoBehaviour
     private void Start()
     {
         UpdateUI();
-        
+
         InventoryManager.Instance.OnCurrencyChanged += OnCurrencyChanged;
-        OnCurrencyChanged(InventoryManager.Instance.Currency);
+        OnCurrencyChanged(InventoryManager.Instance.Currency, InventoryManager.Instance.Currency);
     }
 
     private void OnDestroy()
     {
         InventoryManager.Instance.OnCurrencyChanged -= OnCurrencyChanged;
     }
-    private void OnCurrencyChanged(int newCurrency)
+    private void OnCurrencyChanged(int newCurrency, int oldCurrency)
     {
-        _currencyText.text = newCurrency.ToString();
+        int difference = newCurrency - oldCurrency;
+        if (difference != 0)
+        {
+            string sign = difference > 0 ? "+" : "";
+            _currencyText.text = newCurrency.ToString("N0");
+            _addedCurrencyContainer.SetActive(false);
+            _addedCurrencyContainer.SetActive(true);
+            _addedCurrencyContainer.GetComponentInChildren<TextMeshProUGUI>().text = $"{sign}" + difference.ToString("N0");
+        }
     }
 
     public void UpdateUI()
     {
-        _currencyText.text = InventoryManager.Instance.Currency.ToString();
+        _currencyText.text = InventoryManager.Instance.Currency.ToString("N0");
     }
 
     public bool IsUpgradeAreaOpen() => _areaUpgradeUI.GetComponent<AreaUpgradeController>() != null;

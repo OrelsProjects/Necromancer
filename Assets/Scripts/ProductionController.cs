@@ -124,7 +124,7 @@ public class ProductionController : MonoBehaviour
             {
                 elapsedTime += Time.deltaTime;
                 float currentGold = Mathf.Lerp(currentCurrency, newCurrency, elapsedTime / timeToUpdate);
-                _currencyText.text = Mathf.RoundToInt(currentGold).ToString();
+                _currencyText.text = Mathf.RoundToInt(currentGold).ToString("N0");
                 yield return null;
             }
             InventoryManager.Instance.AddCurrency(_productionToCollect);

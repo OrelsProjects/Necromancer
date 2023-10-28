@@ -79,7 +79,6 @@ public class WaveController : MonoBehaviour
     private void UpdateWaveText()
     {
         int currentWave = Mathf.Clamp(_currentWave, 0, WavesCount.Value + 1);
-        Debug.Log("Current wave: " + _currentWave + "current wave clamped: " + currentWave);
         int maxWaves = Mathf.Clamp(WavesCount.Value, 1, WavesCount.Value);
         _waveText.text = $"Wave   {currentWave}/{maxWaves}";
     }

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
 
 public enum RoundState
@@ -27,6 +26,8 @@ public class RoundManager : MonoBehaviour
     private GameObject _winUI;
     [SerializeField]
     private GameObject _loseUI;
+    [SerializeField]
+    private GameObject _abandonRaidObject;
     [SerializeField]
     private GameObject _speedFastImage;
     [SerializeField]
@@ -317,6 +318,13 @@ public class RoundManager : MonoBehaviour
         _speedFastImage.SetActive(_currentGameSpeed == _minGameSpeed);
         Time.timeScale = _currentGameSpeed;
     }
+
+    public void ShowAbandonRaid(bool shouldShow)
+    {
+        _abandonRaidObject.SetActive(shouldShow);
+        Time.timeScale = shouldShow ? _minGameSpeed : _currentGameSpeed;
+    }
+
 
     public void FinishRound(bool immediate = false)
     {

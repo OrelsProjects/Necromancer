@@ -169,9 +169,6 @@ public class RaidAssembleController : DisableMapMovement
     private void IncreaseRaidCost(int cost) => UpdateRaidCost(RaidCost + cost, "Increase");
     private void DecreaseRaidCost(int cost) => UpdateRaidCost(RaidCost - cost, "Decrease");
 
-    private void UpdateRaidCost(int cost, string caller = "Other")
-    {
-        RaidCost = cost;
-        Debug.Log("Updated with cost: " + cost + " " + caller);
-    }
+    private void UpdateRaidCost(int cost, string caller = "Other") => RaidCost = cost;
+
 }

@@ -16,7 +16,7 @@ public class InventoryManager : MonoBehaviour, ISaveable
 {
     public static InventoryManager Instance { get; private set; }
 
-    public delegate void CurrencyChangedDelegate(int newCurrency);
+    public delegate void CurrencyChangedDelegate(int newCurrency, int oldCurrency);
 
     public event CurrencyChangedDelegate OnCurrencyChanged;
 
@@ -38,12 +38,10 @@ public class InventoryManager : MonoBehaviour, ISaveable
         get => _currency;
         private set
         {
-            if (_currency != value)
-            {
-                _currency = value;
-                OnCurrencyChanged?.Invoke(value);
-                SaveManager.Instance.InitiateSave();
-            }
+            int oldValue = _currency;
+            _currency = value;
+            OnCurrencyChanged?.Invoke(value, oldValue);
+            SaveManager.Instance.InitiateSave();
         }
     }
 
