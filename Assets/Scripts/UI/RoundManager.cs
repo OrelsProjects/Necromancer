@@ -151,14 +151,14 @@ public class RoundManager : MonoBehaviour
         {
             PlayZombieSpawnSound();
         }
+        if (!AreThereZombies())
+        {
+            PlayBackgroundMusic();
+            _state = RoundState.DefendersWon;
+            return;
+        }
         if (_waveController == null || _waveController.State == WaveState.Done)
         {
-            if (!AreThereZombies())
-            {
-                PlayBackgroundMusic();
-                _state = RoundState.DefendersWon;
-                return;
-            }
             if (!AreThereDefenders())
             {
                 ReduceZombiesSoundVolume();
@@ -329,12 +329,6 @@ public class RoundManager : MonoBehaviour
         _winUI.SetActive(false);
         _loseUI.SetActive(false);
     }
-
-    private void animateUIFade()
-    {
-
-    }
-
 
     private bool ShouldPlayZombiesSound() => AreThereZombiesAlive() && !_isZombiesSoundPlaying;
 

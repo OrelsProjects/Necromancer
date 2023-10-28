@@ -17,21 +17,19 @@ public class Civilian : MonoBehaviour
     [SerializeField]
     private float _speed = 2.0f;
     [SerializeField]
-    private float _maxDistanceFromZombie = 4f;
-    [SerializeField]
     private float _delayBetweenChangingTargets = 2f;
 
     [Header("Sound")]
     [SerializeField]
     private AudioClip _screamSound;
 
-    private float _chanceToScream = 0.3f;
+    private readonly float _chanceToScream = 0.3f;
 
     private MovementController _movementController;
     private WanderController _wanderController;
     private Zombifiable _zombifiable;
     private CivilianState _state = CivilianState.Idle;
-    private List<ZombieBehaviour> _zombiesNearby = new();
+    private readonly List<ZombieBehaviour> _zombiesNearby = new();
 
     private void Awake()
     {

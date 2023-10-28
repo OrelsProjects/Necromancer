@@ -100,7 +100,7 @@ public class DragCamera : MonoBehaviour
         int layerMask = 1 << 8;
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         RaycastHit2D raycastHit2D = Physics2D.Raycast(mousePosition, Vector2.zero, Mathf.Infinity, layerMask);
-        return raycastHit2D != null;
+        return raycastHit2D != null; // TODO: Fix
     }
 
     public void DisableMovement()

@@ -18,7 +18,7 @@ public class Chaser<T> : IChaser<T> where T : MonoBehaviour, IChaseable
     // Owner is the only one allowed to set the target.
     private Owner _owner;
     private float _distanceFromTarget;
-    private float _detectionRangePriorityTarget = 3f;
+    private readonly float _detectionRangePriorityTarget = 3f;
 
     private T Target;
 

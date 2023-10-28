@@ -34,7 +34,6 @@ public class MovementController : MonoBehaviour
     public void FaceTarget(Transform target)
     {
         _direction = target.position;
-        FlipCharacter(force: true);
     }
 
     public bool Move(float speed, Vector2 direction)
