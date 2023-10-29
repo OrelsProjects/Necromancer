@@ -135,7 +135,7 @@ public class CharactersManager : MonoBehaviour, ISaveable
         }
     }
 
-    public ZombieLevel GetZombieData(ZombieType type)
+    public ZombieLevel GetZombieLevelData(ZombieType type)
     {
         return type switch
         {
@@ -143,6 +143,18 @@ public class CharactersManager : MonoBehaviour, ISaveable
             ZombieType.Medium => _mediumZombieData.GetLevel(MediumZombieLevel),
             ZombieType.Large => _largeZombieData.GetLevel(LargeZombieLevel),
             ZombieType.Playground => _smallZombieData.GetLevel(SmallZombieLevel), // Adjust as needed.
+            _ => null,
+        };
+    }
+
+    public ZombieData GetZombieData(ZombieType type)
+    {
+        return type switch
+        {
+            ZombieType.Small => _smallZombieData,
+            ZombieType.Medium => _mediumZombieData,
+            ZombieType.Large => _largeZombieData,
+            ZombieType.Playground => _smallZombieData, // Adjust as needed.
             _ => null,
         };
     }

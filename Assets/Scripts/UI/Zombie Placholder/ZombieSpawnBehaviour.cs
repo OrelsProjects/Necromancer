@@ -38,7 +38,7 @@ public class ZombieSpawnBehaviour : MonoBehaviour
 
         Vector3 circleCenter = position;
 
-        int amountToSpawn = CharactersManager.Instance.GetZombieData(_type.Value).AmountSpawned;
+        int amountToSpawn = CharactersManager.Instance.GetZombieLevelData(_type.Value).AmountSpawned;
         float angleIncrement = 360.0f / amountToSpawn;
         float radius = 0.5f;
 

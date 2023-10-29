@@ -7,8 +7,10 @@ public class ZombieData : ScriptableObject
 {
     [SerializeField]
     private List<ZombieLevel> _zombieLevels;
+    [SerializeField]
+    private int _priceToAcquire;
 
-    private Dictionary<int, ZombieLevel> _levels
+    private Dictionary<int, ZombieLevel> levels
     {
         get
         {
@@ -20,12 +22,14 @@ public class ZombieData : ScriptableObject
 
     public int MaxLevel
     {
-        get { return _levels.Keys.Count; }
+        get { return levels.Keys.Count; }
     }
 
     public ZombieLevel GetLevel(int level)
     {
         int clampedLevel = Mathf.Clamp(level, 0, MaxLevel);
-        return _levels[clampedLevel];
+        return levels[clampedLevel];
     }
+
+    public int PriceToAcquire => _priceToAcquire;
 }

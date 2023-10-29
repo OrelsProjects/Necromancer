@@ -86,7 +86,7 @@ public class RaidAssembleController : DisableMapMovement
     {
         UIZombieOption raidZombieOption = Instantiate(_zombieOptionPrefab);
         ZombieImage zombieImage = CharactersManager.Instance.GetZombieSprite(zombieType).Value;
-        int cost = CharactersManager.Instance.GetZombieData(zombieType).PriceToUse;
+        int cost = CharactersManager.Instance.GetZombieLevelData(zombieType).PriceToUse;
 
         raidZombieOption.Type = zombieType;
         raidZombieOption.Image.sprite = zombieImage.sprite;
@@ -114,7 +114,7 @@ public class RaidAssembleController : DisableMapMovement
     {
         raidZombieOption.ResetButtonListeners();
         raidZombieOption.Button.onClick.AddListener(() => RemoveZombieSelection(raidZombieOption));
-        IncreaseRaidCost(CharactersManager.Instance.GetZombieData(raidZombieOption.Type).PriceToUse);
+        IncreaseRaidCost(CharactersManager.Instance.GetZombieLevelData(raidZombieOption.Type).PriceToUse);
         AddToSelectedList(raidZombieOption);
         UpdateRaidButtonInteractable();
     }
@@ -123,7 +123,7 @@ public class RaidAssembleController : DisableMapMovement
     {
         raidZombieOption.ResetButtonListeners();
         raidZombieOption.Button.onClick.AddListener(() => SelectZombie(raidZombieOption));
-        DecreaseRaidCost(CharactersManager.Instance.GetZombieData(raidZombieOption.Type).PriceToUse);
+        DecreaseRaidCost(CharactersManager.Instance.GetZombieLevelData(raidZombieOption.Type).PriceToUse);
         AddToOptionsList(raidZombieOption);
         UpdateRaidButtonInteractable();
     }

@@ -39,7 +39,7 @@ public class ZombieBehaviour : MonoBehaviour, IChaseable
 
     public ZombieLevel Data
     {
-        get { return CharactersManager.Instance.GetZombieData(_type); }
+        get { return CharactersManager.Instance.GetZombieLevelData(_type); }
     }
 
     private bool _isAttackSoundPlaying = false;

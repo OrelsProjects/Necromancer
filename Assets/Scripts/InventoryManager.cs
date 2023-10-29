@@ -5,7 +5,7 @@ public struct InventoryData : ISaveableObject
 {
     public int Currency;
     public ZombieType[] AcquiredZombies;
-    
+
     public string GetObjectType()
     {
         return GetType().FullName;
@@ -19,7 +19,7 @@ public class InventoryManager : MonoBehaviour, ISaveable
     public delegate void CurrencyChangedDelegate(int newCurrency, int oldCurrency);
     public event CurrencyChangedDelegate OnCurrencyChanged;
 
-    private List<ZombieType> _acquiredZombies;
+    private List<ZombieType> _acquiredZombies = new();
 
     public List<ZombieType> AcquiredZombies
     {
@@ -27,7 +27,12 @@ public class InventoryManager : MonoBehaviour, ISaveable
         private set
         {
             _acquiredZombies = value;
-                    }
+        }
+    }
+
+    public List<ZombieType> AcquireableZombies
+    {
+        get => new(new[] { ZombieType.Small, ZombieType.Medium, ZombieType.Large });
     }
 
     private int _currency;
@@ -71,6 +76,8 @@ public class InventoryManager : MonoBehaviour, ISaveable
         return false;
     }
 
+    public bool IsZombieAcquired(ZombieType zombie) => _acquiredZombies.Contains(zombie);
+
     public void AcquireZombie(ZombieType zombie)
     {
         if (_acquiredZombies.Contains(zombie))
@@ -78,6 +85,7 @@ public class InventoryManager : MonoBehaviour, ISaveable
             return;
         }
         _acquiredZombies.Add(zombie);
+        SaveManager.Instance.InitiateSave();
     }
 
     public ISaveableObject GetData()
@@ -95,7 +103,7 @@ public class InventoryManager : MonoBehaviour, ISaveable
         {
             if (data.Currency == 0)
             {
-                Currency = 50;
+                Currency = 5000;
             }
             else
             {
@@ -104,7 +112,6 @@ public class InventoryManager : MonoBehaviour, ISaveable
             if (data.AcquiredZombies == null || data.AcquiredZombies.Length == 0)
             {
                 _acquiredZombies = new List<ZombieType>();
-                _acquiredZombies.AddRange(new[] { ZombieType.Small });
                 SaveManager.Instance.InitiateSave();
             }
             else
