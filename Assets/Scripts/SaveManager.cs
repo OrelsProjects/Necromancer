@@ -10,7 +10,29 @@ public class SaveManager : MonoBehaviour
 {
     public static SaveManager Instance { get; private set; }
 
+    public delegate void DataFetchingLoadingDelegate(bool isLoading);
+    public event DataFetchingLoadingDelegate OnDataFetchLoading;
+
+    public delegate void DataSavingLoadingDelegate(bool isLoading);
+    public event DataSavingLoadingDelegate OnDataSaveLoading;
+
     public List<ISaveable> _saveables;
+
+    private bool IsLoadingFetch
+    {
+        set
+        {
+            OnDataFetchLoading?.Invoke(value);
+        }
+    }
+
+    private bool IsLoadingSave
+    {
+        set
+        {
+            OnDataSaveLoading?.Invoke(value);
+        }
+    }
 
     private void Awake()
     {
@@ -26,6 +48,28 @@ public class SaveManager : MonoBehaviour
     {
         InitiateLoad();
     }
+
+    #region subscriptions
+    public void SubscribeToDataFetchLoading(DataFetchingLoadingDelegate dataFetchingLoadingDelegate)
+    {
+        OnDataFetchLoading += dataFetchingLoadingDelegate;
+    }
+
+    public void UnsubscribeToDataFetchLoading(DataFetchingLoadingDelegate dataFetchingLoadingDelegate)
+    {
+        OnDataFetchLoading -= dataFetchingLoadingDelegate;
+    }
+
+    public void SubscribeToDataSaveLoading(DataSavingLoadingDelegate dataSavingLoadingDelegate)
+    {
+        OnDataSaveLoading += dataSavingLoadingDelegate;
+    }
+
+    public void UnsubscribeToDataSaveLoading(DataSavingLoadingDelegate dataSavingLoadingDelegate)
+    {
+        OnDataSaveLoading -= dataSavingLoadingDelegate;
+    }
+    #endregion
 
     private void InitSaveables()
     {
@@ -77,12 +121,14 @@ public class SaveManager : MonoBehaviour
 
     private IEnumerator InitiateSaveCore(bool closeAppAfterSave = false)
     {
+        IsLoadingSave = true;
         yield return new WaitForSeconds(0.5f); // Let other processes run before saving
         _saveables?.ForEach(s =>
         {
             ISaveableObject data = s.GetData();
             SaveItem(data);
         });
+        IsLoadingSave = false;
         if (closeAppAfterSave)
         {
             Application.Quit();
@@ -103,10 +149,11 @@ public class SaveManager : MonoBehaviour
     /// <returns></returns>
     private IEnumerator InitiateLoadCore(float delay = 0.5f)
     {
+        IsLoadingFetch = true;
         yield return new WaitForSeconds(delay); // Let other processes run before loading
-        _saveables?.ForEach(s =>
+        _saveables?.ForEach(saveable =>
         {
-            ISaveableObject data = s.GetData();
+            ISaveableObject data = saveable.GetData();
             string saveFileLocation = BuildSaveFileName(data);
             if (File.Exists(saveFileLocation))
             {
@@ -121,7 +168,8 @@ public class SaveManager : MonoBehaviour
                     });
                 }
             }
-            s.LoadData(data);
+            saveable.LoadData(data);
         });
+        IsLoadingFetch = false;
     }
 }
