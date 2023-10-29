@@ -55,6 +55,7 @@ public class WaveController : MonoBehaviour
             {
                 _state = WaveState.Done;
                 _waveSlider.value = 1;
+                UpdateWaveText();
                 return;
             }
             _waveSlider.value += 1 / TimeBetweenWaves.Value * Time.deltaTime;
@@ -78,7 +79,7 @@ public class WaveController : MonoBehaviour
 
     private void UpdateWaveText()
     {
-        int currentWave = Mathf.Clamp(_currentWave, 0, WavesCount.Value + 1);
+        int currentWave = Mathf.Clamp(_currentWave, 0, WavesCount.Value);
         int maxWaves = Mathf.Clamp(WavesCount.Value, 1, WavesCount.Value);
         _waveText.text = $"Wave   {currentWave}/{maxWaves}";
     }

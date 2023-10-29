@@ -5,7 +5,7 @@ public struct InventoryData : ISaveableObject
 {
     public int Currency;
     public ZombieType[] AcquiredZombies;
-
+    
     public string GetObjectType()
     {
         return GetType().FullName;
@@ -17,7 +17,6 @@ public class InventoryManager : MonoBehaviour, ISaveable
     public static InventoryManager Instance { get; private set; }
 
     public delegate void CurrencyChangedDelegate(int newCurrency, int oldCurrency);
-
     public event CurrencyChangedDelegate OnCurrencyChanged;
 
     private List<ZombieType> _acquiredZombies;
@@ -28,7 +27,7 @@ public class InventoryManager : MonoBehaviour, ISaveable
         private set
         {
             _acquiredZombies = value;
-        }
+                    }
     }
 
     private int _currency;
@@ -58,7 +57,6 @@ public class InventoryManager : MonoBehaviour, ISaveable
     }
 
     public bool CanAfford(int cost) => Currency >= cost;
-
 
     public void AddCurrency(int amount) => Currency += amount;
 
@@ -106,7 +104,7 @@ public class InventoryManager : MonoBehaviour, ISaveable
             if (data.AcquiredZombies == null || data.AcquiredZombies.Length == 0)
             {
                 _acquiredZombies = new List<ZombieType>();
-                _acquiredZombies.AddRange(new[] { ZombieType.Small, ZombieType.Medium, ZombieType.Large });
+                _acquiredZombies.AddRange(new[] { ZombieType.Small });
                 SaveManager.Instance.InitiateSave();
             }
             else

@@ -74,7 +74,6 @@ public class AreaUpgradeController : DisableMapMovement
     private void UpdateStats()
     {
         AreaLevel level = _areaData.GetAreaLevel(CurrentLevel);
-        Debug.Log("Got the level!" + level);
         _currentCurrencyPerMinuteText.text = level.CurrencyPerMinute.ToString();
         if (AreasManager.Instance.IsAreaMaxLevel(_area))
         {

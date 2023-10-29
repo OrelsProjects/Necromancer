@@ -45,7 +45,12 @@ public class Zombifiable : MonoBehaviour, IChaseable
         _movementBlockedTimeAfterAttack = _data.MovementBlockedTimeAfterAttack;
     }
 
-    public void Zombify(ZombieType zombieType, int damage)
+    /// <summary>
+    /// Deals damage to the zombifiable and turns it into a zombie if it's health is 0 or less.
+    /// </summary>
+    /// <param name="zombieType">Is used to determine which zombie prefab to instantiate</param> // Maybe in the future
+    /// <param name="damage">The amount of damage to deal</param>
+    public void Zombify(ZombieType _, int damage)
     {
         if (_state == ZombifiableState.Turning)
         {
@@ -61,7 +66,8 @@ public class Zombifiable : MonoBehaviour, IChaseable
         }
         else
         {
-            var zombiePrefab = CharactersManager.Instance.GetZombiePrefab(zombieType);
+            // var zombiePrefab = CharactersManager.Instance.GetZombiePrefab(zombieType);// Maybe in the future
+            var zombiePrefab = CharactersManager.Instance.GetZombiePrefab(ZombieType.Small);
             _state = ZombifiableState.Turning;
             StartCoroutine(TurnToZombie(zombiePrefab.gameObject));
         }

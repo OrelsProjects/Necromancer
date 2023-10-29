@@ -8,12 +8,12 @@ public class FloatBehaviour : MonoBehaviour
 {
     public float floatTime = 1.5f;
     public float delay = 2.0f; // Delay time in seconds
+    public bool selfOnly = true;
+    public Transform initialPosition;
     public bool floatUp = true;
     public bool floatDown = false;
-    public bool includeSelf = true;
     public float floatDistance = 1.0f; // Distance to float up or down
 
-    private Vector3 _objectInitialPosition;
     private Transform _objectToFloat;
 
     private void OnEnable()
@@ -41,12 +41,15 @@ public class FloatBehaviour : MonoBehaviour
 
     public void ApplyFloat(float startPosition, float endPosition, bool returnToInitialPosition = true)
     {
-        if (includeSelf)
+        if (selfOnly)
         {
             _objectToFloat = transform;
             StartCoroutine(FloatObject(startPosition, endPosition, floatTime, returnToInitialPosition));
         }
-        ApplyFloatToChildren(transform, startPosition, endPosition);
+        else
+        {
+            ApplyFloatToChildren(transform, startPosition, endPosition);
+        }
     }
 
     private void ApplyFloatToChildren(Transform parent, float startPosition, float endPosition)
@@ -70,24 +73,24 @@ public class FloatBehaviour : MonoBehaviour
     {
         float startTime = Time.time;
         float endTime = Time.time + time;
-        _objectInitialPosition = _objectToFloat.position;
+        Vector3 objectInitialPosition = initialPosition.position;
 
         while (Time.time <= endTime)
         {
             float normalizedTime = Mathf.Clamp((Time.time - startTime) / time, 0, 1);
-            float currentY = Mathf.Lerp(_objectInitialPosition.y + startPosition, _objectInitialPosition.y + endPosition, normalizedTime);
-            _objectToFloat.position = new Vector3(_objectInitialPosition.x, currentY, _objectInitialPosition.z);
+            float currentY = Mathf.Lerp(objectInitialPosition.y + startPosition, objectInitialPosition.y + endPosition, normalizedTime);
+            _objectToFloat.position = new Vector3(objectInitialPosition.x, currentY, objectInitialPosition.z);
             yield return null;
         }
         if (returnToInitialPosition)
         {
-            _objectToFloat.position = _objectInitialPosition;
+            _objectToFloat.position = initialPosition.position;
         }
     }
 
     private void OnDisable()
     {
         StopAllCoroutines();
-        _objectToFloat.position = _objectInitialPosition;
+        _objectToFloat.position = initialPosition.position;
     }
 }

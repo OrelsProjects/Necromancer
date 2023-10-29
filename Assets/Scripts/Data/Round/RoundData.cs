@@ -29,9 +29,9 @@ public class RoundData : ScriptableObject
 
     [Header("Waves")]
     [SerializeField]
-    private int _wavesCount;
+    private int _wavesCount = 1;
     [SerializeField]
-    private float _timeBetweenWavesInSeconds;
+    private float _timeBetweenWavesInSeconds = 1;
 
     [Header("Costs")]
 
