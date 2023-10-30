@@ -23,12 +23,12 @@ public class Civilian : MonoBehaviour
     [SerializeField]
     private AudioClip _screamSound;
 
-    private readonly float _chanceToScream = 0.3f;
+    private readonly float _chanceToScream = 0.05f;
 
     private MovementController _movementController;
     private WanderController _wanderController;
     private Zombifiable _zombifiable;
-    private CivilianState _state = CivilianState.Idle;
+    public CivilianState _state = CivilianState.Idle;
     private readonly List<ZombieBehaviour> _zombiesNearby = new();
 
     private void Awake()
@@ -41,17 +41,14 @@ public class Civilian : MonoBehaviour
 
     private void Update()
     {
-        CleanZombiesList();
+        RemoveDeadZombiesFromList();
         if (_zombifiable.IsZombified())
         {
             SetState(CivilianState.Dead);
             _movementController.Disable(true);
             return;
         }
-        if (IsZombieNearby())
-        {
-            SetState(CivilianState.AboutToRun);
-        }
+
         switch (_state)
         {
             case CivilianState.Idle:
@@ -59,6 +56,9 @@ public class Civilian : MonoBehaviour
                 break;
             case CivilianState.AboutToRun:
                 HandleAboutToRunState();
+                break;
+            case CivilianState.Wander:
+                HandleWanderState();
                 break;
         }
     }
@@ -69,52 +69,59 @@ public class Civilian : MonoBehaviour
         collider.isTrigger = true;
         collider.radius = 1;
         collider.offset = Vector2.zero;
-        collider.includeLayers = LayerMask.GetMask("Zombie");
-        collider.excludeLayers = -1;
     }
 
-    private void CleanZombiesList() => _zombiesNearby.RemoveAll(zombie => zombie == null || !zombie.IsAvailable());
+    private void RemoveDeadZombiesFromList() => _zombiesNearby.RemoveAll(zombie => zombie == null || !zombie.IsAvailable());
 
     private void HandleIdleState()
     {
-        if (IsZombieNearby())
-        {
-            SetState(CivilianState.AboutToRun);
-        }
-        else
+        if (!SetShouldRunState())
         {
             _wanderController.Enable();
             SetState(CivilianState.Wander);
         }
     }
 
+    private void HandleWanderState()
+    {
+        SetShouldRunState();
+    }
+
+    private bool SetShouldRunState()
+    {
+        bool isZombieNearby = IsZombieNearby();
+        if (isZombieNearby)
+        {
+            SetState(CivilianState.AboutToRun);
+        }
+        return isZombieNearby;
+    }
+
     private void HandleAboutToRunState()
     {
-        if (IsZombieNearby())
-        {
-            _wanderController.Disable();
-            RunAwayFromZombie();
-            SetState(CivilianState.Running);
-            StartCoroutine(DelayChangingTargets());
-            Scream();
-        }
-        else
-        {
-            SetState(CivilianState.Idle);
-        }
+        SetState(CivilianState.Running);
+        _wanderController.Disable();
+        RunAwayFromZombie();
+        StartCoroutine(DelayChangingTargets());
+        Scream();
     }
 
     private void Scream()
     {
-        if (Random.Range(0f, 1f) < _chanceToScream)
+        if (Random.Range(0f, 1f) <= _chanceToScream)
         {
-            AudioSource.PlayClipAtPoint(_screamSound, transform.position);
+            AudioSource.PlayClipAtPoint(_screamSound, transform.position, 0.2f);
         }
     }
 
     private void RunAwayFromZombie()
     {
         Vector3? zombiePosition;
+        if (_zombiesNearby.Count <= 0)
+        {
+            SetState(CivilianState.Idle);
+            return;
+        }
         zombiePosition = _zombiesNearby[0].transform.position;
 
         if (zombiePosition == null)
@@ -148,19 +155,19 @@ public class Civilian : MonoBehaviour
         _state = state;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (other.gameObject.CompareTag("Zombie"))
+        if (collision.gameObject.CompareTag("Zombie"))
         {
-            _zombiesNearby.Add(other.gameObject.GetComponent<ZombieBehaviour>());
+            _zombiesNearby.Add(collision.gameObject.GetComponent<ZombieBehaviour>());
         }
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        if (other.gameObject.CompareTag("Zombie"))
+        if (collision.gameObject.CompareTag("Zombie"))
         {
-            _zombiesNearby.Remove(other.gameObject.GetComponent<ZombieBehaviour>());
+            _zombiesNearby.Remove(collision.gameObject.GetComponent<ZombieBehaviour>());
         }
     }
 

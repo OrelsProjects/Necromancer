@@ -6,6 +6,7 @@ public enum WaveState
 {
     NotStarted,
     Started,
+    Stopped,
     Done,
 }
 
@@ -47,8 +48,14 @@ public class WaveController : MonoBehaviour
         UpdateWaveText();
     }
 
+    public void StopWaves() => _state = WaveState.Stopped;
+
     private void Update()
     {
+        if (_state == WaveState.Stopped)
+        {
+            return;
+        }
         if (_state == WaveState.Started)
         {
             if (_currentWave > WavesCount.Value)
@@ -58,15 +65,22 @@ public class WaveController : MonoBehaviour
                 UpdateWaveText();
                 return;
             }
-            _waveSlider.value += 1 / TimeBetweenWaves.Value * Time.deltaTime;
-            if (_waveSlider.value >= 1)
+            else
             {
-                _currentWave++;
-                if (_currentWave < WavesCount.Value)
+                _waveSlider.value += 1 / TimeBetweenWaves.Value * Time.deltaTime;
+                if (_waveSlider.value >= 1)
                 {
-                    SpawnWave();
+                    _currentWave++;
                     UpdateWaveText();
-                    _waveSlider.value = 0;
+                    if (_currentWave > WavesCount.Value)
+                    {
+                        _waveSlider.value = 1;
+                    }
+                    else
+                    {
+                        SpawnWave();
+                        _waveSlider.value = 0;
+                    }
                 }
             }
         }

@@ -15,12 +15,12 @@ public class DragCamera : MonoBehaviour
     private Vector3 lastMousePosition;
 
     #region Test
-    public TextMeshProUGUI positionXText;
-    public TextMeshProUGUI positionYText;
-    public TextMeshProUGUI minXText;
-    public TextMeshProUGUI maxXText;
-    public TextMeshProUGUI minYText;
-    public TextMeshProUGUI maxYText;
+    public GameObject positionXText;
+    public GameObject positionYText;
+    public GameObject minXText;
+    public GameObject maxXText;
+    public GameObject minYText;
+    public GameObject maxYText;
     #endregion
 
     public bool _canMove = true;
@@ -83,15 +83,6 @@ public class DragCamera : MonoBehaviour
         Vector3 clampedPosition = transform.position;
         clampedPosition.x = Mathf.Clamp(clampedPosition.x, minX, maxX);
         clampedPosition.y = Mathf.Clamp(clampedPosition.y, minY, maxY);
-
-        positionXText.text = "CX: " + clampedPosition.x;
-        positionYText.text = "CY: " + clampedPosition.y;
-        minXText.text = "mnX: " + minX;
-        minYText.text = "mxX: " + maxX;
-        maxYText.text = "mnY: " + minY;
-        maxXText.text = "mxY: " + maxY;
-        // miny - 0 minx - 20
-        // maxy - 23 maxx - 20
         transform.position = clampedPosition;
     }
 

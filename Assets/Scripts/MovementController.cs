@@ -92,7 +92,9 @@ public class MovementController : MonoBehaviour
     }
 
     /// <summary>
-    ///  Disable movement of character
+    ///  Disable movement of character.
+    ///  If forced, movement will be disabled forever.
+    ///   That's done in order to avoid null reference exceptions when Destroy() is called.
     /// </summary>
     /// <param name="forced">Disable forever. No way to return.</param>
     public void Disable(bool forced = false)

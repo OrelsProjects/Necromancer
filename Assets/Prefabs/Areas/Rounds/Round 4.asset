@@ -18,7 +18,7 @@ MonoBehaviour:
   _archersCount: 1
   Civilians: 1
   _civiliansCount: 10
-  _wavesCount: 1
+  _wavesCount: 3
   _timeBetweenWavesInSeconds: 1
   _raidCost: 150
   Reward: 200

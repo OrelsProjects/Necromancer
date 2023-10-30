@@ -8,7 +8,7 @@ public class Projectile : MonoBehaviour, IProjectile
     [SerializeField]
     private Sprite _sprite;
     [SerializeField]
-    private AudioClip _hitSound;
+    private AudioClip _hitSound; // TODO: Make it according to the layer it hits
 
     private const float ProjectileLifetime = 3f;
     private float _damage;
@@ -43,12 +43,19 @@ public class Projectile : MonoBehaviour, IProjectile
         Destroy(gameObject, ProjectileLifetime);
     }
 
+    public void PlayHitSound()
+    {
+        // 25% Chance to play the hit sound
+        if (UnityEngine.Random.Range(0, 4) == 0)
+        {
+            AudioSource.PlayClipAtPoint(_hitSound, transform.position);
+        }
+    }
+
     public void AddAttackCallback(Action onAttack)
     {
         onAttack();
     }
-
-
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
@@ -62,7 +69,7 @@ public class Projectile : MonoBehaviour, IProjectile
             {
                 _isUsed = true;
                 zombie.TakeDamage(_damage);
-                AudioSource.PlayClipAtPoint(_hitSound, transform.position);
+                PlayHitSound();
                 Destroy(gameObject);
             }
         }

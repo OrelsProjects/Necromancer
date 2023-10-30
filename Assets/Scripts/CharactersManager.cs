@@ -135,6 +135,18 @@ public class CharactersManager : MonoBehaviour, ISaveable
         }
     }
 
+    public Vector2 GetZombieBoxColliderSize(ZombieType type)
+    {
+        return type switch
+        {
+            ZombieType.Small => new(0.1f, 0.24f),
+            ZombieType.Medium => new(0.13f, 0.26f),
+            ZombieType.Large => new(0.18f, 0.325f),
+            ZombieType.Playground => new(0.1f, 0.24f),
+            _ => Vector2.zero,
+        };
+    }
+
     public ZombieLevel GetZombieLevelData(ZombieType type)
     {
         return type switch

@@ -133,7 +133,7 @@ public class ZombieBehaviour : MonoBehaviour, IChaseable
         BoxCollider2D collider = gameObject.AddComponent<BoxCollider2D>();
         //collider.includeLayers = LayerMask.GetMask("Zombie");
         collider.isTrigger = true;
-        collider.size = new Vector2(0.1f, 0.05f);
+        collider.size = CharactersManager.Instance.GetZombieBoxColliderSize(_type);
     }
 
     private void HandleAboutToWanderState()

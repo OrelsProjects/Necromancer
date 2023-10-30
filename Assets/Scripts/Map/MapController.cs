@@ -32,6 +32,7 @@ public class Map : MonoBehaviour
     {
         _audioSource.clip = SoundsManager.GetBackgroundSound(BackgroundSoundTypes.Map);
         _audioSource.loop = true;
+        _audioSource.volume = 0.35f;
         _audioSource.Play();
     }
 

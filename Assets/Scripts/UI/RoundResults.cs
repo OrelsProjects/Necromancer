@@ -44,12 +44,12 @@ public class RoundResults : MonoBehaviour
         {
             return;
         }
-        _isRoundOver = RoundManager.Instance.State == RoundState.Lost || RoundManager.Instance.State == RoundState.Won;
-        if (RoundManager.Instance.State == RoundState.Lost)
+        _isRoundOver = RoundManager.Instance.State == RoundState.ZombiesWon || RoundManager.Instance.State == RoundState.DefendersWon;
+        if (RoundManager.Instance.State == RoundState.ZombiesWon)
         {
             SetUpLose();
         }
-        else if (RoundManager.Instance.State == RoundState.Won)
+        else if (RoundManager.Instance.State == RoundState.DefendersWon)
         {
             SetUpWin();
         }

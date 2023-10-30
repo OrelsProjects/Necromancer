@@ -110,28 +110,16 @@ public class AreaController : MonoBehaviour
         }
         else
         {
-            int areaLevel = CalculateAreaLevel();
+            int areaLevel = CalculateAreaPower();
             _areaLevelText.text = $"{areaLevel}";
         }
     }
 
-    private int CalculateAreaLevel()
+    private int CalculateAreaPower()
     {
-        AreaData areaData = AreasManager.Instance.GetAreaData(_area);
-        if (areaData == null)
-        {
-            Debug.Log("area: " + _area + " is null");
-            return 0;
-        }
-        RoundData roundData = areaData.RoundData;
-        if (roundData == null)
-        {
-            Debug.Log("round data: " + _area + " is null");
-            return 0;
-        }
+        RoundData roundData = AreasManager.Instance.GetAreaData(_area).RoundData;
         int wavesCount = Mathf.Clamp(roundData.WavesCount, 1, roundData.WavesCount);
-        int defendersCount = roundData.DefendersCount;
-        defendersCount = Mathf.Clamp(defendersCount, 1, defendersCount);
+        int defendersCount = Mathf.Clamp(roundData.DefendersCount, 1, roundData.DefendersCount);
         return wavesCount * defendersCount;
     }
 }

@@ -20,7 +20,9 @@ public enum UISoundTypes
 {
     ButtonClick,
     Purchase,
-    CoinsCollect
+    CoinsCollect,
+    RoundWin,
+    RoundLose,
 }
 
 [System.Serializable]
@@ -49,6 +51,10 @@ public class SoundsManager : MonoBehaviour
     private AudioClip _purchaseSound;
     [SerializeField]
     private AudioClip _coinsCollectSonud;
+    [SerializeField]
+    private AudioClip _roundLose;
+    [SerializeField]
+    private AudioClip _roundWin;
 
     [Header("Areas Clips")]
     [SerializeField]
@@ -69,12 +75,6 @@ public class SoundsManager : MonoBehaviour
         {
             Destroy(this);
         }
-    }
-
-    private void Start()
-    {
-        _backgroundAudioSource.clip = _mapSound;
-        _backgroundAudioSource.Play();
     }
 
     public void StopAll()
@@ -107,6 +107,8 @@ public class SoundsManager : MonoBehaviour
         UISoundTypes.ButtonClick => Instance._buttonClickSound,
         UISoundTypes.Purchase => Instance._purchaseSound,
         UISoundTypes.CoinsCollect => Instance._coinsCollectSonud,
+        UISoundTypes.RoundWin => Instance._roundWin,
+        UISoundTypes.RoundLose => Instance._roundLose,
         _ => throw new System.NotImplementedException(),
     };
 }

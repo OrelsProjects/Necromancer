@@ -8,8 +8,7 @@ public enum RoundState
     Started,
     ZombiesWon,
     DefendersWon,
-    Won,
-    Lost,
+    Done
 }
 
 public class RoundManager : MonoBehaviour
@@ -39,10 +38,6 @@ public class RoundManager : MonoBehaviour
 
     [Header("Sound")]
     [SerializeField]
-    private AudioClip _winSound;
-    [SerializeField]
-    private AudioClip _loseSound;
-    [SerializeField]
     private AudioClip _zombiesSpawnedSound;
     [SerializeField]
     private AudioSource _audioSource;
@@ -51,6 +46,7 @@ public class RoundManager : MonoBehaviour
     [SerializeField]
     private bool _playground = false;
 
+    private readonly float _timeToCloseRound = 2f;
     private readonly List<ZombieBehaviour> _zombies = new();
     private readonly List<Zombifiable> _zombifiables = new();
     private readonly List<Defender> _defenders = new();
@@ -81,8 +77,6 @@ public class RoundManager : MonoBehaviour
     }
 
     public RoundState State => _state;
-
-    public bool IsRoundOver => (_state == RoundState.ZombiesWon || _state == RoundState.DefendersWon) && _waveController != null && _waveController.IsWaveInProgress;
 
     private void Awake()
     {
@@ -149,52 +143,50 @@ public class RoundManager : MonoBehaviour
         {
             _state = RoundState.Started;
             _waveController.StartWaves();
+            if (ShouldPlayZombiesSound())
+            {
+                ChangeSoundFromAreaToZombies();
+            }
         }
     }
 
     private void HandleStartedState()
     {
-        if (ShouldPlayZombiesSound())
+        if (DidDefendersWin())
         {
-            PlayZombieSpawnSound();
-        }
-        if (!AreThereZombies())
-        {
-            PlayBackgroundMusic();
+            ReduceZombiesSoundVolume();
             _state = RoundState.DefendersWon;
             return;
         }
-        if (_waveController == null || _waveController.State == WaveState.Done)
+        if (DidZombiesWin())
         {
-            if (!AreThereDefenders())
-            {
-                ReduceZombiesSoundVolume();
-                _state = RoundState.ZombiesWon;
-                return;
-            }
+            ReduceZombiesSoundVolume();
+            _state = RoundState.ZombiesWon;
+            return;
         }
     }
 
     private void HandleZombiesWonState()
     {
         SoundsManager.Instance.StopAll();
-        AudioSource.PlayClipAtPoint(_winSound, transform.position);
+        AudioSourceHelper.PlayClipAtPoint(UISoundTypes.RoundWin, 0.25f);
         AreasManager.Instance.ZombifyArea(_data.Area);
         AreasManager.Instance.SaveData();
         ShowWinUI();
-        _state = RoundState.Won;
+        _state = RoundState.Done;
         FinishRound();
     }
 
     private void HandleDefendersWonState()
     {
         SoundsManager.Instance.StopAll();
-        AudioSource.PlayClipAtPoint(_loseSound, transform.position);
+        AudioSourceHelper.PlayClipAtPoint(UISoundTypes.RoundLose, 0.25f);
         ShowLoseUI();
-        _state = RoundState.Lost;
         FinishRound();
+        _state = RoundState.Done;
     }
 
+    #region WIN CONDITIONS
     private bool AreThereZombies()
     {
         bool areThereZombifiedCharacters = _zombifiables.Exists(zombifiable => zombifiable.IsZombified());
@@ -213,10 +205,17 @@ public class RoundManager : MonoBehaviour
         return _zombies.Count > 0;
     }
 
-    private bool AreThereDefenders()
-    {
-        return _defenders.Count > 0;
-    }
+    private bool AreThereDefenders => _defenders.Count > 0;
+
+    private bool AreThereCivilians =>
+         _zombifiables.Exists(zombifiable => zombifiable.GetComponent<Civilian>() != null);
+
+    private bool AreWavesFinished => _waveController == null || _waveController.State == WaveState.Done;
+
+
+    private bool DidZombiesWin() => (!AreThereDefenders && AreWavesFinished) || !AreThereCivilians;
+    private bool DidDefendersWin() => !AreThereZombies();
+    #endregion
 
     public Vector3? GetClosestZombiePosition(Vector3 position)
     {
@@ -314,6 +313,10 @@ public class RoundManager : MonoBehaviour
 
     public void SpeedUpGame()
     {
+        if (_state == RoundState.ZombiesWon || _state == RoundState.DefendersWon)
+        {
+            return;
+        }
         _currentGameSpeed = _currentGameSpeed == _minGameSpeed ? _maxGameSpeed : _minGameSpeed;
         _speedFastImage.SetActive(_currentGameSpeed == _minGameSpeed);
         Time.timeScale = _currentGameSpeed;
@@ -329,6 +332,7 @@ public class RoundManager : MonoBehaviour
     public void FinishRound(bool immediate = false)
     {
         Time.timeScale = _minGameSpeed;
+        _waveController.StopWaves();
         if (immediate)
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene("Map1");
@@ -342,7 +346,7 @@ public class RoundManager : MonoBehaviour
     private IEnumerator FinishRoundCore()
     {
         Destroy(gameObject, 2.3f);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(_timeToCloseRound);
         UnityEngine.SceneManagement.SceneManager.LoadScene("Map1");
         Time.timeScale = 1f;
     }
@@ -378,7 +382,13 @@ public class RoundManager : MonoBehaviour
         _isZombiesSoundPlaying = true;
         _audioSource.clip = SoundsManager.GetBackgroundSound(BackgroundSoundTypes.ZombiesSpawned);
         _audioSource.loop = true;
-        _audioSource.Play();
+        _audioSource.FadeIn(0.5f, 1f);
+    }
+
+    // Assuming the current clip is Area's clip.
+    private void ChangeSoundFromAreaToZombies()
+    {
+        _audioSource.FadeOut(1f, PlayZombieSpawnSound);
     }
 
     private void ReduceZombiesSoundVolume()
