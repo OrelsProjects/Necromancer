@@ -97,8 +97,9 @@ public class UpgradeController : DisableMapMovement
     {
         base.OnEnable();
         _zombiesContainer.DestroyAllChildren();
+        CurrentZombieTypes.Clear();
         bool isZombieSelectedForUpgrade = false;
-
+        Debug.Log("AcquireableZombies.Count: " + AcquireableZombies.Count);
         if (CurrentZombieTypes.Count != AcquireableZombies.Count)
         {
             List<ZombieType> newZombieTypes = new();
