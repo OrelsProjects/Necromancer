@@ -34,6 +34,11 @@ public class ZombieSpawner : MonoBehaviour
 
     void Update()
     {
+        SpawnSelectedZombie();
+    }
+
+    public void SpawnSelectedZombie()
+    {
         if (Input.touchCount > 0 && _selectedZombieSpawnBehaviour != null)
         {
             Touch touch = Input.GetTouch(0);
@@ -93,6 +98,11 @@ public class ZombieSpawner : MonoBehaviour
         }
     }
 
+    public void SelectZombie(ZombieType zombieType)
+    {
+        SelectZombie(_zombieTypeToZombieSpawnBehaviour[zombieType]);
+    }
+
     public bool AreThereZombiesToSpawn()
     {
         foreach (var zombie in _zombieTypeToZombieSpawnBehaviour)
@@ -105,4 +115,3 @@ public class ZombieSpawner : MonoBehaviour
         return false;
     }
 }
-

@@ -89,6 +89,7 @@ public class SettingsManager : DisableMapMovement, ISaveable
     private void Start()
     {
         Application.targetFrameRate = 144;
+        ToggleSound(); // Keep it quiet until the player decides otherwise
         UpdateSoundUI();
         //UpdateVibrationUI();
     }

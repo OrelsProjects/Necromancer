@@ -32,6 +32,8 @@ public class RaidAssembleController : DisableMapMovement
     [SerializeField]
     private TMPro.TextMeshProUGUI _raidPriceText;
 
+    private Dictionary<ZombieType, UIZombieOption> _zombieOptions = new();
+
     private Areas _area;
 
     private int _raidCost;
@@ -71,11 +73,12 @@ public class RaidAssembleController : DisableMapMovement
             Destroy(child.gameObject);
         }
 
-
+        _zombieOptions = new();
         int position = 0;
         foreach (ZombieType zombieType in InventoryManager.Instance.AcquiredZombies)
         {
             UIZombieOption raidZombieOption = GetRaidZombieUI(zombieType, position++);
+            _zombieOptions.Add(zombieType, raidZombieOption);
             AddToOptionsList(raidZombieOption);
         }
         UpdateRaidCost(AreasManager.Instance.GetAreaData(_area).RaidCost);
@@ -128,6 +131,26 @@ public class RaidAssembleController : DisableMapMovement
         UpdateRaidButtonInteractable();
     }
 
+    public void SelectZombie(ZombieType zombieType)
+    {
+        if (!_zombieOptions.ContainsKey(zombieType))
+        {
+            return;
+        }
+        UIZombieOption raidZombieOption = _zombieOptions[zombieType];
+        SelectZombie(raidZombieOption);
+    }
+
+    public void RemoveZombieSelection(ZombieType zombieType)
+    {
+        if (!_zombieOptions.ContainsKey(zombieType))
+        {
+            return;
+        }
+        UIZombieOption raidZombieOption = _zombieOptions[zombieType];
+        RemoveZombieSelection(raidZombieOption);
+    }
+
     public void Raid()
     {
         List<ZombieType> selectedZombies = new();
@@ -145,7 +168,7 @@ public class RaidAssembleController : DisableMapMovement
         else
         {
             // TODO: Log it.
-            Debug.Log("Something went wrong with raiding.");
+            Debug.Log("Can't Afford Raid");
         }
     }
 

@@ -153,22 +153,31 @@ public class SaveManager : MonoBehaviour
         yield return new WaitForSeconds(delay); // Let other processes run before loading
         _saveables?.ForEach(saveable =>
         {
-            ISaveableObject data = saveable.GetData();
-            string saveFileLocation = BuildSaveFileName(data);
-            if (File.Exists(saveFileLocation))
+            try
             {
-                string stringData = File.ReadAllText(saveFileLocation);
-                var saveData = JsonConvert.DeserializeObject<Dictionary<string, string>>(stringData);
-                if (saveData.ContainsKey("ObjectType"))
+                ISaveableObject data = saveable.GetData();
+                string saveFileLocation = BuildSaveFileName(data);
+                if (File.Exists(saveFileLocation))
                 {
-                    var type = Type.GetType(saveData["ObjectType"]);
-                    data = (ISaveableObject)JsonConvert.DeserializeObject(saveData["Data"], type, new JsonSerializerSettings
+                    string stringData = File.ReadAllText(saveFileLocation);
+                    var saveData = JsonConvert.DeserializeObject<Dictionary<string, string>>(stringData);
+                    if (saveData.ContainsKey("ObjectType"))
                     {
-                        TypeNameHandling = TypeNameHandling.Auto
-                    });
+                        var type = Type.GetType(saveData["ObjectType"]);
+                        data = (ISaveableObject)JsonConvert.DeserializeObject(saveData["Data"], type, new JsonSerializerSettings
+                        {
+                            TypeNameHandling = TypeNameHandling.Auto
+                        });
+                    }
                 }
+                saveable.LoadData(data);
             }
-            saveable.LoadData(data);
+            catch (Exception e)
+            {
+                // Debug.LogError(e);
+                // Log error
+                Debug.Log("Save file not found, loading default data: " + e);
+            }
         });
         IsLoadingFetch = false;
     }

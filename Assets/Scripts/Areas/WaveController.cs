@@ -22,8 +22,9 @@ public class WaveController : MonoBehaviour
     private int _currentWave = 0;
     private WaveState _state = WaveState.NotStarted;
 
-    private Lazy<float> TimeBetweenWaves => new(() => _data.TimeBetweenWaves);
-    private Lazy<int> WavesCount => new(() => _data.WavesCount);
+    private Lazy<float> TimeBetweenWaves => new(() => 0);
+
+    private Lazy<int> WavesCount => new(() => 0);
 
     public WaveState State => _state;
     public bool IsWaveInProgress => _state == WaveState.Started;

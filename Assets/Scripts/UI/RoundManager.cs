@@ -29,10 +29,7 @@ public class RoundManager : MonoBehaviour
     private GameObject _abandonRaidObject;
     [SerializeField]
     private GameObject _speedFastImage;
-    [SerializeField]
-    private GameObject _zombiesSpawnersContainer;
-    [SerializeField]
-    private ZombieSpawnBehaviour _zombieSpawnerBehaviorPrefab;
+
     [SerializeField]
     private List<Transform> _defendersPositions;
 

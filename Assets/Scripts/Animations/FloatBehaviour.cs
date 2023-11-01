@@ -13,12 +13,17 @@ public class FloatBehaviour : MonoBehaviour
     public bool floatUp = true;
     public bool floatDown = false;
     public float floatDistance = 1.0f; // Distance to float up or down
+    public bool repeat = false; // Added repeat feature
 
     private Transform _objectToFloat;
 
     private void OnEnable()
     {
-        if (floatUp && floatDown)
+        if (repeat)
+        {
+            StartCoroutine(RepeatFloatUpDown());
+        }
+        else if (floatUp && floatDown)
         {
             StartCoroutine(FloatUpDown());
         }
@@ -37,6 +42,15 @@ public class FloatBehaviour : MonoBehaviour
         ApplyFloat(0.0f, floatDistance, false);
         yield return new WaitForSeconds(floatTime + delay);
         ApplyFloat(0.0f, -floatDistance);
+    }
+
+    private IEnumerator RepeatFloatUpDown()
+    {
+        while (true)
+        {
+            yield return FloatUpDown();
+            yield return new WaitForSeconds(delay);
+        }
     }
 
     public void ApplyFloat(float startPosition, float endPosition, bool returnToInitialPosition = true)
@@ -73,6 +87,10 @@ public class FloatBehaviour : MonoBehaviour
     {
         float startTime = Time.time;
         float endTime = Time.time + time;
+        if (initialPosition == null)
+        {
+            initialPosition = _objectToFloat;
+        }
         Vector3 objectInitialPosition = initialPosition.position;
 
         while (Time.time <= endTime)

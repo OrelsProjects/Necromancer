@@ -116,7 +116,8 @@ public class InventoryManager : MonoBehaviour, ISaveable
             }
             else
             {
-                _acquiredZombies = new List<ZombieType>(data.AcquiredZombies);
+                // _acquiredZombies = new List<ZombieType>(data.AcquiredZombies);
+                _acquiredZombies = new List<ZombieType>();
             }
         }
     }

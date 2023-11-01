@@ -1,13 +1,11 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ZombieSpawnBehaviour : MonoBehaviour
 {
-
-    private ZombieType? _type;
+    public ZombieType? _type;
     private bool _isSpawned = false;
     [SerializeField]
     private Image _selected;
