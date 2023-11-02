@@ -6,10 +6,9 @@ public struct InventoryData : ISaveableObject
     public int Currency;
     public ZombieType[] AcquiredZombies;
 
-    public string GetObjectType()
-    {
-        return GetType().FullName;
-    }
+    public readonly string GetName() => GetType().FullName;
+    public readonly string GetObjectType() => GetType().FullName;
+
 }
 
 public class InventoryManager : MonoBehaviour, ISaveable
@@ -45,7 +44,7 @@ public class InventoryManager : MonoBehaviour, ISaveable
             int oldValue = _currency;
             _currency = value;
             OnCurrencyChanged?.Invoke(value, oldValue);
-            SaveManager.Instance.InitiateSave();
+            SaveManager.Instance.SaveItem(GetData());
         }
     }
 
@@ -85,7 +84,7 @@ public class InventoryManager : MonoBehaviour, ISaveable
             return;
         }
         _acquiredZombies.Add(zombie);
-        SaveManager.Instance.InitiateSave();
+        SaveManager.Instance.SaveItem(GetData());
     }
 
     public ISaveableObject GetData()
@@ -112,13 +111,15 @@ public class InventoryManager : MonoBehaviour, ISaveable
             if (data.AcquiredZombies == null || data.AcquiredZombies.Length == 0)
             {
                 _acquiredZombies = new List<ZombieType>();
-                SaveManager.Instance.InitiateSave();
+                SaveManager.Instance.SaveItem(GetData());
             }
             else
             {
-                // _acquiredZombies = new List<ZombieType>(data.AcquiredZombies);
+                _acquiredZombies = new List<ZombieType>(data.AcquiredZombies);
                 _acquiredZombies = new List<ZombieType>();
             }
         }
     }
+
+    public string GetObjectName() => new InventoryData().GetName();
 }

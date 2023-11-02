@@ -5,10 +5,10 @@ public struct SettingsData : ISaveableObject
     public bool Sound;
     public bool Vibration;
 
-    public string GetObjectType()
-    {
-        return GetType().FullName;
-    }
+    public string GetName() => GetType().FullName;
+    public readonly string GetObjectType() =>
+        GetType().FullName;
+
 }
 
 public static class Settings
@@ -150,4 +150,6 @@ public class SettingsManager : DisableMapMovement, ISaveable
             Debug.LogError("Loaded data is not of type SettingsData");
         }
     }
+
+    public string GetObjectName() => new SettingsData().GetName();
 }

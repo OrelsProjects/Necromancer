@@ -9,6 +9,8 @@ public enum TutorialState
     Done,
 }
 
+
+// For saving tutorial progress
 public enum TutorialType
 {
     Onboarding,
@@ -18,9 +20,12 @@ public struct TutorialData : ISaveableObject
 {
     public bool IsTutorialComplete;
     public TutorialType Type;
+    public int Part; // Each tutorial can have multiple parts, e.g. onboarding has 2 parts, 1 for raiding 2 for the raid itself.
 
-    public readonly string GetObjectType() =>
-        GetType().FullName + "." + nameof(Type);
+    public readonly string GetName() =>
+           GetObjectType() + "." + nameof(Type) + "." + Part;
+
+    public readonly string GetObjectType() => GetType().FullName;
 
 }
 
@@ -30,14 +35,20 @@ abstract public class TutorialBehaviour : MonoBehaviour, ISaveable
     internal List<TutorialStep> _stepsNotDone;
     internal TutorialStep _currentStep;
     internal TutorialStep CurrentStep;
-    internal TutorialType _type;
     internal TutorialState _state = TutorialState.Idle;
+
+    [SerializeField]
+    internal TutorialType _type;
+    [SerializeField]
+    internal int Part;
 
     public ISaveableObject GetData()
     {
         return new TutorialData()
         {
             IsTutorialComplete = _stepsNotDone != null && _stepsNotDone.Count == 0,
+            Type = _type,
+            Part = Part,
         };
     }
 
@@ -47,9 +58,17 @@ abstract public class TutorialBehaviour : MonoBehaviour, ISaveable
         {
             return;
         }
-        if (data.IsTutorialComplete)
+        if (data.Type == _type && data.Part == Part)
         {
-            _state = TutorialState.Done;
+            if (data.IsTutorialComplete)
+            {
+                TutorialManager.Instance.ClearAllObjects();
+                Destroy(this);
+            }
+            else
+            {
+                _state = TutorialState.Idle;
+            }
         }
     }
 
@@ -69,8 +88,7 @@ abstract public class TutorialBehaviour : MonoBehaviour, ISaveable
             CurrentStep = _stepsNotDone[0];
             CurrentStep.gameObject.SetActive(true);
         }
-
-        SetType();
+        SaveManager.Instance.LoadItem(this);
     }
 
     internal virtual void Update()
@@ -96,9 +114,7 @@ abstract public class TutorialBehaviour : MonoBehaviour, ISaveable
                 }
                 break;
             case TutorialState.Done:
-                // SaveManager.Instance.InitiateSave();
-                TutorialManager.Instance.ClearAllObjects();
-                Destroy(this);
+                FinishTutorial();
                 break;
             default:
                 break;
@@ -112,6 +128,7 @@ abstract public class TutorialBehaviour : MonoBehaviour, ISaveable
             TutorialManager.Instance.ClearAllObjects();
             CurrentStep.gameObject.SetActive(false);
             _stepsNotDone.Remove(CurrentStep);
+
             if (_stepsNotDone.Count > 0)
             {
                 CurrentStep = _stepsNotDone[0];
@@ -120,9 +137,22 @@ abstract public class TutorialBehaviour : MonoBehaviour, ISaveable
             else
             {
                 CurrentStep = null;
+                FinishTutorial();
             }
         }
     }
 
-    abstract internal void SetType();
+    private void FinishTutorial()
+    {
+        Debug.Log("About to save: " + GetData().GetName() + " Part: " + Part);
+        SaveManager.Instance.SaveItem(GetData());
+        TutorialManager.Instance.ClearAllObjects();
+        Destroy(this);
+    }
+
+    public string GetObjectName() => new TutorialData()
+    {
+        Type = _type,
+        Part = Part,
+    }.GetName();
 }

@@ -89,15 +89,15 @@ public class SaveManager : MonoBehaviour
         return saveables;
     }
 
-    private string BuildSaveFileName(ISaveableObject saveableObject)
-    {
-        return Application.persistentDataPath + "/" + saveableObject.ToString() + ".dat";
-    }
+    private string BuildSaveFileName(ISaveableObject saveableObject) => Application.persistentDataPath + "/" + saveableObject.GetName() + ".dat";
+    private string BuildSaveFileName(string saveableObjectName) => Application.persistentDataPath + "/" + saveableObjectName + ".dat";
 
     private void InitiateLoad()
     {
         StartCoroutine(InitiateLoadCore());
     }
+
+    public void LoadItem(ISaveable item) => StartCoroutine(LoadItemCore(item));
 
     public void InitiateSave(bool closeAppAfterSave = false)
     {
@@ -115,8 +115,39 @@ public class SaveManager : MonoBehaviour
             })
         }
     };
+        Debug.Log("Saving: " + item.GetName());
         string stringSaveData = JsonConvert.SerializeObject(saveData);
         File.WriteAllText(BuildSaveFileName(item), stringSaveData);
+    }
+
+    private IEnumerator LoadItemCore(ISaveable saveable)
+    {
+        try
+        {
+            ISaveableObject data = saveable.GetData();
+            string saveFileLocation = BuildSaveFileName(saveable.GetObjectName());
+            if (File.Exists(saveFileLocation))
+            {
+                string stringData = File.ReadAllText(saveFileLocation);
+                var saveData = JsonConvert.DeserializeObject<Dictionary<string, string>>(stringData);
+                if (saveData.ContainsKey("ObjectType"))
+                {
+                    var type = Type.GetType(saveData["ObjectType"]);
+                    data = (ISaveableObject)JsonConvert.DeserializeObject(saveData["Data"], type, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    });
+                }
+            }
+            saveable.LoadData(data);
+        }
+        catch (Exception e)
+        {
+            // Debug.LogError(e);
+            // Log error
+            Debug.Log("Save file not found, loading default data: " + e);
+        }
+        yield return null;
     }
 
     private IEnumerator InitiateSaveCore(bool closeAppAfterSave = false)

@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,6 +24,8 @@ public class TutorialManager : MonoBehaviour
 
     [SerializeField]
     private Image cursorImage; // Assume this Image component displays your cursor sprite
+    [SerializeField]
+    private GameObject chatContainer;
 
     [SerializeField]
     [Range(1, 10)]
@@ -31,6 +34,7 @@ public class TutorialManager : MonoBehaviour
     private GameObject dimMaskObject;
     private GameObject highlightedObject;
     private GameObject cursorObject;
+    private TextMeshProUGUI chatText;
 
     private Vector3 _previousCursorPosition;
 
@@ -39,12 +43,27 @@ public class TutorialManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            chatText = chatContainer.GetComponentInChildren<TextMeshProUGUI>();
         }
         else
         {
             Destroy(gameObject);
         }
     }
+
+    public void SetText(string text)
+    {
+        if (text == "")
+        {
+            chatContainer.SetActive(false);
+        }
+        else if (chatText != null)
+        {
+            chatContainer.SetActive(true);
+            chatText.text = text;
+        }
+    }
+
     public GameObject HighlightObject(GameObject gameObject)
     {
         if (dimMaskObject != null)
@@ -60,11 +79,16 @@ public class TutorialManager : MonoBehaviour
         highlightedObject = Instantiate(gameObject, mainCanvas.transform);
         highlightedObject.SetActive(true);
         highlightedObject.transform.position = gameObject.transform.position;
-        // Set dim mask above everything else
-        dimMaskObject.transform.SetAsLastSibling();
-        // Set replicate above dim mask
-        highlightedObject.transform.SetAsLastSibling();
+
+        SetItemsOrder();
         return highlightedObject;
+    }
+
+    private void SetItemsOrder()
+    {
+        dimMaskObject.transform.SetAsLastSibling();
+        chatContainer.transform.SetAsLastSibling();
+        highlightedObject.transform.SetAsLastSibling();
     }
 
     public void ResetHighlight(bool shouldRemoveDim = true)
@@ -175,10 +199,10 @@ public class TutorialManager : MonoBehaviour
 
     public void ClearAllObjects()
     {
-        Debug.Log("Clearing all objects");
         Destroy(cursorObject);
         Destroy(dimMaskObject);
         Destroy(highlightedObject);
+        chatContainer.SetActive(false);
     }
 
 }

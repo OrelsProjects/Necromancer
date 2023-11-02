@@ -15,10 +15,9 @@ public struct CharacterData : ISaveableObject
     public int MediumZombieLevel;
     public int LargeZombieLevel;
 
-    public string GetObjectType()
-    {
-        return GetType().FullName;
-    }
+    public readonly string GetName() => GetType().FullName;
+    public readonly string GetObjectType() => GetType().FullName;
+
 }
 
 [System.Serializable]
@@ -81,7 +80,7 @@ public class CharactersManager : MonoBehaviour, ISaveable
                 {
                     _smallZombieLevel = value;
                 }
-                SaveManager.Instance.InitiateSave();
+                SaveZombiesData();
             }
         }
     }
@@ -101,7 +100,7 @@ public class CharactersManager : MonoBehaviour, ISaveable
                 {
                     _mediumZombieLevel = value;
                 }
-                SaveManager.Instance.InitiateSave();
+                SaveZombiesData();
             }
         }
     }
@@ -121,7 +120,7 @@ public class CharactersManager : MonoBehaviour, ISaveable
                 {
                     _largeZombieLevel = value;
                 }
-                SaveManager.Instance.InitiateSave();
+                SaveZombiesData();
             }
         }
     }
@@ -276,4 +275,8 @@ public class CharactersManager : MonoBehaviour, ISaveable
     }
 
     public Civilian GetRandomCivlian() => _civilianPrefabs[Random.Range(0, _civilianPrefabs.Count)];
+
+    public string GetObjectName() => new CharacterData().GetName();
+
+    private void SaveZombiesData() => SaveManager.Instance.SaveItem(GetData());
 }

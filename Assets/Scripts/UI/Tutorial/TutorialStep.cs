@@ -8,8 +8,8 @@ public class TutorialStep : MonoBehaviour
 
     private TutorialManager Manager => TutorialManager.Instance;
     public bool IsComplete => item.isCompleted;
-
     public int Index => item.index;
+    public string Text => item.text;
 
     private void Update()
     {
@@ -33,6 +33,7 @@ public class TutorialStep : MonoBehaviour
     private void ActivateStep(CursorPosition cursorPosition, TutorialItem item)
     {
         GameObject gameObject = item.gameObject;
+        Manager.SetText(Text);
         if (item.isHighlighted)
         {
             gameObject = Manager.HighlightObject(item.gameObject);

@@ -28,10 +28,8 @@ public struct AreasData : ISaveableObject
     public Dictionary<Areas, int> AreasLevels;
     public Dictionary<Areas, DateTime> AreasProductionTime;
 
-    public readonly string GetObjectType()
-    {
-        return GetType().FullName;
-    }
+    public readonly string GetObjectType() => GetType().FullName;
+    public readonly string GetName() => GetObjectType();
 }
 
 public class AreasManager : MonoBehaviour, ISaveable
@@ -308,4 +306,6 @@ public class AreasManager : MonoBehaviour, ISaveable
         return totalProduction;
 
     }
+
+    public string GetObjectName() => new AreasData().GetName();
 }
