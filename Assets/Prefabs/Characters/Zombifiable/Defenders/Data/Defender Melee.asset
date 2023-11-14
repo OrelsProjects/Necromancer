@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Level: 1
   Damage: 30
-  Health: 5
+  Health: 200
   Speed: 3
   AttackSpeed: 2
   AttackRange: 0.5

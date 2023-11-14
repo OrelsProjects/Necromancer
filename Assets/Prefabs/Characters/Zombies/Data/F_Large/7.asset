@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: 7
   m_EditorClassIdentifier: 
   Level: 7
-  Damage: 2
-  Health: 7
-  Speed: 7
-  AttackSpeed: 3
-  AmountSpawned: 7
-  PriceToUse: 7
-  PriceToUpgrade: 7
-  DetectionRange: 3
+  Damage: 130
+  Health: 500
+  Speed: 1.8
+  AttackSpeed: 0.8
+  AmountSpawned: 2
+  PriceToUse: 120
+  PriceToUpgrade: 3500
+  DetectionRange: 2

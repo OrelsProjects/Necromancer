@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
 
 public enum ZombieType
@@ -7,6 +9,26 @@ public enum ZombieType
     Medium,
     Large,
     Playground
+}
+
+public class ZombieTypeConverter : JsonConverter
+{
+    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+    {
+        ZombieType zombieType = (ZombieType)value;
+        writer.WriteValue(zombieType.ToString());
+    }
+
+    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+    {
+        string strValue = (string)reader.Value;
+        return Enum.Parse(typeof(ZombieType), strValue);
+    }
+
+    public override bool CanConvert(Type objectType)
+    {
+        return objectType == typeof(ZombieType);
+    }
 }
 
 public struct CharacterData : ISaveableObject
@@ -220,7 +242,7 @@ public class CharactersManager : MonoBehaviour, ISaveable
         };
     }
 
-    public Civilian GetRandomCivilian() => _civilianPrefabs.Count > 0 ? _civilianPrefabs[Random.Range(0, _civilianPrefabs.Count)] : null;
+    public Civilian GetRandomCivilian() => _civilianPrefabs.Count > 0 ? _civilianPrefabs[UnityEngine.Random.Range(0, _civilianPrefabs.Count)] : null;
 
     public ZombieImage? GetZombieSprite(ZombieType type)
     {
@@ -274,7 +296,7 @@ public class CharactersManager : MonoBehaviour, ISaveable
         }
     }
 
-    public Civilian GetRandomCivlian() => _civilianPrefabs[Random.Range(0, _civilianPrefabs.Count)];
+    public Civilian GetRandomCivlian() => _civilianPrefabs[UnityEngine.Random.Range(0, _civilianPrefabs.Count)];
 
     public string GetObjectName() => new CharacterData().GetName();
 

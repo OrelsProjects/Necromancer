@@ -63,7 +63,7 @@ public class ZombieBehaviour : MonoBehaviour, IChaseable
         _chaser = GetComponent<ZombieChaser>();
         _wanderController = GetComponent<WanderController>();
         _animationHelper = new AnimationHelper(_animator, true);
-        SetCollider();
+        // SetCollider();
     }
 
     private void Start()
@@ -131,7 +131,10 @@ public class ZombieBehaviour : MonoBehaviour, IChaseable
     private void SetCollider()
     {
         BoxCollider2D collider = gameObject.AddComponent<BoxCollider2D>();
-        //collider.includeLayers = LayerMask.GetMask("Zombie");
+        int zombifiableLayerMask = 1 << LayerMask.NameToLayer("Zombifiable");
+        collider.includeLayers = zombifiableLayerMask;
+        collider.contactCaptureLayers = zombifiableLayerMask;
+        collider.callbackLayers = zombifiableLayerMask;
         collider.isTrigger = true;
         collider.size = CharactersManager.Instance.GetZombieBoxColliderSize(_type);
     }

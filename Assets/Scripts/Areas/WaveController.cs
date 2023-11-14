@@ -57,6 +57,13 @@ public class WaveController : MonoBehaviour
         {
             return;
         }
+        if (WavesCount.Value == 1 && _state == WaveState.Started)
+        {
+            _state = WaveState.Done;
+            _waveSlider.value = 1;
+            UpdateWaveText();
+            return;
+        }
         if (_state == WaveState.Started)
         {
             if (_currentWave > WavesCount.Value)

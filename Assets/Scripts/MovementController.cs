@@ -69,9 +69,14 @@ public class MovementController : MonoBehaviour
 
     public bool Move(float speed, GameObject target)
     {
-        _direction = target.transform.position - transform.position;
-        Vector2 directionNormalized = _direction.normalized;
-        _speed = speed;
+        Vector2 newDirection = target.transform.position - transform.position;
+        if (newDirection == _direction && speed == _speed)
+        {
+            Debug.Log("Same direction and speed");
+            return true;
+        }
+
+        Vector2 directionNormalized = newDirection.normalized;
         return Move(speed, directionNormalized);
     }
 

@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: 3
   m_EditorClassIdentifier: 
   Level: 3
-  Damage: 30
-  Health: 3
-  Speed: 3
-  AttackSpeed: 2
-  AmountSpawned: 3
-  PriceToUse: 3
-  PriceToUpgrade: 3
-  DetectionRange: 3
+  Damage: 115
+  Health: 450
+  Speed: 1.6
+  AttackSpeed: 0.6
+  AmountSpawned: 1
+  PriceToUse: 120
+  PriceToUpgrade: 1400
+  DetectionRange: 2

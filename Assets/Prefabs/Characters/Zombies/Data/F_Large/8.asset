@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: 8
   m_EditorClassIdentifier: 
   Level: 8
-  Damage: 3
-  Health: 8
-  Speed: 8
-  AttackSpeed: 4
-  AmountSpawned: 8
-  PriceToUse: 8
-  PriceToUpgrade: 8
-  DetectionRange: 3
+  Damage: 130
+  Health: 500
+  Speed: 1.8
+  AttackSpeed: 0.8
+  AmountSpawned: 3
+  PriceToUse: 120
+  PriceToUpgrade: 5000
+  DetectionRange: 2

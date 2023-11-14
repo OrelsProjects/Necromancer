@@ -13,16 +13,14 @@ MonoBehaviour:
   m_Name: Medium
   m_EditorClassIdentifier: 
   _zombieLevels:
-  - {fileID: 11400000, guid: 6225d86fc2a3a49f7a14e8b02d64e1e7, type: 2}
-  - {fileID: 11400000, guid: 362c25a955cda4f9cbfef52c51074b96, type: 2}
-  - {fileID: 11400000, guid: 9983e2ee0e06c4dd8a124c386c05fd24, type: 2}
-  - {fileID: 11400000, guid: 84d3e4118103045878bb127e45f672c8, type: 2}
-  - {fileID: 11400000, guid: 464b04034167b4b1dbeef8c6a3e5a178, type: 2}
-  - {fileID: 11400000, guid: ac22e89a23dba460ab45119ea5d44104, type: 2}
-  - {fileID: 11400000, guid: b0a4dc4df6caf4dfc9f8cc6dd8664f61, type: 2}
-  - {fileID: 11400000, guid: e56d57234e2b24b32b27f7288b580db9, type: 2}
-  - {fileID: 11400000, guid: 8504b7cbbf3f54eff9b2a6376395e5ed, type: 2}
-  - {fileID: 11400000, guid: 4238929ced7794dab89632af4ab91a1d, type: 2}
-  - {fileID: 11400000, guid: 8f3c237c0cd964599a2603c0b20ed62e, type: 2}
-  - {fileID: 11400000, guid: a8bb74eec89124ab6969889b0affc597, type: 2}
+  - {fileID: 11400000, guid: cb06f1f53bf4e496bba2f6efda1606b7, type: 2}
+  - {fileID: 11400000, guid: 74621be0c629c4c718bc9ef042504aa1, type: 2}
+  - {fileID: 11400000, guid: 2e8ffdef76eb6490b9aed04b3777c10e, type: 2}
+  - {fileID: 11400000, guid: acc9e0a1f5fe745ba90817538528f85d, type: 2}
+  - {fileID: 11400000, guid: 24b775c0dcfeb415a926b543fef700dc, type: 2}
+  - {fileID: 11400000, guid: 575bcdb2696314f6cb82310cd91b5a9a, type: 2}
+  - {fileID: 11400000, guid: a5b3662af0222484ab7ae6bc158c81fb, type: 2}
+  - {fileID: 11400000, guid: 9a791fe966f5945abae1ed531cdce769, type: 2}
+  - {fileID: 11400000, guid: e677a108e6a8f4d1680f98183e49b352, type: 2}
+  - {fileID: 11400000, guid: 95651263a61464bc09f71fe888b6c251, type: 2}
   _priceToAcquire: 200

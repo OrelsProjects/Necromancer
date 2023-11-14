@@ -28,8 +28,11 @@ public class Civilian : MonoBehaviour
     private MovementController _movementController;
     private WanderController _wanderController;
     private Zombifiable _zombifiable;
-    public CivilianState _state = CivilianState.Idle;
+    private Collider2D _collider;
     private readonly List<ZombieBehaviour> _zombiesNearby = new();
+
+
+    public CivilianState _state = CivilianState.Idle;
 
     private void Awake()
     {
@@ -65,16 +68,29 @@ public class Civilian : MonoBehaviour
 
     private void SetCollider()
     {
-        CircleCollider2D collider = gameObject.AddComponent<CircleCollider2D>();
-        collider.isTrigger = true;
-        collider.radius = 1;
-        collider.offset = Vector2.zero;
+        _collider = gameObject.AddComponent<CircleCollider2D>();
+        _collider.isTrigger = true;
+        (_collider as CircleCollider2D).radius = 1f;
+        _collider.offset = Vector2.zero;
+        int zombieLayerMask = 1 << LayerMask.NameToLayer("Zombie");
+        _collider.includeLayers = zombieLayerMask;
+        _collider.contactCaptureLayers = zombieLayerMask;
+        _collider.callbackLayers = zombieLayerMask;
     }
 
     private void RemoveDeadZombiesFromList() => _zombiesNearby.RemoveAll(zombie => zombie == null || !zombie.IsAvailable());
 
     private void HandleIdleState()
     {
+        bool isRoundStarted = RoundManager.Instance.IsRoundStarted;
+        if (_collider != null)
+        {
+            _collider.enabled = isRoundStarted;
+        }
+        if (!isRoundStarted)
+        {
+            return;
+        }
         if (!SetShouldRunState())
         {
             _wanderController.Enable();

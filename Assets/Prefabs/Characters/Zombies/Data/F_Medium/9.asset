@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: 9
   m_EditorClassIdentifier: 
   Level: 9
-  Damage: 3
-  Health: 9
-  Speed: 9
-  AttackSpeed: 5
-  AmountSpawned: 9
-  PriceToUse: 9
-  PriceToUpgrade: 9
-  DetectionRange: 3
+  Damage: 55
+  Health: 85
+  Speed: 2.8
+  AttackSpeed: 1.2
+  AmountSpawned: 3
+  PriceToUse: 140
+  PriceToUpgrade: 840
+  DetectionRange: 2

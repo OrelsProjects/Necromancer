@@ -77,12 +77,13 @@ public class AreaUpgradeController : DisableMapMovement
         _currentCurrencyPerMinuteText.text = level.CurrencyPerMinute.ToString();
         if (AreasManager.Instance.IsAreaMaxLevel(_area))
         {
-            _upgradeCost.text = "MAXED";
+            _upgradeCost.text = "MAX";
             _upgradeButton.interactable = false;
 
             Image upgradeButtonImage = _upgradeButton.GetComponent<Image>();
             upgradeButtonImage.enabled = false;
             _upgradeCostIcon.enabled = false;
+            
 
             _nextStatsContainer.SetActive(false);
             _nextStatsContainerMax.SetActive(true);

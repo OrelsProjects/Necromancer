@@ -47,7 +47,7 @@ public class AnimationHelper
         {
             return;
         }
-        Reset();
+        // Reset();
 
         switch (animationType)
         {

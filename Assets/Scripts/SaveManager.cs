@@ -111,7 +111,8 @@ public class SaveManager : MonoBehaviour
         { "ObjectType", item.GetObjectType() },
         { "Data", JsonConvert.SerializeObject(item, new JsonSerializerSettings
             {
-                TypeNameHandling = TypeNameHandling.Auto
+                TypeNameHandling = TypeNameHandling.Auto,
+                Converters = new List<JsonConverter> { new ZombieTypeConverter() }
             })
         }
     };

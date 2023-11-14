@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: 2
   m_EditorClassIdentifier: 
   Level: 2
-  Damage: 20
-  Health: 2
-  Speed: 2
-  AttackSpeed: 1
+  Damage: 22
+  Health: 55
+  Speed: 2.8
+  AttackSpeed: 1.1
   AmountSpawned: 2
-  PriceToUse: 2
-  PriceToUpgrade: 2
+  PriceToUse: 5
+  PriceToUpgrade: 15
   DetectionRange: 2

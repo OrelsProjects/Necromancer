@@ -14,7 +14,7 @@ public struct SettingsData : ISaveableObject
 public static class Settings
 {
     public static bool Vibration = true;
-    public static bool Sound = true;
+    public static bool Sound = false;
 }
 
 public class SettingsManager : DisableMapMovement, ISaveable
@@ -89,7 +89,6 @@ public class SettingsManager : DisableMapMovement, ISaveable
     private void Start()
     {
         Application.targetFrameRate = 144;
-        ToggleSound(); // Keep it quiet until the player decides otherwise
         UpdateSoundUI();
         //UpdateVibrationUI();
     }

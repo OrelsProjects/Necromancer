@@ -56,7 +56,7 @@ public class RoundManager : MonoBehaviour
 
     private float _currentGameSpeed = 1;
     private readonly float _minGameSpeed = 1;
-    private readonly float _maxGameSpeed = 5;
+    private readonly float _maxGameSpeed = 2f;
     private bool _isZombiesSoundPlaying = false;
 
     private RoundState _state = RoundState.NotStarted;
@@ -170,7 +170,6 @@ public class RoundManager : MonoBehaviour
         AreasManager.Instance.ZombifyArea(_data.Area);
         AreasManager.Instance.SaveData();
         ShowWinUI();
-        _state = RoundState.Done;
         FinishRound();
     }
 
@@ -180,7 +179,6 @@ public class RoundManager : MonoBehaviour
         AudioSourceHelper.PlayClipAtPoint(UISoundTypes.RoundLose, 0.25f);
         ShowLoseUI();
         FinishRound();
-        _state = RoundState.Done;
     }
 
     #region WIN CONDITIONS
@@ -229,6 +227,8 @@ public class RoundManager : MonoBehaviour
         }
         return closestPosition;
     }
+
+    public bool IsRoundStarted => _state != RoundState.NotStarted;
 
     public void StartRound()
     {
@@ -328,8 +328,14 @@ public class RoundManager : MonoBehaviour
 
     public void FinishRound(bool immediate = false)
     {
+        RoundState previousState = _state;
         Time.timeScale = _minGameSpeed;
+        _state = RoundState.Done;
         _waveController.StopWaves();
+        if (previousState == RoundState.ZombiesWon)
+        {
+            InventoryManager.Instance.AddCurrency(Reward);
+        }
         if (immediate)
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene("Map1");

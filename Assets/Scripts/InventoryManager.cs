@@ -4,9 +4,9 @@ using UnityEngine;
 public struct InventoryData : ISaveableObject
 {
     public int Currency;
-    public ZombieType[] AcquiredZombies;
+    public List<ZombieType> AcquiredZombies;
 
-    public readonly string GetName() => GetType().FullName;
+    public readonly string GetName() => GetObjectType();
     public readonly string GetObjectType() => GetType().FullName;
 
 }
@@ -44,7 +44,6 @@ public class InventoryManager : MonoBehaviour, ISaveable
             int oldValue = _currency;
             _currency = value;
             OnCurrencyChanged?.Invoke(value, oldValue);
-            SaveManager.Instance.SaveItem(GetData());
         }
     }
 
@@ -60,9 +59,13 @@ public class InventoryManager : MonoBehaviour, ISaveable
         }
     }
 
-    public bool CanAfford(int cost) => Currency >= cost;
+    public bool CanAfford(int cost) => cost <= 0 || Currency >= cost;
 
-    public void AddCurrency(int amount) => Currency += amount;
+    public void AddCurrency(int amount)
+    {
+        Currency += amount;
+        SaveManager.Instance.SaveItem(GetData());
+    }
 
     public bool UseCurrency(int amount)
     {
@@ -70,6 +73,7 @@ public class InventoryManager : MonoBehaviour, ISaveable
         {
             Currency -= amount;
             AudioSourceHelper.PlayClipAtPoint(UISoundTypes.Purchase);
+            SaveManager.Instance.SaveItem(GetData());
             return true;
         }
         return false;
@@ -92,7 +96,7 @@ public class InventoryManager : MonoBehaviour, ISaveable
         return new InventoryData
         {
             Currency = _currency,
-            AcquiredZombies = _acquiredZombies?.ToArray() ?? new ZombieType[0]
+            AcquiredZombies = _acquiredZombies
         };
     }
 
@@ -100,15 +104,8 @@ public class InventoryManager : MonoBehaviour, ISaveable
     {
         if (item is InventoryData data)
         {
-            if (data.Currency == 0)
-            {
-                Currency = 5000;
-            }
-            else
-            {
-                Currency = data.Currency;
-            }
-            if (data.AcquiredZombies == null || data.AcquiredZombies.Length == 0)
+            Currency = data.Currency;
+            if (data.AcquiredZombies == null || data.AcquiredZombies.Count == 0)
             {
                 _acquiredZombies = new List<ZombieType>();
                 SaveManager.Instance.SaveItem(GetData());
@@ -116,7 +113,6 @@ public class InventoryManager : MonoBehaviour, ISaveable
             else
             {
                 _acquiredZombies = new List<ZombieType>(data.AcquiredZombies);
-                _acquiredZombies = new List<ZombieType>();
             }
         }
     }

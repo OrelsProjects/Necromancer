@@ -31,6 +31,7 @@ public abstract class Defender : MonoBehaviour
     {
         get { return Type == DefenderType.Ranged; }
     }
+
     [ShowIf("IsRanged")]
     [SerializeField]
     protected Transform ProjectileSpawnPosition;
@@ -43,6 +44,7 @@ public abstract class Defender : MonoBehaviour
     private Zombifiable _zombifiable;
     private Animator _animator;
     private ZombieBehaviour _currentTarget;
+    private Collider2D _collider;
     private readonly List<ZombieBehaviour> _zombiesNearby = new();
 
     public DefenderState State = DefenderState.Idle;
@@ -61,7 +63,7 @@ public abstract class Defender : MonoBehaviour
         _animationHelper = new AnimationHelper(_animator);
         _animationHelper.SetAttackSpeed(Data.AttackSpeed);
 
-        SetCollider();
+        SetCollider(); 
         SetState(DefenderState.Idle);
     }
 
@@ -70,7 +72,7 @@ public abstract class Defender : MonoBehaviour
         _chaser.SubscribeToTargetChanges(OnTargetChange);
     }
 
-    public virtual void Update()
+    public virtual void FixedUpdate()
     {
         CleanZombiesList();
         if (IsSelfZombified())
@@ -107,14 +109,17 @@ public abstract class Defender : MonoBehaviour
 
     private void SetCollider()
     {
-        CircleCollider2D collider = gameObject.AddComponent<CircleCollider2D>();
-        collider.isTrigger = true;
-        collider.radius = 2;
-        collider.offset = Vector2.zero;
+        _collider = gameObject.AddComponent<CircleCollider2D>();
+        (_collider as CircleCollider2D).radius = 2;
+        _collider.isTrigger = true;
+        _collider.offset = Vector2.zero;
+        int layerMask = 1 << LayerMask.NameToLayer("Zombie");
+        _collider.includeLayers = layerMask;
+        _collider.contactCaptureLayers = layerMask;
+        _collider.callbackLayers = layerMask;
     }
 
     public void CleanZombiesList() => _zombiesNearby.RemoveAll(zombie => zombie == null || !zombie.IsAvailable());
-
 
     public virtual void StartBattle()
     {
@@ -131,6 +136,15 @@ public abstract class Defender : MonoBehaviour
 
     private void HandleIdleState()
     {
+        bool isRoundStarted = RoundManager.Instance.IsRoundStarted;
+        if (_collider != null)
+        {
+            _collider.enabled = isRoundStarted;
+        }
+        if (!isRoundStarted)
+        {
+            return;
+        }
         if (_chaser.Target != null && _chaser.Target.IsAvailable())
         {
             SetState(DefenderState.Chasing);
@@ -265,6 +279,7 @@ public abstract class Defender : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log("Entered" + collision.gameObject.name);
         if (collision.gameObject.CompareTag("Zombie"))
         {
             _zombiesNearby.Add(collision.gameObject.GetComponent<ZombieBehaviour>());

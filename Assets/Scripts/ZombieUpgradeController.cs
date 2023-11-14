@@ -1,20 +1,21 @@
-using System;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UpgradeController : DisableMapMovement
 {
 
-    const string STRING_MAX = "MAX";
-
     [Header("UI")]
     [SerializeField]
     private UIZombieOption _zombieOptionPrefab;
     [SerializeField]
     private Transform _zombiesContainer;
+    [SerializeField]
+    private GameObject _arrow;
+    [Header("Current")]
+    [SerializeField]
+    private GameObject _currentStatsContainer;
     [SerializeField]
     private Image _currentZombieImage;
     [SerializeField]
@@ -27,6 +28,10 @@ public class UpgradeController : DisableMapMovement
     private TextMeshProUGUI _currentSpeed;
     [SerializeField]
     private TextMeshProUGUI _currentSpawnAmount;
+
+    [Header("Next")]
+    [SerializeField]
+    private GameObject _NextStatsContainer;
     [SerializeField]
     private TextMeshProUGUI _nextAttackSpeed;
     [SerializeField]
@@ -39,20 +44,23 @@ public class UpgradeController : DisableMapMovement
     private TextMeshProUGUI _nextSpawnAmount;
     [SerializeField]
     private GameObject _nextSpawnAmountContainer;
+    [Header("Upgrade")]
     [SerializeField]
     private TextMeshProUGUI _upgradeCost;
-    [SerializeField]
-    private TextMeshProUGUI _acquireCost;
-
-    [SerializeField]
-    private TextMeshProUGUI _maxLevelText;
     [SerializeField]
     private Image _upgradeCostIcon;
     [SerializeField]
     private Button _upgradeButton;
+    [Header("Acquire")]
+    [SerializeField]
+    private TextMeshProUGUI _acquireCost;
     [SerializeField]
     private Button _acquireButton;
+    [Header("Max Level")]
+    [SerializeField]
+    private TextMeshProUGUI _maxLevelText;
 
+    private Vector3 _currentStatsOriginalPosition;
     private UIZombieOption _selectedZombieOption;
     private ZombieType? SelectedZombieType
     {
@@ -96,10 +104,11 @@ public class UpgradeController : DisableMapMovement
     public override void OnEnable()
     {
         base.OnEnable();
+        _currentStatsOriginalPosition = _currentStatsContainer.transform.position;
         _zombiesContainer.DestroyAllChildren();
         CurrentZombieTypes.Clear();
         bool isZombieSelectedForUpgrade = false;
-        if (CurrentZombieTypes.Count != AcquireableZombies.Count)
+        if (AcquireableZombies == null || CurrentZombieTypes.Count != AcquireableZombies.Count)
         {
             List<ZombieType> newZombieTypes = new();
             foreach (ZombieType zombieType in AcquireableZombies)
@@ -122,6 +131,12 @@ public class UpgradeController : DisableMapMovement
         Map.Instance.DisableMovement();
 
         UpdateUI();
+    }
+
+    public override void OnDisable()
+    {
+        base.OnDisable();
+        _currentStatsContainer.transform.position = _currentStatsOriginalPosition;
     }
 
     private UIZombieOption AddZombieOption(ZombieType zombieType)
@@ -155,7 +170,6 @@ public class UpgradeController : DisableMapMovement
 
     public void AcquireZombie()
     {
-        Debug.Log("Price To Acquire: " + SelectedZombieData.PriceToAcquire);
         if (SelectedZombieData != null)
         {
             if (InventoryManager.Instance.UseCurrency(SelectedZombieData.PriceToAcquire))
@@ -194,42 +208,39 @@ public class UpgradeController : DisableMapMovement
         UpdateText(_currentHealth, selectedZombieCurrentLevel.Health.ToString(), isZombieAcquired);
         UpdateText(_currentSpeed, selectedZombieCurrentLevel.Speed.ToString(), isZombieAcquired);
         UpdateText(_currentSpawnAmount, selectedZombieCurrentLevel.AmountSpawned.ToString(), isZombieAcquired);
-        if (CharactersManager.Instance.IsZombieMaxLevel(SelectedZombieType.Value))
+        if (CharactersManager.Instance.IsZombieMaxLevel(SelectedZombieType.Value) || !isZombieAcquired)
         {
-            _maxLevelText.gameObject.SetActive(true);
-            _upgradeButton.gameObject.SetActive(false);
-            _upgradeCostIcon.enabled = false;
+            CenterCurrentStats();
+            EnlargeCurrentStats();
 
-            _nextAttackSpeed.text = STRING_MAX;
-            _nextDamage.text = STRING_MAX;
-            _nextHealth.text = STRING_MAX;
-            _nextSpeed.text = STRING_MAX;
-            _nextSpawnAmountContainer.SetActive(false);
+            _upgradeButton.gameObject.SetActive(false);
+            _upgradeCost.gameObject.SetActive(false);
+            _upgradeCostIcon.gameObject.SetActive(false);
+            _arrow.SetActive(false);
+            _NextStatsContainer.SetActive(false);
+
+            _acquireButton.gameObject.SetActive(!isZombieAcquired);
+            _maxLevelText.gameObject.SetActive(isZombieAcquired);
         }
         else
         {
             ZombieLevel selectedZombieNextLevel = CharactersManager.Instance.GetZombieDataNextLevel(SelectedZombieType.Value);
-
+            _currentStatsContainer.transform.position = _currentStatsOriginalPosition;
+            _currentStatsContainer.transform.localScale = Vector3.one;
+            _NextStatsContainer.SetActive(true);
             _maxLevelText.gameObject.SetActive(false);
             _upgradeButton.gameObject.SetActive(true);
-            _upgradeCostIcon.enabled = true;
-            if (isZombieAcquired)
-            {
-                UpdateText(_upgradeCost, selectedZombieCurrentLevel.PriceToUpgrade.ToString(), true);
-            }
-            else
-            {
-                UpdateText(_acquireCost, SelectedZombieData.PriceToAcquire.ToString(), true);
-            }
+            _upgradeCost.gameObject.SetActive(true);
+            _upgradeCostIcon.gameObject.SetActive(true);
+
+            _arrow.SetActive(true);
+            UpdateText(isZombieAcquired ? _upgradeCost : _acquireCost, selectedZombieCurrentLevel.PriceToUpgrade.ToString(), true);
             UpdateText(_nextAttackSpeed, selectedZombieNextLevel.AttackSpeed.ToString(), isZombieAcquired);
             UpdateText(_nextDamage, selectedZombieNextLevel.Damage.ToString(), isZombieAcquired);
             UpdateText(_nextHealth, selectedZombieNextLevel.Health.ToString(), isZombieAcquired);
             UpdateText(_nextSpeed, selectedZombieNextLevel.Speed.ToString(), isZombieAcquired);
             UpdateText(_nextSpawnAmount, selectedZombieNextLevel.AmountSpawned.ToString(), isZombieAcquired);
             _nextSpawnAmountContainer.SetActive(true);
-
-            _upgradeButton.gameObject.SetActive(isZombieAcquired);
-            _acquireButton.gameObject.SetActive(!isZombieAcquired);
 
             if (isZombieAcquired)
             {
@@ -240,10 +251,14 @@ public class UpgradeController : DisableMapMovement
             {
                 bool canAfford = InventoryManager.Instance.CanAfford(selectedZombieCurrentLevel.PriceToUpgrade);
                 _acquireButton.interactable = canAfford;
-
             }
         }
+
+        _acquireButton.gameObject.SetActive(!isZombieAcquired);
     }
+
+    private void CenterCurrentStats() => _currentStatsContainer.transform.localPosition = new Vector3(-85f, -85f, 0);
+    private void EnlargeCurrentStats() => _currentStatsContainer.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
 
     private void UpdateText(TextMeshProUGUI text, string value, bool isZombieAcquired = false)
     {
