@@ -97,6 +97,7 @@ public class RaidAssembleController : DisableMapMovement
         raidZombieOption.CostText.text = cost.ToString();
         raidZombieOption.PositionInList = positionInList;
         raidZombieOption.Button.onClick.AddListener(() => SelectZombie(raidZombieOption));
+        raidZombieOption.Acquired(true);
         return raidZombieOption;
     }
 

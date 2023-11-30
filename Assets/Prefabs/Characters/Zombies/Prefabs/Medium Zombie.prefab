@@ -206,7 +206,7 @@ MonoBehaviour:
     - m_Name: Entry_7
       m_Hash: 0
       m_Sprite: {fileID: 7025303585581471589, guid: 855618bf01d024d64b14f88342644b72, type: 3}
-  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 3d1de1bb79fbb9244b504edf0f8b8e4f, type: 3}
+  m_SpriteLibraryAsset: {fileID: 0}
 --- !u!114 &8827342997923373397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -384,7 +384,7 @@ GameObject:
   - component: {fileID: 2439436291612016770}
   m_Layer: 10
   m_Name: Priority Behaviour
-  m_TagString: Untagged
+  m_TagString: Zombie
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

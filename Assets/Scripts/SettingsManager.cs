@@ -1,9 +1,16 @@
 using UnityEngine;
 
+public struct SettingBool
+{
+    public bool value;
+    public bool defaultValue;
+    public string name;
+}
+
 public struct SettingsData : ISaveableObject
 {
-    public bool Sound;
-    public bool Vibration;
+    public SettingBool Sound;
+    public SettingBool Vibration;
 
     public string GetName() => GetType().FullName;
     public readonly string GetObjectType() =>
@@ -13,8 +20,18 @@ public struct SettingsData : ISaveableObject
 
 public static class Settings
 {
-    public static bool Vibration = true;
-    public static bool Sound = false;
+    public static SettingBool Vibration = new()
+    {
+        value = false,
+        defaultValue = false,
+        name = "Vibration"
+    };
+    public static SettingBool Sound = new()
+    {
+        value = false,
+        defaultValue = false,
+        name = "Sound"
+    };
 }
 
 public class SettingsManager : DisableMapMovement, ISaveable
@@ -44,10 +61,10 @@ public class SettingsManager : DisableMapMovement, ISaveable
     [HideInInspector]
     public bool Vibration
     {
-        get => Settings.Vibration;
+        get => Settings.Vibration.value;
         set
         {
-            Settings.Vibration = value;
+            Settings.Vibration.value = value;
             UpdateVibrationUI();
             SaveManager.Instance.SaveItem(GetData());
         }
@@ -56,11 +73,11 @@ public class SettingsManager : DisableMapMovement, ISaveable
     [HideInInspector]
     public bool Sound
     {
-        get => Settings.Sound;
+        get => Settings.Sound.value;
         set
         {
-            Settings.Sound = value;
-            if (Settings.Sound)
+            Settings.Sound.value = value;
+            if (Settings.Sound.value)
             {
                 AudioListener.volume = 1f;
             }
@@ -78,7 +95,6 @@ public class SettingsManager : DisableMapMovement, ISaveable
         if (Instance == null)
         {
             Instance = this;
-            Settings.Sound = true;
         }
         else
         {
@@ -93,9 +109,14 @@ public class SettingsManager : DisableMapMovement, ISaveable
         //UpdateVibrationUI();
     }
 
+    private void setDefaults()
+    {
+        Sound = Settings.Sound.defaultValue;
+        // Vibration = Settings.Vibration.defaultValue;
+    }
+
     #region Modifiers
     public void ToggleSound() => Sound = !Sound;
-
 
     public void ToggleVibration() => Vibration = !Vibration;
 
@@ -104,14 +125,20 @@ public class SettingsManager : DisableMapMovement, ISaveable
     #region UI
     private void UpdateSoundUI()
     {
-        _enabledSound.SetActive(Sound);
-        _disabledSound.SetActive(!Sound);
+        if (enabled)
+        {
+            _enabledSound.SetActive(Sound);
+            _disabledSound.SetActive(!Sound);
+        }
     }
 
     private void UpdateVibrationUI()
     {
-        _enabledVibration.SetActive(Vibration);
-        _disabledVibration.SetActive(!Vibration);
+        if (enabled)
+        {
+            _enabledVibration.SetActive(Vibration);
+            _disabledVibration.SetActive(!Vibration);
+        }
     }
 
     public void ShowSettings()
@@ -141,7 +168,7 @@ public class SettingsManager : DisableMapMovement, ISaveable
     {
         if (item is SettingsData data)
         {
-            Sound = data.Sound;
+            Sound = data.Sound.value;
             //Vibration = data.Vibration;
         }
         else

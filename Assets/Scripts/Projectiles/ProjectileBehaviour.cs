@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider2D))]
 public class Projectile : MonoBehaviour, IProjectile
 {
 
@@ -16,14 +15,27 @@ public class Projectile : MonoBehaviour, IProjectile
 
     private void Awake()
     {
-        GetComponent<Collider2D>().isTrigger = false;
+        SetCollider();
+    }
+
+    private void SetCollider()
+    {
+        BoxCollider2D collider = gameObject.AddComponent<BoxCollider2D>();
+        int zombieLayerMask = 1 << LayerMask.NameToLayer("Zombie");
+        int collidersLayerMask = 1 << LayerMask.NameToLayer("Colliders");
+        collider.excludeLayers = ~zombieLayerMask & ~collidersLayerMask;
+        collider.includeLayers = zombieLayerMask | collidersLayerMask;
+        collider.contactCaptureLayers = zombieLayerMask;
+        collider.callbackLayers = zombieLayerMask;
+        collider.isTrigger = true;
+        collider.size = new Vector2(0.14f, 0.05f);
     }
 
     private void FaceTarget(Transform target)
     {
         Vector3 targetDir = target.position - transform.position;
         float angle = Mathf.Atan2(targetDir.y, targetDir.x) * Mathf.Rad2Deg;
-        Quaternion desiredRotation = Quaternion.Euler(0, 0, angle + 180f);
+        Quaternion desiredRotation = Quaternion.Euler(0, 0, angle);
         transform.rotation = desiredRotation;
     }
 
@@ -63,6 +75,7 @@ public class Projectile : MonoBehaviour, IProjectile
         {
             return;
         }
+        Debug.Log("Projectile hit: " + collider.gameObject.name);
         if (collider.gameObject.layer == LayerMask.NameToLayer("Zombie"))
         {
             if (collider.gameObject.TryGetComponent<ZombieBehaviour>(out var zombie))

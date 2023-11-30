@@ -50,6 +50,5 @@ public class DefenderRanged : Defender
         Projectile projectile = Instantiate(_projectile, ProjectileSpawnPosition.position, Quaternion.identity);
         projectile.SetTarget(_target, _projectileSpeed, Data.Damage);
         AudioSource.PlayClipAtPoint(AttackSound, transform.position);
-        Debug.Log("ShootProjectile");
     }
 }

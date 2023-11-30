@@ -28,7 +28,7 @@ public class ZombieData : ScriptableObject
     public ZombieLevel GetLevel(int level)
     {
         int clampedLevel = Mathf.Clamp(level, 0, MaxLevel);
-        return levels[clampedLevel];
+        return GameBalancer.Instance.ZombieStats[ZombieType.Small][clampedLevel];
     }
 
     public int PriceToAcquire => _priceToAcquire;

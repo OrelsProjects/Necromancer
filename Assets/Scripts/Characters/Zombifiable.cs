@@ -57,7 +57,6 @@ public class Zombifiable : MonoBehaviour, IChaseable
         }
         _currentHealth -= damage;
         _currentHealth = Mathf.Clamp(_currentHealth, 0, _maxHealth);
-        Debug.Log("Current Health: " + _currentHealth);
         PlayHitSound();
         _animationHelper.PlayAnimation(AnimationType.Hit);
         if (_currentHealth > 0)

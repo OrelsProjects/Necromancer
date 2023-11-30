@@ -156,10 +156,7 @@ public class AreasManager : MonoBehaviour, ISaveable
         };
 
 
-    public AreaData GetAreaData(Areas area)
-    {
-        return _areasData.FirstOrDefault(a => a.Area == area);
-    }
+    public AreaData GetAreaData(Areas area) => _areasData.FirstOrDefault(a => a.Area == area);
 
     public int GetAreaLevel(Areas area)
     {

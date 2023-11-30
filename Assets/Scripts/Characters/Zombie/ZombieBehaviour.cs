@@ -134,10 +134,11 @@ public class ZombieBehaviour : MonoBehaviour, IChaseable
     {
         BoxCollider2D collider = gameObject.AddComponent<BoxCollider2D>();
         int zombifiableLayerMask = 1 << LayerMask.NameToLayer("Zombifiable");
-        collider.excludeLayers = ~zombifiableLayerMask;
-        collider.includeLayers = zombifiableLayerMask;
-        collider.contactCaptureLayers = zombifiableLayerMask;
-        collider.callbackLayers = zombifiableLayerMask;
+        int projectileLayerMask = 1 << LayerMask.NameToLayer("Projectile");
+        collider.excludeLayers = ~zombifiableLayerMask & ~projectileLayerMask;
+        collider.includeLayers = zombifiableLayerMask | projectileLayerMask;
+        collider.contactCaptureLayers = zombifiableLayerMask | projectileLayerMask;
+        collider.callbackLayers = zombifiableLayerMask | projectileLayerMask;
         collider.isTrigger = true;
         collider.size = CharactersManager.Instance.GetZombieBoxColliderSize(_type);
     }
@@ -208,6 +209,7 @@ public class ZombieBehaviour : MonoBehaviour, IChaseable
         SetState(ZombieState.Attacking);
         _animationHelper.PlayAnimation(AnimationType.AttackZombie);
         AudioSource.PlayClipAtPoint(_hitSound, transform.position);
+        PlayRandomAttackSound();
         yield return new WaitForSeconds(1 / Data.AttackSpeed);
 
         if (_state == ZombieState.Attacking)
@@ -284,7 +286,8 @@ public class ZombieBehaviour : MonoBehaviour, IChaseable
             return;
         }
         _animationHelper.PlayAnimation(AnimationType.Hit);
-        _currentHealth -= damage;
+        _currentHealth = Mathf.Clamp(_currentHealth - damage, 0, _currentHealth);
+        Debug.Log("Current Health: " + _currentHealth);
         if (_currentHealth <= 0 && _state != ZombieState.AboutToDie)
         {
             SetState(ZombieState.AboutToDie);
@@ -293,7 +296,7 @@ public class ZombieBehaviour : MonoBehaviour, IChaseable
 
     public bool IsAlive() => _currentHealth > 0;
 
-    public bool IsAvailable() => _currentHealth > 0;
+    public bool IsAvailable() => IsAlive();
 
     public bool IsPriority() => true;
 }

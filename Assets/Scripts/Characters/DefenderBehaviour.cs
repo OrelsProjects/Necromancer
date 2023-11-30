@@ -51,7 +51,6 @@ public abstract class Defender : MonoBehaviour
     protected AnimationHelper _animationHelper;
 
     public abstract void Attack(ZombieBehaviour target);
-
     public virtual void Awake()
     {
         _movementController = GetComponent<MovementController>();
@@ -70,6 +69,15 @@ public abstract class Defender : MonoBehaviour
     private void Start()
     {
         _chaser.SubscribeToTargetChanges(OnTargetChange);
+        switch (Type)
+        {
+            case DefenderType.Melee:
+                Data = GameBalancer.Instance.GetMeleeDefenderStats();
+                break;
+            case DefenderType.Ranged:
+                Data = GameBalancer.Instance.GetRangedDefenderStats();
+                break;
+        }
     }
 
     public virtual void FixedUpdate()
@@ -280,7 +288,6 @@ public abstract class Defender : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Entered" + collision.gameObject.name);
         if (collision.gameObject.CompareTag("Zombie"))
         {
             _zombiesNearby.Add(collision.gameObject.GetComponent<ZombieBehaviour>());

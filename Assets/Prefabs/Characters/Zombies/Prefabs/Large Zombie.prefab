@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7370597569086095190}
   m_Layer: 10
   m_Name: Priority Behaviour
-  m_TagString: Untagged
+  m_TagString: Zombie
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -245,7 +245,7 @@ MonoBehaviour:
     - m_Name: Entry_9
       m_Hash: 0
       m_Sprite: {fileID: -7403603099256771813, guid: 2d2b1212eec254f15ae2ed5029799f4b, type: 3}
-  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 3d1de1bb79fbb9244b504edf0f8b8e4f, type: 3}
+  m_SpriteLibraryAsset: {fileID: 0}
 --- !u!114 &3546028585933335406
 MonoBehaviour:
   m_ObjectHideFlags: 0

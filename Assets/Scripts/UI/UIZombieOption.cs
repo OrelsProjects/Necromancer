@@ -8,6 +8,8 @@ public class UIZombieOption : MonoBehaviour
     public TextMeshProUGUI CostText;
     public Image Image;
     public Button Button;
+    public TextMeshProUGUI LevelText;
+    public GameObject Locked;
 
     [HideInInspector]
     public ZombieType Type;
@@ -32,6 +34,12 @@ public class UIZombieOption : MonoBehaviour
     {
         CostContainer.SetActive(false);
         Image.transform.position = new(Image.transform.position.x, 0);
+    }
+
+    public void Acquired(bool isAcquired)
+    {
+        Locked.SetActive(!isAcquired);
+        LevelText.gameObject.SetActive(isAcquired);
     }
 }
 
