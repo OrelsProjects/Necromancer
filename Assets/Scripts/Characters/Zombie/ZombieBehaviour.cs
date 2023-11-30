@@ -63,7 +63,7 @@ public class ZombieBehaviour : MonoBehaviour, IChaseable
         _chaser = GetComponent<ZombieChaser>();
         _wanderController = GetComponent<WanderController>();
         _animationHelper = new AnimationHelper(_animator, true);
-        // SetCollider();
+        SetCollider();
     }
 
     private void Start()
@@ -127,11 +127,14 @@ public class ZombieBehaviour : MonoBehaviour, IChaseable
     /// <summary>
     /// Creates a collider between the zombies so that they won't overlap.
     /// The collider's parent is this zombie.
+    /// 
+    /// REQUIRED for the defender to find it.
     /// </summary>
     private void SetCollider()
     {
         BoxCollider2D collider = gameObject.AddComponent<BoxCollider2D>();
         int zombifiableLayerMask = 1 << LayerMask.NameToLayer("Zombifiable");
+        collider.excludeLayers = ~zombifiableLayerMask;
         collider.includeLayers = zombifiableLayerMask;
         collider.contactCaptureLayers = zombifiableLayerMask;
         collider.callbackLayers = zombifiableLayerMask;

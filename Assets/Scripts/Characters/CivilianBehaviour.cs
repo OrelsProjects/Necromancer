@@ -73,6 +73,7 @@ public class Civilian : MonoBehaviour
         (_collider as CircleCollider2D).radius = 1f;
         _collider.offset = Vector2.zero;
         int zombieLayerMask = 1 << LayerMask.NameToLayer("Zombie");
+        _collider.excludeLayers = ~zombieLayerMask;
         _collider.includeLayers = zombieLayerMask;
         _collider.contactCaptureLayers = zombieLayerMask;
         _collider.callbackLayers = zombieLayerMask;

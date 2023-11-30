@@ -42,7 +42,7 @@ public class Chaser<T> : IChaser<T> where T : MonoBehaviour, IChaseable
     public T FindNewTarget()
     {
         float closestDistance = Mathf.Infinity;
-        bool isPriorityTargetsOnly = false;
+        bool isPriorityTargetsOnly = false; // After the first priority target found, only priority targets will be considered.
         GameObject[] targets = GameObject.FindGameObjectsWithTag(_tag);
         T newTarget = null;
         foreach (var target in targets)
@@ -54,12 +54,14 @@ public class Chaser<T> : IChaser<T> where T : MonoBehaviour, IChaseable
                 {
                     continue;
                 }
+                float distance = Vector3.Distance(_gameObject.transform.position, chaseable.transform.position);
                 if (!isPriorityTargetsOnly && chaseable.IsPriority())
                 {
                     isPriorityTargetsOnly = true;
                     newTarget = chaseable;
+                    closestDistance = distance;
+                    continue;
                 }
-                float distance = Vector3.Distance(_gameObject.transform.position, chaseable.transform.position);
                 if (distance < closestDistance)
                 {
                     newTarget = chaseable;

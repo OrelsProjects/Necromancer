@@ -18,6 +18,6 @@ MonoBehaviour:
   Speed: 1.8
   AttackSpeed: 0.8
   AmountSpawned: 2
-  PriceToUse: 120
+  PriceToUse: 850
   PriceToUpgrade: 3500
   DetectionRange: 2

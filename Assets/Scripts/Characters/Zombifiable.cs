@@ -23,7 +23,6 @@ public class Zombifiable : MonoBehaviour, IChaseable
     private int _maxHealth;
     public int _currentHealth;
     private float _movementBlockedTimeAfterAttack;
-    private float _lastHitTime = 0f;
     private readonly float _timeToZombify = 1f;
     private readonly float _chanceToScreamOnHit = 0.3f;
 
@@ -106,7 +105,7 @@ public class Zombifiable : MonoBehaviour, IChaseable
 
     private IEnumerator BlockMovement()
     {
-        _lastHitTime = Time.time;
+        float _lastHitTime = Time.time;
         _animationHelper.PlayAnimation(AnimationType.Idle);
         _movementController.Disable();
         yield return new WaitForSeconds(_movementBlockedTimeAfterAttack);

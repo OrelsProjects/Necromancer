@@ -17,7 +17,7 @@ MonoBehaviour:
   Health: 500
   Speed: 1.8
   AttackSpeed: 0.8
-  AmountSpawned: 3
-  PriceToUse: 120
+  AmountSpawned: 2
+  PriceToUse: 900
   PriceToUpgrade: 5000
   DetectionRange: 2

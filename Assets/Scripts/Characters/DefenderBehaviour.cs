@@ -63,7 +63,7 @@ public abstract class Defender : MonoBehaviour
         _animationHelper = new AnimationHelper(_animator);
         _animationHelper.SetAttackSpeed(Data.AttackSpeed);
 
-        SetCollider(); 
+        SetCollider();
         SetState(DefenderState.Idle);
     }
 
@@ -114,6 +114,7 @@ public abstract class Defender : MonoBehaviour
         _collider.isTrigger = true;
         _collider.offset = Vector2.zero;
         int layerMask = 1 << LayerMask.NameToLayer("Zombie");
+        _collider.excludeLayers = ~layerMask;
         _collider.includeLayers = layerMask;
         _collider.contactCaptureLayers = layerMask;
         _collider.callbackLayers = layerMask;

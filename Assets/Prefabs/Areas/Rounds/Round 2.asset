@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Round 2
   m_EditorClassIdentifier: 
   Melee: 1
-  _meleesCount: 0
+  _meleesCount: 10
   Ranged: 1
-  _archersCount: 1
+  _archersCount: 10
   Civilians: 1
   _civiliansCount: 15
   _wavesCount: 1

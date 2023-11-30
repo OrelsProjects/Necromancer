@@ -203,6 +203,7 @@ public class UpgradeController : DisableMapMovement
         bool isZombieAcquired = InventoryManager.Instance.IsZombieAcquired(_selectedZombieOption.Type);
 
         ZombieLevel selectedZombieCurrentLevel = SelectedZombieLevelData;
+        ZombieData selectedZombieData = SelectedZombieData;
         UpdateText(_currentAttackSpeed, selectedZombieCurrentLevel.AttackSpeed.ToString(), isZombieAcquired);
         UpdateText(_currentDamage, selectedZombieCurrentLevel.Damage.ToString(), isZombieAcquired);
         UpdateText(_currentHealth, selectedZombieCurrentLevel.Health.ToString(), isZombieAcquired);
@@ -219,8 +220,12 @@ public class UpgradeController : DisableMapMovement
             _arrow.SetActive(false);
             _NextStatsContainer.SetActive(false);
 
-            _acquireButton.gameObject.SetActive(!isZombieAcquired);
             _maxLevelText.gameObject.SetActive(isZombieAcquired);
+            _acquireButton.gameObject.SetActive(!isZombieAcquired);
+            if (!isZombieAcquired)
+            {
+                UpdateText(_acquireCost, selectedZombieData.PriceToAcquire.ToString(), !isZombieAcquired);
+            }
         }
         else
         {

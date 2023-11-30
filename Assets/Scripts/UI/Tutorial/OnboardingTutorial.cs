@@ -9,5 +9,7 @@ public class OnboardingTutorial : TutorialBehaviour
 
     public void SpawnZombie() => ZombieSpawner.Instance.SpawnSelectedZombie();
 
+    public void AcquireSmallZombie() => InventoryManager.Instance.AcquireZombie(ZombieType.Small);
+
     #endregion
 }
