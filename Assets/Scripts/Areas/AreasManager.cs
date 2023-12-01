@@ -189,7 +189,7 @@ public class AreasManager : MonoBehaviour, ISaveable
     {
         if (!_areasState.ContainsKey(area))
         {
-            _areasState.Add(area, AreaState.Zombified);
+            _areasState.TryAdd(area, AreaState.Zombified);
         }
         else
         {
@@ -248,15 +248,15 @@ public class AreasManager : MonoBehaviour, ISaveable
         {
             if (!_areasLevels.ContainsKey(a.Area))
             {
-                _areasLevels.Add(a.Area, 1);
+                _areasLevels.TryAdd(a.Area, 1);
             }
             if (!_areasState.ContainsKey(a.Area))
             {
-                _areasState.Add(a.Area, AreaState.Default);
+                _areasState.TryAdd(a.Area, AreaState.Default);
             }
             if (!_areaLastProductionCollectionTime.ContainsKey(a.Area))
             {
-                _areaLastProductionCollectionTime.Add(a.Area, DateTime.Now);
+                _areaLastProductionCollectionTime.TryAdd(a.Area, DateTime.Now);
             }
         });
         NotifyChangesAreaLevel();

@@ -90,10 +90,6 @@ public class RoundManager : MonoBehaviour
     private void OnEnable() // So it happens before Start of WaveController
     {
         _waveController.Initialize(_area);
-    }
-
-    private void Start()
-    {
         _data = AreasManager.Instance.GetAreaData(_area);
         StartRound();
     }
@@ -261,6 +257,14 @@ public class RoundManager : MonoBehaviour
         _data.RoundData.Defenders.Value.ForEach(defender =>
                 {
                     Defender defenderInstance = Instantiate(defender, Vector3.zero, Quaternion.identity);
+                    if (_data.RoundData.Empowered)
+                    {
+                        defenderInstance.Empower();
+                    }
+                    if (defenderInstance.TryGetComponent<DefenderRanged>(out var rangedDefender))
+                    {
+                        Debug.Log("Ranged defender");
+                    }
                     AddDefender(defenderInstance);
                 });
 

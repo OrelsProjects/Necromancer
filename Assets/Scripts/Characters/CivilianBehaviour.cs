@@ -15,7 +15,7 @@ public enum CivilianState
 public class Civilian : MonoBehaviour
 {
     [SerializeField]
-    private float _speed = 2.0f;
+    private float _speed = 1.2f;
     [SerializeField]
     private float _delayBetweenChangingTargets = 2f;
 
@@ -69,14 +69,15 @@ public class Civilian : MonoBehaviour
     private void SetCollider()
     {
         _collider = gameObject.AddComponent<CircleCollider2D>();
-        _collider.isTrigger = true;
-        (_collider as CircleCollider2D).radius = 1f;
+        _collider.isTrigger = false;
+        (_collider as CircleCollider2D).radius = 0.09f;
         _collider.offset = Vector2.zero;
         int zombieLayerMask = 1 << LayerMask.NameToLayer("Zombie");
-        _collider.excludeLayers = ~zombieLayerMask;
-        _collider.includeLayers = zombieLayerMask;
-        _collider.contactCaptureLayers = zombieLayerMask;
-        _collider.callbackLayers = zombieLayerMask;
+        int colliderLayerMask = 1 << LayerMask.NameToLayer("Colliders");
+        _collider.excludeLayers = ~zombieLayerMask & ~colliderLayerMask;
+        _collider.includeLayers = zombieLayerMask | colliderLayerMask;
+        _collider.contactCaptureLayers = zombieLayerMask | colliderLayerMask;
+        _collider.callbackLayers = zombieLayerMask | colliderLayerMask;
     }
 
     private void RemoveDeadZombiesFromList() => _zombiesNearby.RemoveAll(zombie => zombie == null || !zombie.IsAvailable());
@@ -84,10 +85,10 @@ public class Civilian : MonoBehaviour
     private void HandleIdleState()
     {
         bool isRoundStarted = RoundManager.Instance.IsRoundStarted;
-        if (_collider != null)
-        {
-            _collider.enabled = isRoundStarted;
-        }
+        // if (_collider != null)
+        // {
+        //     _collider.enabled = isRoundStarted;
+        // }
         if (!isRoundStarted)
         {
             return;

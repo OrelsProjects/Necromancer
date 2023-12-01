@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb48a892ae0dce14783cad32d04f50a1, type: 3}
   m_Name: Zombifiable Medium
   m_EditorClassIdentifier: 
-  Health: 150
-  MovementBlockedTimeAfterAttack: 1.2
+  Health: 40
+  MovementBlockedTimeAfterAttack: 2
   ChanceToBecomeZombie: 0.804

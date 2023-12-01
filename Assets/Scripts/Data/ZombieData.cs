@@ -15,7 +15,7 @@ public class ZombieData : ScriptableObject
         get
         {
             Dictionary<int, ZombieLevel> levels = new();
-            _zombieLevels.ForEach(zombieLevel => levels.Add(zombieLevel.Level, zombieLevel));
+            _zombieLevels.ForEach(zombieLevel => levels.TryAdd(zombieLevel.Level, zombieLevel));
             return levels;
         }
     }
@@ -25,10 +25,10 @@ public class ZombieData : ScriptableObject
         get { return levels.Keys.Count; }
     }
 
-    public ZombieLevel GetLevel(int level)
+    public ZombieLevel GetLevel(int level, ZombieType type)
     {
         int clampedLevel = Mathf.Clamp(level, 0, MaxLevel);
-        return GameBalancer.Instance.ZombieStats[ZombieType.Small][clampedLevel];
+        return GameBalancer.Instance.GetZombieStats(type)[clampedLevel];
     }
 
     public int PriceToAcquire => _priceToAcquire;

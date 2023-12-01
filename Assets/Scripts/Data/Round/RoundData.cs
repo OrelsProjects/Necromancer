@@ -20,6 +20,9 @@ public class RoundData : ScriptableObject
     [SerializeField]
     private int _archersCount;
 
+    [SerializeField]
+    private bool _empowered;
+
     [Header("Civilians")]
     [SerializeField]
     private bool Civilians = true;
@@ -45,6 +48,7 @@ public class RoundData : ScriptableObject
     public int WavesCount => _wavesCount;
     public float TimeBetweenWaves => _timeBetweenWavesInSeconds;
     public int RaidCost => _raidCost;
+    public bool Empowered => _empowered;
 
     public Lazy<List<Zombifiable>> CiviliansPrefabs
     {

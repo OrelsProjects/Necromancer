@@ -75,7 +75,6 @@ public class Projectile : MonoBehaviour, IProjectile
         {
             return;
         }
-        Debug.Log("Projectile hit: " + collider.gameObject.name);
         if (collider.gameObject.layer == LayerMask.NameToLayer("Zombie"))
         {
             if (collider.gameObject.TryGetComponent<ZombieBehaviour>(out var zombie))

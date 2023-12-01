@@ -10,12 +10,38 @@ public enum GameState
 
 public class Game
 {
-    public static GameState Instance;
+    private static Game _instance;
     private GameState _state;
 
     public delegate void StateChangedDelegate(GameState state);
 
     public event StateChangedDelegate OnStateChanged;
+
+    public void SubscribeToStateChanged(StateChangedDelegate stateChangedDelegate)
+    {
+        OnStateChanged += stateChangedDelegate;
+    }
+
+    public void UnsubscribeToStateChanged(StateChangedDelegate stateChangedDelegate)
+    {
+        OnStateChanged -= stateChangedDelegate;
+    }
+
+    // Private constructor to prevent external instantiation
+    private Game() { }
+
+    // Public method to access the singleton instance
+    public static Game Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = new Game();
+            }
+            return _instance;
+        }
+    }
 
     public GameState State
     {
@@ -29,4 +55,3 @@ public class Game
 
     public void SetState(GameState state) => State = state;
 }
-

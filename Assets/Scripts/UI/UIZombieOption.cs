@@ -9,6 +9,7 @@ public class UIZombieOption : MonoBehaviour
     public Image Image;
     public Button Button;
     public TextMeshProUGUI LevelText;
+    public GameObject LevelTextContainer;
     public GameObject Locked;
 
     [HideInInspector]
@@ -36,10 +37,14 @@ public class UIZombieOption : MonoBehaviour
         Image.transform.position = new(Image.transform.position.x, 0);
     }
 
-    public void Acquired(bool isAcquired)
+    public void Acquired(bool isAcquired, int level = 0)
     {
         Locked.SetActive(!isAcquired);
-        LevelText.gameObject.SetActive(isAcquired);
+        LevelTextContainer.SetActive(isAcquired);
+        if (isAcquired)
+        {
+            LevelText.text = level.ToString();
+        }
     }
 }
 

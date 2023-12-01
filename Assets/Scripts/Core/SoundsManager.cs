@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -111,4 +112,13 @@ public class SoundsManager : MonoBehaviour
         UISoundTypes.RoundLose => Instance._roundLose,
         _ => throw new System.NotImplementedException(),
     };
+
+    public void Mute(bool shouldMute = true)
+    {
+        if (Instance == null)
+        {
+            return;
+        }
+        _backgroundAudioSource.mute = shouldMute;
+    }
 }

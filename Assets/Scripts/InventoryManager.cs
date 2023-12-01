@@ -69,6 +69,12 @@ public class InventoryManager : MonoBehaviour, ISaveable
 
     public bool UseCurrency(int amount)
     {
+        Debug.Log("About to use currency: " + amount + " Can afford? " + CanAfford(amount));
+        if (amount < 0)
+        {
+            Debug.LogError("Trying to use negative currency: " + amount);
+            return false;
+        }
         if (CanAfford(amount))
         {
             Currency -= amount;

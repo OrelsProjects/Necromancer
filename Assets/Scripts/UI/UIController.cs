@@ -16,6 +16,8 @@ public class UIController : MonoBehaviour
     private TextMeshProUGUI _currencyText;
     [SerializeField]
     private GameObject _addedCurrencyContainer;
+    [SerializeField]
+    private GameObject _loadingScreen;
 
     private void Awake()
     {
@@ -31,12 +33,19 @@ public class UIController : MonoBehaviour
 
         InventoryManager.Instance.OnCurrencyChanged += OnCurrencyChanged;
         OnCurrencyChanged(InventoryManager.Instance.Currency, InventoryManager.Instance.Currency);
+        Game.Instance.SubscribeToStateChanged(OnGameStateChanged);
     }
 
     private void OnDestroy()
     {
         InventoryManager.Instance.OnCurrencyChanged -= OnCurrencyChanged;
     }
+
+    private void OnGameStateChanged(GameState newState)
+    {
+        UpdateLoading();
+    }
+
     private void OnCurrencyChanged(int newCurrency, int oldCurrency)
     {
         int difference = newCurrency - oldCurrency;
@@ -53,6 +62,21 @@ public class UIController : MonoBehaviour
     public void UpdateUI()
     {
         _currencyText.text = InventoryManager.Instance.Currency.ToString("N0");
+        UpdateLoading();
+    }
+
+    private void UpdateLoading()
+    {
+        if (Game.Instance.State == GameState.Loading)
+        {
+            _loadingScreen.SetActive(true);
+            SoundsManager.Instance.Mute(false);
+        }
+        else
+        {
+            _loadingScreen.SetActive(false);
+            SoundsManager.Instance.Mute();
+        }
     }
 
     public bool IsUpgradeAreaOpen() => _areaUpgradeUI.GetComponent<AreaUpgradeController>() != null;

@@ -23,6 +23,9 @@ public class DefenderMelee : Defender {
             return;
         }
         _target.TakeDamage(Data.Damage);
-        AudioSource.PlayClipAtPoint(AttackSound, transform.position);
+        // 1% Chance to play the attack sound
+        if (Random.Range(0, 10) == 0) {
+            AudioSource.PlayClipAtPoint(_attackSound, transform.position);
+        }
     }
 }

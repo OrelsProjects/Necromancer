@@ -28,10 +28,11 @@ public class WaveController : MonoBehaviour
 
     public WaveState State => _state;
     public bool IsWaveInProgress => _state == WaveState.Started;
-
-
+    
     private void Start()
     {
+        SpawnWave(); // Spawn first wave on start.
+        _currentWave = 1;
         _waveSlider.value = 0;
         UpdateWaveText();
     }
@@ -41,13 +42,25 @@ public class WaveController : MonoBehaviour
         _data = AreasManager.Instance.GetAreaData(area).RoundData;
     }
 
+    /// <summary>
+    /// Spawn wave after round start.
+    /// </summary>
+    // public void StartWaves()
+    // {
+    //     SpawnWave();
+    //     _state = WaveState.Started;
+    //     _currentWave = 1;
+    //     UpdateWaveText();
+    // }
+
+    /// <summary>
+    /// Spawn first wave on start.
+    /// </summary>
     public void StartWaves()
     {
-        SpawnWave();
         _state = WaveState.Started;
-        _currentWave = 1;
-        UpdateWaveText();
     }
+
 
     public void StopWaves() => _state = WaveState.Stopped;
 

@@ -63,7 +63,6 @@ public class RoundResults : MonoBehaviour
     private void SetUpWin()
     {
         _rewardText.gameObject.SetActive(true);
-        Debug.Log("Reward: " + RoundManager.Instance.Reward.ToString());
         _rewardText.text = RoundManager.Instance.Reward.ToString();
         _title.text = _winTitle;
 

@@ -120,6 +120,7 @@ public class AreaController : MonoBehaviour
         RoundData roundData = AreasManager.Instance.GetAreaData(_area).RoundData;
         int wavesCount = Mathf.Clamp(roundData.WavesCount, 1, roundData.WavesCount);
         int defendersCount = Mathf.Clamp(roundData.DefendersCount, 1, roundData.DefendersCount);
-        return wavesCount * defendersCount;
+
+        return wavesCount * defendersCount * (roundData.Empowered ? 2 : 1);
     }
 }

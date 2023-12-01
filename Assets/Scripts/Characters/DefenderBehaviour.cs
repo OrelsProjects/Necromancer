@@ -47,6 +47,8 @@ public abstract class Defender : MonoBehaviour
     private Collider2D _collider;
     private readonly List<ZombieBehaviour> _zombiesNearby = new();
 
+    private bool _empowered = false;
+
     public DefenderState State = DefenderState.Idle;
     protected AnimationHelper _animationHelper;
 
@@ -72,10 +74,10 @@ public abstract class Defender : MonoBehaviour
         switch (Type)
         {
             case DefenderType.Melee:
-                Data = GameBalancer.Instance.GetMeleeDefenderStats();
+                Data = GameBalancer.Instance.GetMeleeDefenderStats(_empowered);
                 break;
             case DefenderType.Ranged:
-                Data = GameBalancer.Instance.GetRangedDefenderStats();
+                Data = GameBalancer.Instance.GetRangedDefenderStats(_empowered);
                 break;
         }
     }
@@ -118,14 +120,15 @@ public abstract class Defender : MonoBehaviour
     private void SetCollider()
     {
         _collider = gameObject.AddComponent<CircleCollider2D>();
-        (_collider as CircleCollider2D).radius = 2;
+        (_collider as CircleCollider2D).radius = 3;
         _collider.isTrigger = true;
         _collider.offset = Vector2.zero;
-        int layerMask = 1 << LayerMask.NameToLayer("Zombie");
-        _collider.excludeLayers = ~layerMask;
-        _collider.includeLayers = layerMask;
-        _collider.contactCaptureLayers = layerMask;
-        _collider.callbackLayers = layerMask;
+        int zombieLayerMask = 1 << LayerMask.NameToLayer("Zombie");
+        int collidersLayerMask = 1 << LayerMask.NameToLayer("Colliders");
+        _collider.excludeLayers = ~zombieLayerMask & ~collidersLayerMask;
+        _collider.includeLayers = zombieLayerMask | collidersLayerMask;
+        _collider.contactCaptureLayers = zombieLayerMask | collidersLayerMask;
+        _collider.callbackLayers = zombieLayerMask | collidersLayerMask;
     }
 
     public void CleanZombiesList() => _zombiesNearby.RemoveAll(zombie => zombie == null || !zombie.IsAvailable());
@@ -133,6 +136,11 @@ public abstract class Defender : MonoBehaviour
     public virtual void StartBattle()
     {
         SetState(DefenderState.Idle);
+    }
+
+    public void Empower()
+    {
+        _empowered = true;
     }
 
     private void HandleWanderingState()
@@ -218,6 +226,7 @@ public abstract class Defender : MonoBehaviour
             SetState(DefenderState.Idle);
             return;
         }
+        int damage = Data.Damage;
         _movementController.Stop();
         SetState(DefenderState.Attacking);
         Attack(_currentTarget.GetComponent<ZombieBehaviour>());

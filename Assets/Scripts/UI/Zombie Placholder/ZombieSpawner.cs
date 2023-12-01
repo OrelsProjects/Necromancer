@@ -69,7 +69,7 @@ public class ZombieSpawner : MonoBehaviour
         RaidManager.Instance.RaidZombies.ForEach(zombie =>
         {
             ZombieSpawnBehaviour zombieSpawner = InitSpawningBehaviour(zombie);
-            _zombieTypeToZombieSpawnBehaviour.Add(zombie, zombieSpawner);
+            _zombieTypeToZombieSpawnBehaviour.TryAdd(zombie, zombieSpawner);
         });
     }
 

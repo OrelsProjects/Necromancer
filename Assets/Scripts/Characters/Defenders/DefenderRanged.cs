@@ -49,6 +49,10 @@ public class DefenderRanged : Defender
     {
         Projectile projectile = Instantiate(_projectile, ProjectileSpawnPosition.position, Quaternion.identity);
         projectile.SetTarget(_target, _projectileSpeed, Data.Damage);
-        AudioSource.PlayClipAtPoint(AttackSound, transform.position);
+        // 1% Chance to play the attack sound
+        if (Random.Range(0, 10) == 0)
+        {
+            AudioSource.PlayClipAtPoint(_attackSound, transform.position);
+        }
     }
 }

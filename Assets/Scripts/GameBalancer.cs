@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Debug = UnityEngine.Debug;
 
 public struct CharacterStatus
 {
@@ -17,8 +18,8 @@ public struct CharacterStatus
 
 public class GameBalancer
 {
-
     private static GameBalancer _instance;
+
     public static GameBalancer Instance
     {
         get
@@ -27,7 +28,6 @@ public class GameBalancer
             return _instance;
         }
     }
-
     private DefenderData meleeDefenderStats;
     private DefenderData rangedDefenderStats;
     private Dictionary<ZombieType, ZombieLevel> zombieBaseStats;
@@ -41,10 +41,11 @@ public class GameBalancer
 
     private GameBalancer()
     {
+
         meleeDefenderStats = new(
             level: 1,
-            damage: 11,
-            health: 100,
+            damage: 40,
+            health: 350,
             speed: 2.5f,
             attackSpeed: 2
         );
@@ -55,7 +56,7 @@ public class GameBalancer
             { ZombieType.Small, new(
             level: 1,
             damage: 10,
-            health: 50,
+            health: 75,
             speed: 2.5f,
             attackSpeed: 2,
             amountSpawned: 3,
@@ -64,29 +65,29 @@ public class GameBalancer
             detectionRange: 3
             )},
             { ZombieType.Medium, new(level: 1,
-            damage: 25,
-            health: 100,
+            damage: 50,
+            health: 150,
             speed: 2.5f,
             attackSpeed: 2,
             amountSpawned: 1,
-            priceToUse: 50,
-            priceToUpgrade: 150,
+            priceToUse: 100,
+            priceToUpgrade: 500,
             detectionRange: 1
             ) },
             { ZombieType.Large, new(
             level: 1,
-            damage: 100,
-            health: 300,
+            damage: 150,
+            health: 600,
             speed: 2.5f,
             attackSpeed: 0.5f,
             amountSpawned: 1,
-            priceToUse: 150,
-            priceToUpgrade: 300,
+            priceToUse: 1000,
+            priceToUpgrade: 2000,
             detectionRange: 1
             )
             }
         };
-        zombieStats = new Dictionary<ZombieType, Dictionary<int, ZombieLevel>>();
+        ZombieStats = new Dictionary<ZombieType, Dictionary<int, ZombieLevel>>();
 
         CalculateZombieStats();
         CalculateRangedDefenderStats();
@@ -98,22 +99,22 @@ public class GameBalancer
         {
             if (type == ZombieType.Playground) continue;
             var baseStats = zombieBaseStats[type];
-            zombieStats[type] = new Dictionary<int, ZombieLevel>();
+            ZombieStats[type] = new Dictionary<int, ZombieLevel>();
             for (int level = 1; level <= 12; level++)
             {
                 // Linear progression calculation
                 float factor = (level - 1) / 11f;
-                zombieStats[type][level] = new(
-                   level: level,
-                   damage: (int)(baseStats.Damage * (1 + factor)),
-                   health: (int)(baseStats.Health * (1 + factor)),
-                   speed: baseStats.Speed * (1 + factor),
-                   attackSpeed: baseStats.AttackSpeed * (1 + factor),
-                   amountSpawned: baseStats.AmountSpawned + (int)(level / 3),
-                   priceToUse: baseStats.PriceToUse,
-                   priceToUpgrade: baseStats.PriceToUpgrade + (50 * (level - 1)),
-                   detectionRange: baseStats.DetectionRange
-                );
+                ZombieStats[type][level] = new(
+                     level: level,
+                     damage: (int)(baseStats.Damage * (1 + factor)),
+                     health: (int)(baseStats.Health * (1 + factor)),
+                     speed: baseStats.Speed * (1 + factor),
+                     attackSpeed: baseStats.AttackSpeed * (1 + factor),
+                     amountSpawned: baseStats.AmountSpawned + level / 3,
+                     priceToUse: baseStats.PriceToUse + (50 * (level - 1)),
+                     priceToUpgrade: baseStats.PriceToUpgrade + (50 * level),
+                     detectionRange: baseStats.DetectionRange
+                  );
             }
         }
     }
@@ -122,36 +123,44 @@ public class GameBalancer
     {
         // Using the condition: 1.5 small zombies (level 1) = 1 ranged defender
         var smallZombieStats = zombieBaseStats[ZombieType.Small];
-        float totalZombiePower =
-            1.5f * (smallZombieStats.Health + smallZombieStats.Damage + smallZombieStats.AttackSpeed);
         float zombieDps = smallZombieStats.Damage * smallZombieStats.AttackSpeed;
         int zombieTimeToKillRanged = 3;
-        int rangedHealth = (int)(zombieDps * 1.5 / zombieTimeToKillRanged);
-        float rangedDps = smallZombieStats.Health / 2;
-        float rangedAttackSpeed = 2;
-        float rangedDamage = rangedDps * rangedAttackSpeed;
-        rangedDefenderStats = new DefenderData(
+        int rangedHealth = (int)(zombieDps * zombieTimeToKillRanged);
+        float rangedAttackSpeed = 1.4f;
+        int rangedDamage = smallZombieStats.Health / 4;
+        rangedDefenderStats = new(
             level: 1,
             damage: (int)rangedDamage,
             health: rangedHealth,
-            speed: 2.5f,
+            speed: 1.5f,
             attackSpeed: rangedAttackSpeed
         );
+        Debug.Log("Ranged health" + rangedHealth);
+        Debug.Log("Ranged damage" + rangedDamage);
+        Debug.Log("attackSpeed" + rangedAttackSpeed);
     }
 
     // Methods to access the stats (optional)
-    public DefenderData GetMeleeDefenderStats()
+    public DefenderData GetMeleeDefenderStats(bool empowered = false)
     {
+        if (empowered)
+        {
+            meleeDefenderStats.Empower();
+        }
         return meleeDefenderStats;
     }
 
-    public DefenderData GetRangedDefenderStats()
+    public DefenderData GetRangedDefenderStats(bool empowered = false)
     {
+        if (empowered)
+        {
+            rangedDefenderStats.Empower();
+        }
         return rangedDefenderStats;
     }
 
     public Dictionary<int, ZombieLevel> GetZombieStats(ZombieType type)
     {
-        return zombieStats[type];
+        return ZombieStats[type];
     }
 }

@@ -144,7 +144,6 @@ abstract public class TutorialBehaviour : MonoBehaviour, ISaveable
 
     private void FinishTutorial()
     {
-        Debug.Log("About to save: " + GetData().GetName() + " Part: " + Part);
         SaveManager.Instance.SaveItem(GetData());
         TutorialManager.Instance.ClearAllObjects();
         Destroy(this);

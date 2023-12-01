@@ -43,7 +43,7 @@ public class AreaData : ScriptableObject
         get
         {
             Dictionary<int, AreaLevel> levels = new();
-            _areaLevels.ForEach(areaLevel => levels.Add(areaLevel.Level, areaLevel));
+            _areaLevels.ForEach(areaLevel => levels.TryAdd(areaLevel.Level, areaLevel));
             return levels;
         }
     }
@@ -78,12 +78,4 @@ public class AreaData : ScriptableObject
         GoldRewardPerRound = baseGoldReward + goldMultiplier * 50;
         LabLevelUpgradeCost = baseLabUpgradeCost + round * labCostMultiplier * 100;
     }
-}
-
-[CreateAssetMenu(fileName = "AreaLevel", menuName = "Necromancer/Area/Level", order = 2)]
-public class AreaLevel : ScriptableObject
-{
-    public int Level = 1;
-    public int CurrencyPerMinute = 1;
-    public int PriceToUpgrade = 1;
 }

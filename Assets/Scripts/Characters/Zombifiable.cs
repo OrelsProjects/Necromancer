@@ -49,7 +49,7 @@ public class Zombifiable : MonoBehaviour, IChaseable
     /// </summary>
     /// <param name="zombieType">Is used to determine which zombie prefab to instantiate</param> // Maybe in the future
     /// <param name="damage">The amount of damage to deal</param>
-    public void Zombify(ZombieType _, int damage)
+    public void Zombify(ZombieType zombieType, int damage)
     {
         if (_state == ZombifiableState.Turning)
         {
@@ -65,8 +65,8 @@ public class Zombifiable : MonoBehaviour, IChaseable
         }
         else
         {
-            // var zombiePrefab = CharactersManager.Instance.GetZombiePrefab(zombieType);// Maybe in the future
-            var zombiePrefab = CharactersManager.Instance.GetZombiePrefab(ZombieType.Small);
+            var zombiePrefab = CharactersManager.Instance.GetZombiePrefab(zombieType);// Maybe in the future
+            // var zombiePrefab = CharactersManager.Instance.GetZombiePrefab(ZombieType.Small);
             _state = ZombifiableState.Turning;
             StartCoroutine(TurnToZombie(zombiePrefab.gameObject));
         }

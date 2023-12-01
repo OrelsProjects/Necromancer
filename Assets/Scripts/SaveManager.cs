@@ -94,6 +94,7 @@ public class SaveManager : MonoBehaviour
 
     private void InitiateLoad()
     {
+        Game.Instance.SetState(GameState.Loading);
         StartCoroutine(InitiateLoadCore());
     }
 
@@ -116,7 +117,6 @@ public class SaveManager : MonoBehaviour
             })
         }
     };
-        Debug.Log("Saving: " + item.GetName());
         string stringSaveData = JsonConvert.SerializeObject(saveData);
         File.WriteAllText(BuildSaveFileName(item), stringSaveData);
     }
@@ -210,7 +210,11 @@ public class SaveManager : MonoBehaviour
                 // Log error
                 Debug.Log("Save file not found, loading default data: " + e);
             }
+            finally
+            {
+                Game.Instance.SetState(GameState.Playing);
+                IsLoadingFetch = false;
+            }
         });
-        IsLoadingFetch = false;
     }
 }

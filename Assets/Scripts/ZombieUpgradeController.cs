@@ -145,6 +145,8 @@ public class UpgradeController : DisableMapMovement
     {
         UIZombieOption uiZombieOption = Instantiate(_zombieOptionPrefab);
         ZombieImage zombieImage = CharactersManager.Instance.GetZombieSprite(zombieType).Value;
+        bool isZombieAcquired = InventoryManager.Instance.IsZombieAcquired(zombieType);
+        uiZombieOption.name = "Zombie Option" + zombieType.ToString();
         uiZombieOption.Type = zombieType;
         uiZombieOption.DisableCost();
         uiZombieOption.transform.SetParent(_zombiesContainer);
@@ -153,7 +155,8 @@ public class UpgradeController : DisableMapMovement
         uiZombieOption.Image.transform.localScale = new Vector3(zombieImage.xDim, zombieImage.yDim, 1);
         uiZombieOption.Button.onClick.AddListener(() => SelectZombie(uiZombieOption));
         CurrentZombieTypes.Add(zombieType);
-        _zombieOptions.Add(zombieType, uiZombieOption);
+        _zombieOptions.TryAdd(zombieType, uiZombieOption);
+        uiZombieOption.Acquired(isZombieAcquired, CharactersManager.Instance.GetZombieLevelData(zombieType).Level);
         return uiZombieOption;
     }
 
@@ -189,6 +192,7 @@ public class UpgradeController : DisableMapMovement
         if (SelectedZombieLevelData != null)
         {
             upgradeCost = SelectedZombieLevelData.PriceToUpgrade;
+            Debug.Log(upgradeCost);
         }
         if (InventoryManager.Instance.UseCurrency((int)upgradeCost))
         {
@@ -209,9 +213,9 @@ public class UpgradeController : DisableMapMovement
         _zombieOptions.TryGetValue(_selectedZombieOption.Type, out UIZombieOption zombieOption);
         if (zombieOption != null)
         {
-            zombieOption.LevelText.text = selectedZombieCurrentLevel.Level.ToString();
-            zombieOption.Acquired(isZombieAcquired);
+            zombieOption.Acquired(isZombieAcquired, selectedZombieCurrentLevel.Level);
         }
+
         UpdateText(_currentAttackSpeed, selectedZombieCurrentLevel.AttackSpeed.ToString("N1"), isZombieAcquired);
         UpdateText(_currentDamage, selectedZombieCurrentLevel.Damage.ToString(), isZombieAcquired);
         UpdateText(_currentHealth, selectedZombieCurrentLevel.Health.ToString(), isZombieAcquired);

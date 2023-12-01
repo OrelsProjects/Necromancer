@@ -172,10 +172,10 @@ public class CharactersManager : MonoBehaviour, ISaveable
     {
         return type switch
         {
-            ZombieType.Small => _smallZombieData.GetLevel(SmallZombieLevel),
-            ZombieType.Medium => _mediumZombieData.GetLevel(MediumZombieLevel),
-            ZombieType.Large => _largeZombieData.GetLevel(LargeZombieLevel),
-            ZombieType.Playground => _smallZombieData.GetLevel(SmallZombieLevel), // Adjust as needed.
+            ZombieType.Small => _smallZombieData.GetLevel(SmallZombieLevel, type),
+            ZombieType.Medium => _mediumZombieData.GetLevel(MediumZombieLevel, type),
+            ZombieType.Large => _largeZombieData.GetLevel(LargeZombieLevel, type),
+            ZombieType.Playground => _smallZombieData.GetLevel(SmallZombieLevel, type), // Adjust as needed.
             _ => null,
         };
     }
@@ -208,10 +208,10 @@ public class CharactersManager : MonoBehaviour, ISaveable
     {
         return type switch
         {
-            ZombieType.Small => _smallZombieData.GetLevel(SmallZombieLevel + 1),
-            ZombieType.Medium => _mediumZombieData.GetLevel(MediumZombieLevel + 1),
-            ZombieType.Large => _largeZombieData.GetLevel(LargeZombieLevel + 1),
-            ZombieType.Playground => _smallZombieData.GetLevel(SmallZombieLevel + 1), // Adjust as needed.
+            ZombieType.Small => _smallZombieData.GetLevel(SmallZombieLevel + 1, type),
+            ZombieType.Medium => _mediumZombieData.GetLevel(MediumZombieLevel + 1, type),
+            ZombieType.Large => _largeZombieData.GetLevel(LargeZombieLevel + 1, type),
+            ZombieType.Playground => _smallZombieData.GetLevel(SmallZombieLevel + 1, type), // Adjust as needed.
             _ => new ZombieLevel(), // Adjust as needed.
         };
     }

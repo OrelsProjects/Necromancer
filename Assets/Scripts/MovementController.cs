@@ -72,7 +72,6 @@ public class MovementController : MonoBehaviour
         Vector2 newDirection = target.transform.position - transform.position;
         if (newDirection == _direction && speed == _speed)
         {
-            Debug.Log("Same direction and speed");
             return true;
         }
 

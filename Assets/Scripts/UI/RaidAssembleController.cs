@@ -78,7 +78,7 @@ public class RaidAssembleController : DisableMapMovement
         foreach (ZombieType zombieType in InventoryManager.Instance.AcquiredZombies)
         {
             UIZombieOption raidZombieOption = GetRaidZombieUI(zombieType, position++);
-            _zombieOptions.Add(zombieType, raidZombieOption);
+            _zombieOptions.TryAdd(zombieType, raidZombieOption);
             AddToOptionsList(raidZombieOption);
         }
         UpdateRaidCost(AreasManager.Instance.GetAreaData(_area).RaidCost);
@@ -89,7 +89,8 @@ public class RaidAssembleController : DisableMapMovement
     {
         UIZombieOption raidZombieOption = Instantiate(_zombieOptionPrefab);
         ZombieImage zombieImage = CharactersManager.Instance.GetZombieSprite(zombieType).Value;
-        int cost = CharactersManager.Instance.GetZombieLevelData(zombieType).PriceToUse;
+        ZombieLevel zombieLevel = CharactersManager.Instance.GetZombieLevelData(zombieType);
+        int cost = zombieLevel.PriceToUse;
 
         raidZombieOption.Type = zombieType;
         raidZombieOption.Image.sprite = zombieImage.sprite;
@@ -97,7 +98,7 @@ public class RaidAssembleController : DisableMapMovement
         raidZombieOption.CostText.text = cost.ToString();
         raidZombieOption.PositionInList = positionInList;
         raidZombieOption.Button.onClick.AddListener(() => SelectZombie(raidZombieOption));
-        raidZombieOption.Acquired(true);
+        raidZombieOption.Acquired(true, zombieLevel.Level);
         return raidZombieOption;
     }
 
@@ -169,7 +170,6 @@ public class RaidAssembleController : DisableMapMovement
         else
         {
             // TODO: Log it.
-            Debug.Log("Can't Afford Raid");
         }
     }
 

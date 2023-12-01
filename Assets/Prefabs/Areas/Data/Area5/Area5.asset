@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Area5
   m_EditorClassIdentifier: 
   _areaLevels:
-  - {fileID: 11400000, guid: d6564a4691f23c84d88ff2ff53f221cd, type: 2}
-  - {fileID: 11400000, guid: 845319a790fd23a409e904f654033e34, type: 2}
-  - {fileID: 11400000, guid: b4a57d7de0a7adc4fb3910b706f70895, type: 2}
+  - {fileID: 11400000, guid: d3eceae04b876463880bae47fd094d85, type: 2}
+  - {fileID: 11400000, guid: a8d48e2cb5a4949b4ac034de7a982086, type: 2}
+  - {fileID: 11400000, guid: 9f74b74092dc04a6095fc0bc6742c99f, type: 2}
+  Difficulty: 0
   Area: 4
   RoundData: {fileID: 11400000, guid: d60b06c045c95c543aa79d25e74b7b9f, type: 2}

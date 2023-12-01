@@ -13,7 +13,7 @@ public class PodData : ScriptableObject
         get
         {
             Dictionary<int, PodLevel> levels = new();
-            _podLevels.ForEach(podLevel => levels.Add(podLevel.Level, podLevel));
+            _podLevels.ForEach(podLevel => levels.TryAdd(podLevel.Level, podLevel));
             return levels;
         }
     }
