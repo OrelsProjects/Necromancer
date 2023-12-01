@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 public struct CharacterStatus
@@ -53,7 +54,7 @@ public class GameBalancer
         rangedDefenderStats = new();
         // Base stats for zombies at level 1
         zombieBaseStats = new Dictionary<ZombieType, ZombieLevel> {
-            { ZombieType.Small, new(
+            { ZombieType.Small, CreateZombieLevel(
             level: 1,
             damage: 10,
             health: 75,
@@ -64,7 +65,7 @@ public class GameBalancer
             priceToUpgrade: 0,
             detectionRange: 3
             )},
-            { ZombieType.Medium, new(level: 1,
+            { ZombieType.Medium, CreateZombieLevel(level: 1,
             damage: 50,
             health: 150,
             speed: 2.5f,
@@ -74,7 +75,7 @@ public class GameBalancer
             priceToUpgrade: 500,
             detectionRange: 1
             ) },
-            { ZombieType.Large, new(
+            { ZombieType.Large, CreateZombieLevel(
             level: 1,
             damage: 150,
             health: 600,
@@ -104,7 +105,7 @@ public class GameBalancer
             {
                 // Linear progression calculation
                 float factor = (level - 1) / 11f;
-                ZombieStats[type][level] = new(
+                ZombieStats[type][level] = CreateZombieLevel(
                      level: level,
                      damage: (int)(baseStats.Damage * (1 + factor)),
                      health: (int)(baseStats.Health * (1 + factor)),
@@ -130,17 +131,38 @@ public class GameBalancer
         int rangedDamage = smallZombieStats.Health / 4;
         rangedDefenderStats = new(
             level: 1,
-            damage: (int)rangedDamage,
+            damage: rangedDamage,
             health: rangedHealth,
             speed: 1.5f,
-            attackSpeed: rangedAttackSpeed
+            attackSpeed: rangedAttackSpeed,
+            attackRange: 3f
         );
-        Debug.Log("Ranged health" + rangedHealth);
-        Debug.Log("Ranged damage" + rangedDamage);
-        Debug.Log("attackSpeed" + rangedAttackSpeed);
     }
 
-    // Methods to access the stats (optional)
+    private ZombieLevel CreateZombieLevel(
+        int level,
+        int damage,
+        int health,
+        float speed,
+        float attackSpeed,
+        int amountSpawned,
+        int priceToUse,
+        int priceToUpgrade,
+        float detectionRange
+    )
+    {
+        ZombieLevel zombieLevel = ScriptableObject.CreateInstance<ZombieLevel>();
+        zombieLevel.Level = level;
+        zombieLevel.Damage = damage;
+        zombieLevel.Health = health;
+        zombieLevel.Speed = speed;
+        zombieLevel.AttackSpeed = attackSpeed;
+        zombieLevel.AmountSpawned = amountSpawned;
+        zombieLevel.PriceToUse = priceToUse;
+        zombieLevel.PriceToUpgrade = priceToUpgrade;
+        zombieLevel.DetectionRange = detectionRange;
+        return zombieLevel;
+    }
     public DefenderData GetMeleeDefenderStats(bool empowered = false)
     {
         if (empowered)

@@ -18,7 +18,7 @@ public class DefenderChaser : MonoBehaviour, IChaser<ZombieBehaviour>
         }
     }
 
-    void Awake()
+    void Start()
     {
         Defender defender = GetComponent<Defender>();
         _selfOwner = new() { gameObject = gameObject, priority = OwnerPriority.Default };

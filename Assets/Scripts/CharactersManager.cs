@@ -212,7 +212,7 @@ public class CharactersManager : MonoBehaviour, ISaveable
             ZombieType.Medium => _mediumZombieData.GetLevel(MediumZombieLevel + 1, type),
             ZombieType.Large => _largeZombieData.GetLevel(LargeZombieLevel + 1, type),
             ZombieType.Playground => _smallZombieData.GetLevel(SmallZombieLevel + 1, type), // Adjust as needed.
-            _ => new ZombieLevel(), // Adjust as needed.
+            _ => ScriptableObject.CreateInstance<ZombieLevel>(),
         };
     }
 

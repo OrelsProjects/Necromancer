@@ -24,8 +24,8 @@ public enum DefenderType
 [RequireComponent(typeof(Zombifiable))]
 public abstract class Defender : MonoBehaviour
 {
-    public DefenderData Data;
     public DefenderType Type;
+    public DefenderData Data;
 
     public bool IsRanged
     {
@@ -47,39 +47,33 @@ public abstract class Defender : MonoBehaviour
     private Collider2D _collider;
     private readonly List<ZombieBehaviour> _zombiesNearby = new();
 
-    private bool _empowered = false;
-
     public DefenderState State = DefenderState.Idle;
     protected AnimationHelper _animationHelper;
 
     public abstract void Attack(ZombieBehaviour target);
     public virtual void Awake()
     {
+
         _movementController = GetComponent<MovementController>();
         _chaser = GetComponent<DefenderChaser>();
         _wanderController = GetComponent<WanderController>();
         _zombifiable = GetComponent<Zombifiable>();
         _animator = GetComponent<Animator>();
 
-        _animationHelper = new AnimationHelper(_animator);
-        _animationHelper.SetAttackSpeed(Data.AttackSpeed);
+        DefenderData dd1 = GameBalancer.Instance.GetRangedDefenderStats();
+        DefenderData dd = GameBalancer.Instance.GetMeleeDefenderStats();
 
+        InitData();
         SetCollider();
         SetState(DefenderState.Idle);
+
+        _animationHelper = new AnimationHelper(_animator);
+        _animationHelper.SetAttackSpeed(Data.AttackSpeed);
     }
 
     private void Start()
     {
         _chaser.SubscribeToTargetChanges(OnTargetChange);
-        switch (Type)
-        {
-            case DefenderType.Melee:
-                Data = GameBalancer.Instance.GetMeleeDefenderStats(_empowered);
-                break;
-            case DefenderType.Ranged:
-                Data = GameBalancer.Instance.GetRangedDefenderStats(_empowered);
-                break;
-        }
     }
 
     public virtual void FixedUpdate()
@@ -117,6 +111,19 @@ public abstract class Defender : MonoBehaviour
         }
     }
 
+    private void InitData()
+    {
+        switch (Type)
+        {
+            case DefenderType.Melee:
+                Data = GameBalancer.Instance.GetMeleeDefenderStats();
+                break;
+            case DefenderType.Ranged:
+                Data = GameBalancer.Instance.GetRangedDefenderStats();
+                break;
+        }
+    }
+
     private void SetCollider()
     {
         _collider = gameObject.AddComponent<CircleCollider2D>();
@@ -138,10 +145,6 @@ public abstract class Defender : MonoBehaviour
         SetState(DefenderState.Idle);
     }
 
-    public void Empower()
-    {
-        _empowered = true;
-    }
 
     private void HandleWanderingState()
     {
@@ -226,7 +229,6 @@ public abstract class Defender : MonoBehaviour
             SetState(DefenderState.Idle);
             return;
         }
-        int damage = Data.Damage;
         _movementController.Stop();
         SetState(DefenderState.Attacking);
         Attack(_currentTarget.GetComponent<ZombieBehaviour>());
@@ -242,6 +244,8 @@ public abstract class Defender : MonoBehaviour
             SetState(DefenderState.Chasing);
         }
     }
+
+
 
     private void HandleDeathState()
     {
@@ -310,4 +314,6 @@ public abstract class Defender : MonoBehaviour
             _zombiesNearby.Remove(collision.gameObject.GetComponent<ZombieBehaviour>());
         }
     }
+
+    public void Empower() => Data.Empower();
 }
