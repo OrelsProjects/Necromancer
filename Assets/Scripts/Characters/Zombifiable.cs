@@ -33,15 +33,28 @@ public class Zombifiable : MonoBehaviour, IChaseable
     AnimationHelper _animationHelper;
 
 
-    private void Awake()
+    private void Start()
     {
         gameObject.tag = "Zombifiable";
         _animator = GetComponent<Animator>();
         _movementController = GetComponent<MovementController>();
         _animationHelper = new AnimationHelper(_animator);
+        if (IsDefender())
+        {
+            SetDefenderData();
+        }
         _maxHealth = _data.Health;
-        _currentHealth = _maxHealth;
         _movementBlockedTimeAfterAttack = _data.MovementBlockedTimeAfterAttack;
+        _currentHealth = _maxHealth;
+    }
+
+    private bool IsDefender() => GetComponent<Defender>() != null;
+    private void SetDefenderData()
+    {
+        var defender = GetComponent<Defender>();
+        _data.Health = defender.Data.Health;
+        _data.ChanceToBecomeZombie = 1;
+        _data.MovementBlockedTimeAfterAttack = 0;
     }
 
     /// <summary>
@@ -104,6 +117,10 @@ public class Zombifiable : MonoBehaviour, IChaseable
 
     private IEnumerator BlockMovement()
     {
+        if (_movementBlockedTimeAfterAttack <= 0)
+        {
+            yield break;
+        }
         float _lastHitTime = Time.time;
         _animationHelper.PlayAnimation(AnimationType.Idle);
         _movementController.Disable();

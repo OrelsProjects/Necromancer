@@ -352,7 +352,12 @@ public class RoundManager : MonoBehaviour
 
     private IEnumerator FinishRoundCore()
     {
-        Destroy(gameObject, 2.3f);
+        float timeToWait = 2.3f;
+        if (_state == RoundState.DefendersWon)
+        {
+            timeToWait = 3.5f; // To allow the user to read the text
+        }
+        Destroy(gameObject, timeToWait);
         yield return new WaitForSeconds(_timeToCloseRound);
         UnityEngine.SceneManagement.SceneManager.LoadScene("Map1");
         Time.timeScale = 1f;

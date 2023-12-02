@@ -8,37 +8,46 @@ public class DefenderChaser : MonoBehaviour, IChaser<ZombieBehaviour>
     private Owner _selfOwner;
     private IChaser<ZombieBehaviour> _chaser;
 
+    public IChaser<ZombieBehaviour> Chaser
+    {
+        get
+        {
+            Defender defender = GetComponent<Defender>();
+            _chaser ??= new Chaser<ZombieBehaviour>(gameObject, defender.Data.AttackRange, _selfOwner);
+            return _chaser;
+        }
+    }
+
     public event IChaser<ZombieBehaviour>.TargetChangeDelegate OnTargetChange;
 
     public ZombieBehaviour Target
     {
         get
         {
-            return _chaser.GetTarget();
+            return Chaser.GetTarget();
         }
     }
 
-    void Start()
+    // Has to be OnEnable, because in Start of DefenderBehaviour we subscribe to OnTargetChange and _chaser is not initialized yet.
+    void OnEnable()
     {
-        Defender defender = GetComponent<Defender>();
         _selfOwner = new() { gameObject = gameObject, priority = OwnerPriority.Default };
-        _chaser = new Chaser<ZombieBehaviour>(gameObject, defender.Data.AttackRange, _selfOwner);
     }
 
-    public ZombieBehaviour FindNewTarget() => _chaser.FindNewTarget();
+    public ZombieBehaviour FindNewTarget() => Chaser.FindNewTarget();
 
-    public void SetTarget(ZombieBehaviour zombie, Owner owner = default) => _chaser.SetTarget(zombie, _selfOwner);
+    public void SetTarget(ZombieBehaviour zombie, Owner owner = default) => Chaser.SetTarget(zombie, _selfOwner);
 
-    public TargetDistanceState GetTargetDistanceState() => _chaser.GetTargetDistanceState();
+    public TargetDistanceState GetTargetDistanceState() => Chaser.GetTargetDistanceState();
 
-    public ZombieBehaviour GetTarget() => _chaser.GetTarget();
+    public ZombieBehaviour GetTarget() => Chaser.GetTarget();
 
     public void SubscribeToTargetChanges(IChaser<ZombieBehaviour>.TargetChangeDelegate action) =>
-        _chaser.SubscribeToTargetChanges(action);
+        Chaser.SubscribeToTargetChanges(action);
     public void UnsubscribeFromTargetChanges(IChaser<ZombieBehaviour>.TargetChangeDelegate action) =>
-        _chaser.UnsubscribeFromTargetChanges(action);
+        Chaser.UnsubscribeFromTargetChanges(action);
 
-    public void SetOwner(Owner owner) => _chaser.SetOwner(owner);
+    public void SetOwner(Owner owner) => Chaser.SetOwner(owner);
 }
 
 

@@ -93,6 +93,7 @@ abstract public class TutorialBehaviour : MonoBehaviour, ISaveable
 
     internal virtual void Update()
     {
+        if (Game.Instance.IsLoading()) { return; }
         switch (_state)
         {
             case TutorialState.Idle:

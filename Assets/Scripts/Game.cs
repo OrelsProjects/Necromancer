@@ -6,6 +6,7 @@ public enum GameState
     Playing,
     Paused,
     UI,
+    Completed,
 }
 
 public class Game
@@ -54,4 +55,6 @@ public class Game
     }
 
     public void SetState(GameState state) => State = state;
+
+    public bool IsLoading() => State == GameState.Loading;
 }

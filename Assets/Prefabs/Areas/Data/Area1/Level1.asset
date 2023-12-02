@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Level1
   m_EditorClassIdentifier: 
   Level: 1
-  CurrencyPerMinute: 5
+  CurrencyPerMinute: 15
   PriceToUpgrade: 100

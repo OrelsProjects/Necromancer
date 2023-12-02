@@ -53,26 +53,22 @@ public abstract class Defender : MonoBehaviour
     public abstract void Attack(ZombieBehaviour target);
     public virtual void Awake()
     {
+        InitData();
+        SetCollider();
+        SetState(DefenderState.Idle);
 
         _movementController = GetComponent<MovementController>();
         _chaser = GetComponent<DefenderChaser>();
         _wanderController = GetComponent<WanderController>();
         _zombifiable = GetComponent<Zombifiable>();
         _animator = GetComponent<Animator>();
-
-        DefenderData dd1 = GameBalancer.Instance.GetRangedDefenderStats();
-        DefenderData dd = GameBalancer.Instance.GetMeleeDefenderStats();
-
-        InitData();
-        SetCollider();
-        SetState(DefenderState.Idle);
-
         _animationHelper = new AnimationHelper(_animator);
         _animationHelper.SetAttackSpeed(Data.AttackSpeed);
     }
 
     private void Start()
     {
+        Debug.Log("Is data null? " + (Data == null));
         _chaser.SubscribeToTargetChanges(OnTargetChange);
     }
 

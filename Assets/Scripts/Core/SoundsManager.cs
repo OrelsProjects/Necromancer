@@ -24,6 +24,7 @@ public enum UISoundTypes
     CoinsCollect,
     RoundWin,
     RoundLose,
+    Rating,
 }
 
 [System.Serializable]
@@ -56,6 +57,8 @@ public class SoundsManager : MonoBehaviour
     private AudioClip _roundLose;
     [SerializeField]
     private AudioClip _roundWin;
+    [SerializeField]
+    private AudioClip _rating;
 
     [Header("Areas Clips")]
     [SerializeField]
@@ -110,6 +113,7 @@ public class SoundsManager : MonoBehaviour
         UISoundTypes.CoinsCollect => Instance._coinsCollectSonud,
         UISoundTypes.RoundWin => Instance._roundWin,
         UISoundTypes.RoundLose => Instance._roundLose,
+        UISoundTypes.Rating => Instance._rating,
         _ => throw new System.NotImplementedException(),
     };
 
@@ -120,5 +124,10 @@ public class SoundsManager : MonoBehaviour
             return;
         }
         _backgroundAudioSource.mute = shouldMute;
+    }
+    // Play at maximum volume
+    public static void PlayAtPointUISound(UISoundTypes type)
+    {
+        AudioSource.PlayClipAtPoint(GetUISound(type), Camera.main.transform.position, 1f);
     }
 }

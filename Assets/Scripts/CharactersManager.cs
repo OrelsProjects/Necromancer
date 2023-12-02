@@ -57,15 +57,9 @@ public class CharactersManager : MonoBehaviour, ISaveable
     [SerializeField]
     private ZombieImage _smallZombieSprite;
     [SerializeField]
-    private ZombieData _smallZombieData;
-    [SerializeField]
     private ZombieImage _mediumZombieSprite;
     [SerializeField]
-    private ZombieData _mediumZombieData;
-    [SerializeField]
     private ZombieImage _largeZombieSprite;
-    [SerializeField]
-    private ZombieData _largeZombieData;
 
     [Header("Prefabs")]
     [SerializeField]
@@ -170,36 +164,26 @@ public class CharactersManager : MonoBehaviour, ISaveable
 
     public ZombieLevel GetZombieLevelData(ZombieType type)
     {
+        Dictionary<int, ZombieLevel> zombieLevel = GameBalancer.Instance.GetZombieStats(type);
         return type switch
         {
-            ZombieType.Small => _smallZombieData.GetLevel(SmallZombieLevel, type),
-            ZombieType.Medium => _mediumZombieData.GetLevel(MediumZombieLevel, type),
-            ZombieType.Large => _largeZombieData.GetLevel(LargeZombieLevel, type),
-            ZombieType.Playground => _smallZombieData.GetLevel(SmallZombieLevel, type), // Adjust as needed.
+            ZombieType.Small => zombieLevel[SmallZombieLevel],
+            ZombieType.Medium => zombieLevel[MediumZombieLevel],
+            ZombieType.Large => zombieLevel[LargeZombieLevel],
+            ZombieType.Playground => zombieLevel[SmallZombieLevel], // Adjust as needed.
             _ => null,
         };
     }
 
-    public ZombieData GetZombieData(ZombieType type)
-    {
-        return type switch
-        {
-            ZombieType.Small => _smallZombieData,
-            ZombieType.Medium => _mediumZombieData,
-            ZombieType.Large => _largeZombieData,
-            ZombieType.Playground => _smallZombieData, // Adjust as needed.
-            _ => null,
-        };
-    }
 
     public bool IsZombieMaxLevel(ZombieType type)
     {
         return type switch
         {
-            ZombieType.Small => SmallZombieLevel >= _smallZombieData.MaxLevel,
-            ZombieType.Medium => MediumZombieLevel >= _mediumZombieData.MaxLevel,
-            ZombieType.Large => LargeZombieLevel >= _largeZombieData.MaxLevel,
-            ZombieType.Playground => SmallZombieLevel >= _smallZombieData.MaxLevel, // Adjust as needed.
+            ZombieType.Small => SmallZombieLevel >= ZombieData.MaxLevel,
+            ZombieType.Medium => MediumZombieLevel >= ZombieData.MaxLevel,
+            ZombieType.Large => LargeZombieLevel >= ZombieData.MaxLevel,
+            ZombieType.Playground => SmallZombieLevel >= ZombieData.MaxLevel, // Adjust as needed.
             _ => false,
         };
     }
@@ -208,11 +192,11 @@ public class CharactersManager : MonoBehaviour, ISaveable
     {
         return type switch
         {
-            ZombieType.Small => _smallZombieData.GetLevel(SmallZombieLevel + 1, type),
-            ZombieType.Medium => _mediumZombieData.GetLevel(MediumZombieLevel + 1, type),
-            ZombieType.Large => _largeZombieData.GetLevel(LargeZombieLevel + 1, type),
-            ZombieType.Playground => _smallZombieData.GetLevel(SmallZombieLevel + 1, type), // Adjust as needed.
-            _ => ScriptableObject.CreateInstance<ZombieLevel>(),
+            ZombieType.Small => ZombieData.GetLevel(SmallZombieLevel + 1, type),
+            ZombieType.Medium => ZombieData.GetLevel(MediumZombieLevel + 1, type),
+            ZombieType.Large => ZombieData.GetLevel(LargeZombieLevel + 1, type),
+            ZombieType.Playground => ZombieData.GetLevel(SmallZombieLevel + 1, type), // Adjust as needed.
+            _ => new(),
         };
     }
 

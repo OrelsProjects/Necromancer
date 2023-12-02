@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -87,18 +88,6 @@ public class UpgradeController : DisableMapMovement
         }
     }
 
-    private ZombieData SelectedZombieData
-    {
-        get
-        {
-            if (SelectedZombieType != null)
-            {
-                return CharactersManager.Instance.GetZombieData(SelectedZombieType.Value);
-            }
-            return null;
-        }
-    }
-
     private List<ZombieType> AcquireableZombies => InventoryManager.Instance.AcquireableZombies;
 
     private readonly List<ZombieType> CurrentZombieTypes = new(); // Avoid duplicates in the UI.
@@ -176,13 +165,11 @@ public class UpgradeController : DisableMapMovement
 
     public void AcquireZombie()
     {
-        if (SelectedZombieData != null)
+        ZombieType zombieType = SelectedZombieType.Value;
+        if (InventoryManager.Instance.UseCurrency(ZombieData.GetPriceToAcquire(zombieType)))
         {
-            if (InventoryManager.Instance.UseCurrency(SelectedZombieData.PriceToAcquire))
-            {
-                InventoryManager.Instance.AcquireZombie(SelectedZombieType.Value);
-                UpdateUI();
-            }
+            InventoryManager.Instance.AcquireZombie(zombieType);
+            UpdateUI();
         }
     }
 
@@ -209,8 +196,8 @@ public class UpgradeController : DisableMapMovement
         }
         bool isZombieAcquired = InventoryManager.Instance.IsZombieAcquired(_selectedZombieOption.Type);
         ZombieLevel selectedZombieCurrentLevel = SelectedZombieLevelData;
-        ZombieData selectedZombieData = SelectedZombieData;
         _zombieOptions.TryGetValue(_selectedZombieOption.Type, out UIZombieOption zombieOption);
+        ZombieType zombieType = SelectedZombieType.Value;
         if (zombieOption != null)
         {
             zombieOption.Acquired(isZombieAcquired, selectedZombieCurrentLevel.Level);
@@ -236,7 +223,7 @@ public class UpgradeController : DisableMapMovement
             _acquireButton.gameObject.SetActive(!isZombieAcquired);
             if (!isZombieAcquired)
             {
-                UpdateText(_acquireCost, selectedZombieData.PriceToAcquire.ToString(), !isZombieAcquired);
+                UpdateText(_acquireCost, ZombieData.GetPriceToAcquire(zombieType).ToString(), !isZombieAcquired);
             }
         }
         else

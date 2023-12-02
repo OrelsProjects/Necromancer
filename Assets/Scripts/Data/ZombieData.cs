@@ -1,35 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "Data", menuName = "Necromancer/Zombie/Data", order = 2)]
-public class ZombieData : ScriptableObject
+public static class ZombieData
 {
-    [SerializeField]
-    private List<ZombieLevel> _zombieLevels;
-    [SerializeField]
-    private int _priceToAcquire;
+    public static int MaxLevel => 12;
 
-    private Dictionary<int, ZombieLevel> levels
-    {
-        get
-        {
-            Dictionary<int, ZombieLevel> levels = new();
-            _zombieLevels.ForEach(zombieLevel => levels.TryAdd(zombieLevel.Level, zombieLevel));
-            return levels;
-        }
-    }
-
-    public int MaxLevel
-    {
-        get { return levels.Keys.Count; }
-    }
-
-    public ZombieLevel GetLevel(int level, ZombieType type)
+    public static ZombieLevel GetLevel(int level, ZombieType type)
     {
         int clampedLevel = Mathf.Clamp(level, 0, MaxLevel);
         return GameBalancer.Instance.GetZombieStats(type)[clampedLevel];
     }
 
-    public int PriceToAcquire => _priceToAcquire;
+    public static int GetPriceToAcquire(ZombieType type)
+    {
+        return GameBalancer.Instance.GetZombieStats(type)[1].PriceToAcquire;
+    }
 }

@@ -16,10 +16,11 @@ MonoBehaviour:
   _meleesCount: 10
   Ranged: 1
   _archersCount: 11
+  _empowered: 0
   Civilians: 1
   _civiliansCount: 4
   _wavesCount: 6
   _timeBetweenWavesInSeconds: 5
   _raidCost: 100
-  Reward: 1000
+  Reward: 2500
   BackgroundMusic: {fileID: 8300000, guid: 71006b454f6a70c46ba9b40a6deefc15, type: 3}

@@ -1,11 +1,13 @@
+
+
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class UIController : MonoBehaviour
 {
-
     public static UIController Instance;
 
     [SerializeField]
@@ -18,6 +20,8 @@ public class UIController : MonoBehaviour
     private GameObject _addedCurrencyContainer;
     [SerializeField]
     private GameObject _loadingScreen;
+    [SerializeField]
+    private GameObject _demoCompletedUI;
 
     private void Awake()
     {
@@ -30,7 +34,6 @@ public class UIController : MonoBehaviour
     private void Start()
     {
         UpdateUI();
-
         InventoryManager.Instance.OnCurrencyChanged += OnCurrencyChanged;
         OnCurrencyChanged(InventoryManager.Instance.Currency, InventoryManager.Instance.Currency);
         Game.Instance.SubscribeToStateChanged(OnGameStateChanged);
@@ -62,11 +65,22 @@ public class UIController : MonoBehaviour
     public void UpdateUI()
     {
         _currencyText.text = InventoryManager.Instance.Currency.ToString("N0");
+
+        if (AreasManager.Instance.IsGameCompleted())
+        {
+            AreasManager.Instance.CompleteGame();
+            ShowCompletedScreen();
+        }
+
         UpdateLoading();
     }
 
     private void UpdateLoading()
     {
+        if (_loadingScreen == null)
+        {
+            return;
+        }
         if (Game.Instance.State == GameState.Loading)
         {
             _loadingScreen.SetActive(true);
@@ -109,5 +123,15 @@ public class UIController : MonoBehaviour
     public void PlayClickSound()
     {
         AudioSourceHelper.PlayClipAtPoint(UISoundTypes.ButtonClick);
+    }
+
+    public void ShowCompletedScreen()
+    {
+        _demoCompletedUI.SetActive(true);
+    }
+
+    public void HideCompletedScreen()
+    {
+        _demoCompletedUI.SetActive(false);
     }
 }

@@ -27,6 +27,7 @@ public struct AreasData : ISaveableObject
     public Dictionary<Areas, AreaState> AreasState;
     public Dictionary<Areas, int> AreasLevels;
     public Dictionary<Areas, DateTime> AreasProductionTime;
+    public bool IsCompletedScreenShown;
 
     public readonly string GetObjectType() => GetType().FullName;
     public readonly string GetName() => GetObjectType();
@@ -51,6 +52,7 @@ public class AreasManager : MonoBehaviour, ISaveable
 
     public delegate void AreasLevelChangeDelegate();
     private event AreasLevelChangeDelegate OnAreaLevelChanged;
+    private bool _isCompletedScreenShown = false;
     private Dictionary<Areas, int> _areasLevels = new();
     public Dictionary<Areas, int> AreasLevels
     {
@@ -77,6 +79,7 @@ public class AreasManager : MonoBehaviour, ISaveable
             Instance = this;
         }
     }
+
 
     private void NotifyChangesAreaState()
     {
@@ -106,6 +109,18 @@ public class AreasManager : MonoBehaviour, ISaveable
     public void UnsubscribeFromAreasLevelChange(AreasLevelChangeDelegate delegateUnsubscribe)
     {
         OnAreaLevelChanged -= delegateUnsubscribe;
+    }
+
+    public bool IsGameCompleted() => _areasState.All(a => a.Value == AreaState.Zombified);
+
+    public void CompleteGame()
+    {
+        if (!_isCompletedScreenShown && IsGameCompleted())
+        {
+            Game.Instance.SetState(GameState.Completed);
+            UIController.Instance.ShowCompletedScreen();
+            _isCompletedScreenShown = true;
+        }
     }
 
     public void CollectProduction()
@@ -216,10 +231,7 @@ public class AreasManager : MonoBehaviour, ISaveable
         return false;
     }
 
-    public void SaveData()
-    {
-        SaveManager.Instance.SaveItem(GetData());
-    }
+    public void SaveData() => SaveManager.Instance.SaveItem(GetData());
 
     public ISaveableObject GetData()
     {
@@ -228,6 +240,7 @@ public class AreasManager : MonoBehaviour, ISaveable
             AreasState = _areasState,
             AreasLevels = _areasLevels,
             AreasProductionTime = _areaLastProductionCollectionTime,
+            IsCompletedScreenShown = _isCompletedScreenShown,
         };
     }
 
@@ -238,6 +251,7 @@ public class AreasManager : MonoBehaviour, ISaveable
             _areasState = data.AreasState; // Trigger event after loading data   
             _areasLevels = data.AreasLevels;
             _areaLastProductionCollectionTime = data.AreasProductionTime;
+            _isCompletedScreenShown = data.IsCompletedScreenShown;
         }
         _areasLevels ??= new();
         _areasState ??= new();

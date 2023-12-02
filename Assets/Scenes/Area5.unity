@@ -139,10 +139,6 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4041125323024906260, guid: 79d18cf08c3fa497990e7c81dbf09779, type: 3}
-      propertyPath: _area
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 5477904604162028230, guid: 79d18cf08c3fa497990e7c81dbf09779, type: 3}
       propertyPath: m_Name
       value: 'Round Manager '

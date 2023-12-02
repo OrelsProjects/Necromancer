@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 public struct CharacterStatus
 {
@@ -42,11 +40,10 @@ public class GameBalancer
 
     private GameBalancer()
     {
-
         meleeDefenderStats = new(
             level: 1,
             damage: 40,
-            health: 350,
+            health: 100,
             speed: 2.5f,
             attackSpeed: 2
         );
@@ -56,45 +53,48 @@ public class GameBalancer
         zombieBaseStats = new Dictionary<ZombieType, ZombieLevel> {
             { ZombieType.Small, CreateZombieLevel(
             level: 1,
-            damage: 10,
+            damage: 20,
             health: 75,
             speed: 2.5f,
-            attackSpeed: 2,
+            attackSpeed: 2.4f,
             amountSpawned: 3,
             priceToUse: 0,
             priceToUpgrade: 0,
-            detectionRange: 3
+            detectionRange: 3,
+            priceToAcquire: 0
             )},
-            { ZombieType.Medium, CreateZombieLevel(level: 1,
-            damage: 50,
-            health: 150,
+            { ZombieType.Medium, new(level: 1,
+            damage: 76,
+            health: 180,
             speed: 2.5f,
             attackSpeed: 2,
             amountSpawned: 1,
-            priceToUse: 100,
+            priceToUse: 10,
             priceToUpgrade: 500,
-            detectionRange: 1
+            detectionRange: 1,
+            priceToAcquire: 600
             ) },
-            { ZombieType.Large, CreateZombieLevel(
+            { ZombieType.Large, new(
             level: 1,
-            damage: 150,
-            health: 600,
+            damage: 297,
+            health: 700,
             speed: 2.5f,
-            attackSpeed: 0.5f,
+            attackSpeed: 1f,
             amountSpawned: 1,
-            priceToUse: 1000,
+            priceToUse: 100,
             priceToUpgrade: 2000,
-            detectionRange: 1
+            detectionRange: 1,
+            priceToAcquire: 1000
             )
             }
         };
         ZombieStats = new Dictionary<ZombieType, Dictionary<int, ZombieLevel>>();
 
-        CalculateZombieStats();
-        CalculateRangedDefenderStats();
+        InitZombieStats();
+        InitRangedDefenderStats();
     }
 
-    private void CalculateZombieStats()
+    private void InitZombieStats()
     {
         foreach (ZombieType type in Enum.GetValues(typeof(ZombieType)))
         {
@@ -105,7 +105,7 @@ public class GameBalancer
             {
                 // Linear progression calculation
                 float factor = (level - 1) / 11f;
-                ZombieStats[type][level] = CreateZombieLevel(
+                ZombieStats[type][level] = new(
                      level: level,
                      damage: (int)(baseStats.Damage * (1 + factor)),
                      health: (int)(baseStats.Health * (1 + factor)),
@@ -114,13 +114,14 @@ public class GameBalancer
                      amountSpawned: baseStats.AmountSpawned + level / 3,
                      priceToUse: baseStats.PriceToUse + (50 * (level - 1)),
                      priceToUpgrade: baseStats.PriceToUpgrade + (50 * level),
-                     detectionRange: baseStats.DetectionRange
+                     detectionRange: baseStats.DetectionRange,
+                        priceToAcquire: baseStats.PriceToAcquire
                   );
             }
         }
     }
 
-    private void CalculateRangedDefenderStats()
+    private void InitRangedDefenderStats()
     {
         // Using the condition: 1.5 small zombies (level 1) = 1 ranged defender
         var smallZombieStats = zombieBaseStats[ZombieType.Small];
@@ -135,7 +136,7 @@ public class GameBalancer
             health: rangedHealth,
             speed: 1.5f,
             attackSpeed: rangedAttackSpeed,
-            attackRange: 3f
+            attackRange: 6f
         );
     }
 
@@ -148,21 +149,20 @@ public class GameBalancer
         int amountSpawned,
         int priceToUse,
         int priceToUpgrade,
-        float detectionRange
-    )
-    {
-        ZombieLevel zombieLevel = ScriptableObject.CreateInstance<ZombieLevel>();
-        zombieLevel.Level = level;
-        zombieLevel.Damage = damage;
-        zombieLevel.Health = health;
-        zombieLevel.Speed = speed;
-        zombieLevel.AttackSpeed = attackSpeed;
-        zombieLevel.AmountSpawned = amountSpawned;
-        zombieLevel.PriceToUse = priceToUse;
-        zombieLevel.PriceToUpgrade = priceToUpgrade;
-        zombieLevel.DetectionRange = detectionRange;
-        return zombieLevel;
-    }
+        float detectionRange,
+        int priceToAcquire
+    ) => new(
+        level: level,
+        damage: damage,
+        health: health,
+        speed: speed,
+        attackSpeed: attackSpeed,
+        amountSpawned: amountSpawned,
+        priceToUse: priceToUse,
+        priceToUpgrade: priceToUpgrade,
+        detectionRange: detectionRange,
+        priceToAcquire: priceToAcquire
+);
     public DefenderData GetMeleeDefenderStats(bool empowered = false)
     {
         if (empowered)
@@ -184,5 +184,10 @@ public class GameBalancer
     public Dictionary<int, ZombieLevel> GetZombieStats(ZombieType type)
     {
         return ZombieStats[type];
+    }
+
+    public int GetZombiePriceToAcquire(ZombieType type)
+    {
+        return zombieBaseStats[type].PriceToUse;
     }
 }
